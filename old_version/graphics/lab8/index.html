@@ -1,0 +1,266 @@
+<html><head><title>Computer Graphics: Lab 8</title>
+<LINK REL=StyleSheet HREF="../graphics.css" TYPE="text/css">
+</head>
+<body bgcolor=white text=black>
+<center><font size=+2><b>Lab 8: Illumination and Shading</b><br>
+<font color=blue>Andrew Cantino & Will Moss</font></font></center>
+<p>
+<div style="margin: 5px;">
+This is <a href=http://palantir.swarthmore.edu/maxwell/classes/e26/F04/labs/lab08/>lab 8</a> of <a href=
+http://palantir.swarthmore.edu/maxwell/classes/e26/F04>Computer Graphics</a>.
+</div>
+<p>
+<b>Sections:</b>
+<ul>
+<li><a href="#api">Light API</a>
+<li><a href="#images">Images</a>
+<li><a href="#questions">Questions and Answers</a>
+<li><a href="#extensions">Extensions</a>
+</ul>
+<p>
+<div class="newsitem">
+<a name="api"></a>
+<div class="newsitem_title">The New Light API</div><p>
+In this lab we have added illumination and shading to our modeling system.  Like all the rest of our models in our modeling system, lights know how to render themselves, returning themselves as part of a list of light sources.  Here is an extension to our API:<p>
+<pre>
+class modelLight
+
+  class pointLight
+    >A point light source that projects in all directions
+      pointLight()
+        >Primative constructor
+      pointLight(colorVector l)
+        >Takes a colorVector, which is a tuple in the range [0 1], specifying the color of the light
+
+  class spotLight
+    >A point light source that projects in a specific direction
+      spotLight()
+        >Primative constructor
+      spotLight(colorVector l, vector3D d, double a)
+        >Takes a colorVector, as well as a direction and angle, specifying the radius of the beam
+</pre>
+</div>
+
+<p>
+
+<div class="newsitem">
+<a name="images"></a>
+<div class="newsitem_title">Images</div><p>
+
+<center><table border=0 width=100%><tr>
+<td valign=top><center><img src=req1.gif>
+<br>
+<i>The Required Image<br>A white light illuminating a green cylinder from (-5, 0, 0).</i></center>
+</td>
+<td valign=top><center><img src=req2.gif border=0><br>
+<i>A white cylinder, illuminated by blue and green lights.<br>
+The blue light is at (10, 0, 3) and the green light is at (-10, 0, -3).
+</i></center>
+</td></tr></table></center>
+
+</div>
+
+<p>
+
+<a name="questions"></a>
+<div class="newsitem">
+<div class="newsitem_title">Questions and Answers</div>
+<ol>
+<li><i>If you use different specular coefficients for the Phong specularity model, what is the apparent effect of increasing or decreasing the coefficient? Test this out, don't just make up an answer. Show the pictures on your lab report so you can visually answer this question.</i><br>
+By increasing the value of kS, we accomplish two things.  First, we make the light the is reflecting off the surface due to specular reflection (i.e. the direct reflection of the light source off of the surface) brighter (and in the case of the white light for our images, whiter).  Second, the fact that the light reflecting off the surface if getting brighter means that the region that has a noticable amount of specular reflection increases.<br>
+By increasing the value of nS, we decrease the "radius" that the light reflects off (i.e. the angle between R and v must be smaller).
+Here are some sample images, with the value for kS across the top and nS on the side:<br><br>
+<table>
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td colspan="6">
+<center><font size=+1><strong>kS</strong></font></center>
+</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td><center>
+(0, 0, 0)
+</center></td>
+<td><center>
+(.2, .2, .2)
+</center></td>
+<td><center>
+(.4, .4, .4)
+</center></td>
+<td><center>
+(.6, .6, .6)
+</center></td>
+<td><center>
+(.8, .8, .8)
+</center></td>
+<td><center>
+(1, 1, 1)
+</center></td>
+</tr>
+<tr>
+<td rowspan="6" valign="center"><font size=+1><strong>nS</strong></font></td>
+<td>
+2
+</td>
+<td><center>
+<img src="q1/11.gif"><br>
+</center></td>
+<td><center>
+<img src="q1/21.gif"><br>
+</center></td>
+<td><center>
+<img src="q1/31.gif"><br>
+</center></td>
+<td><center>
+<img src="q1/41.gif"><br>
+</center></td>
+<td><center>
+<img src="q1/51.gif"><br>
+</center></td>
+<td><center>
+<img src="q1/61.gif"><br>
+</center></td>
+</tr>
+<tr>
+<td>
+4
+</td>
+<td><center>
+<img src="q1/12.gif"><br>
+</center></td>
+<td><center>
+<img src="q1/22.gif"><br>
+</center></td>
+<td><center>
+<img src="q1/32.gif"><br>
+</center></td>
+<td><center>
+<img src="q1/42.gif"><br>
+</center></td>
+<td><center>
+<img src="q1/52.gif"><br>
+</center></td>
+<td><center>
+<img src="q1/62.gif"><br>
+</center></td>
+</tr>
+<tr>
+<td>
+8
+</td>
+<td><center>
+<img src="q1/13.gif"><br>
+</center></td>
+<td><center>
+<img src="q1/23.gif"><br>
+</center></td>
+<td><center>
+<img src="q1/33.gif"><br>
+</center></td>
+<td><center>
+<img src="q1/43.gif"><br>
+</center></td>
+<td><center>
+<img src="q1/53.gif"><br>
+</center></td>
+<td><center>
+<img src="q1/63.gif"><br>
+</center></td>
+</tr>
+<tr>
+<td>
+16
+</td>
+<td><center>
+<img src="q1/14.gif"><br>
+</center></td>
+<td><center>
+<img src="q1/24.gif"><br>
+</center></td>
+<td><center>
+<img src="q1/34.gif"><br>
+</center></td>
+<td><center>
+<img src="q1/44.gif"><br>
+</center></td>
+<td><center>
+<img src="q1/54.gif"><br>
+</center></td>
+<td><center>
+<img src="q1/64.gif"><br>
+</center></td>
+</tr>
+<tr>
+<td>
+32
+</td>
+<td><center>
+<img src="q1/15.gif"><br>
+</center></td>
+<td><center>
+<img src="q1/25.gif"><br>
+</center></td>
+<td><center>
+<img src="q1/35.gif"><br>
+</center></td>
+<td><center>
+<img src="q1/45.gif"><br>
+</center></td>
+<td><center>
+<img src="q1/55.gif"><br>
+</center></td>
+<td><center>
+<img src="q1/65.gif"><br>
+</center></td>
+</tr>
+<tr>
+<td>
+64
+</td>
+<td><center>
+<img src="q1/16.gif"><br>
+</center></td>
+<td><center>
+<img src="q1/26.gif"><br>
+</center></td>
+<td><center>
+<img src="q1/36.gif"><br>
+</center></td>
+<td><center>
+<img src="q1/46.gif"><br>
+</center></td>
+<td><center>
+<img src="q1/56.gif"><br>
+</center></td>
+<td><center>
+<img src="q1/66.gif"><br>
+</center></td>
+</tr>
+</table>
+<p>
+<li><i>If you integrated the light sources with your modeling system, how did you do it?</i><br>
+We added a new modelLight object to our modeling system.  modelLights can be added to a scene like any other model object.  Then when the scene is rendered, a list of the lights is returned (along with the previously returned list of polygons and points).  These lights are then transformed by the VTM to get them into CVV space.  Once in CVV space, we can use them when we are rendering the rest of the scene.  Since we are interpolating our CVV coordinates as well as our normal values as we scan across a polygon, we can just use our lighting model in CVV space to calculate the color of each pixel.
+</ol>
+</div>
+
+<p>
+
+<div class="newsitem">
+<a name="extensions"></a>
+<div class="newsitem_title">Extensions</div><p>
+<b>Starting Shadow Rays</b><br>
+In order to let objects in our 3D scenes cast shadows, we have started to implement shadow rays, in which we shoot a ray from every rendered pixel to each light source.  If the ray intersects any polygons in the world, then the pixel is in shadow from that light source, and so should not be illuminated.  We have the implementation mostly working, but have not eliminated all of the bugs.  It will be completed in the next lab.  Here is an image looking straight down on a pyramid, illuminated with a blue light on the right and a yellow light on the left.  There is some glitching that we plan to iron out by the next lab.<p>
+<center><table border=0><tr><td><center><img src=shadows.gif border=0></center></td></tr></table></center>
+<p>
+<b>Integration with Hierarchical Modeling System</b><br>
+As mentioned above, we integrated our new lighting model with our hierarchical modeling system.  Here is an example image with a light orbiting a pyramid:<p>
+<center><table border=0><tr><td><center><a href=light_ani.gif><img src=light_ani-small.gif border=0></a><br><i>Click for full resolution version.</i></center></td></tr></table></center>
+</div>
+
+<p align=left><font size=-1>[<a href=../index.html>Back to Lab Index</a>]</font>
+</p>
+</body></html>
+

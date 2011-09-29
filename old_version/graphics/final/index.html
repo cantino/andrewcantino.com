@@ -1,0 +1,123 @@
+<html><head><title>Computer Graphics: Final Project</title>
+<LINK REL=StyleSheet HREF="../graphics.css" TYPE="text/css">
+</head>
+<body bgcolor=white text=black>
+<center><font size=+2><b>Final Project: Physics Model</b><br>
+<font color=blue>Andrew Cantino & Will Moss</font></font></center>
+<p>
+<div style="margin: 5px;">
+This is <a href=http://palantir.swarthmore.edu/maxwell/classes/e26/F04/labs/lab10/>lab 10</a> of <a href=
+http://palantir.swarthmore.edu/maxwell/classes/e26/F04>Computer Graphics</a>.  
+In this lab we develop a physics engine and make some pretty pictures.
+</div>
+<p>
+<b>Sections:</b>
+<ul>
+<li><a href="#engine">Physics Engine</a>
+<li><a href="#images">Images</a>
+</ul>
+<p>
+<div class="newsitem">
+<a name="engine"></a>
+<div class="newsitem_title">Physics Engine</div><p>
+For our final project, we implemented a physics engine.  We started by adapting a Runga-Kutta integrator and vector physics engine written in Java by Andrew this summer (see <a href=http://elm.fig.haverford.edu/~andrew/java/>BigSim</a>).  This took extensive rewriting of the code in order to port it to C++ and adapt it to our graphics system.  Here is an outline of the physics engine as it stands in our C++ version:<br>
+<pre>
+<b>Variables</b>
+int doWorldGravity              Model acceleration in -z due to gravity? (0/1)
+int doAirFriction               Model air friction? (0/1)
+double airFrictionCoeff         Coefficient of air friction.  (Try .025)
+double gravityConstant          g (Usually 9.8 m/s^2)
+double curTime                  The current time.
+double timeStep                 The integration time step (try .01)
+
+<b>Classes</b>
+class <i>mass</i>                      A mass in the physics model.
+        vector3D l              Location of the <i>mass</i>.
+        vector3D v              Velocity of the <i>mass</i>.
+        vector3D force          The current sum of forces on this <i>mass</i>.
+        double m                Mass of the <i>mass</i>.
+        bool locked             If true, the mass will not move due to forces.
+        double distTo(mass &t)  Returns the distance from this <i>mass</i> to t.
+class <i>spring</i>                    A Hooke's Law spring in the physics model.
+        int body1, body2        Ids of the <i>mass</i>es connected to this <i>spring</i>.
+        double k                Spring constant of this <i>spring</i>.
+        double damping          Damping constant of this <i>spring</i>.
+        double restLength       Rest length of this <i>spring</i>.
+        void doForces()         Apply the force of this spring to body1 and body2.
+
+<b>Functions</b>
+void findForces(vector<mass> & masses, vector<spring> & springs)
+        Apply air friction, world gravity, and springs to every <i>mass</i> in masses.
+void doRungaKutta(vector<mass> & masses, vector<spring> & springs)
+        Do a Runga-Kutta timeStep of the physics model.
+</pre>
+
+In developing this physics engine, the first thing that we did was try making some simple particle systems.  Here are two examples.  The first is a burst of particles that start with the same position but random velocities, then fall under world gravity.  The second is a similar case, but with continuous particle generation.<p>
+<center><table border=0 width=100%><tr>
+<td valign=top><center><a href=particle1.gif><img src=particle1-small.gif border=0></a>
+<br>
+<i>Spinning around an explosion of particle boxes.<br>Click for larger version (with less aliasing).</i></center>
+</td>
+<td valign=top><center>
+<a href=particle2.gif><img src=particle2-small.gif border=0></a>
+<br>
+<i>Spinning around a fountain of particle boxes.<br>Click for larger version (with less aliasing).</i></center>
+</td></tr></table></center>
+<p>
+Next, we wanted to use springs in interesting ways, so we started with modeling strings (chains of masses and springs).  Here are two examples of strings, drawn as a series of boxes with invisible springs connecting them.  The top box is fixed, but the rest fall under world gravity until the springs stop them.  The second example has a higher air friction coefficient.<p>
+<center><table border=0 width=100%><tr>
+<td valign=top><center><a href=string1.gif><img src=string1-small.gif border=0></a>
+<br>
+<i>A bouncy string of springs.<br>Click for larger version (with less aliasing).</i></center>
+</td>
+<td valign=top><center>
+<a href=string-damped.gif><img src=string-damped-small.gif border=0></a>
+<br>
+<i>A bouncy string of springs with lots o' air friction.<br>Click for larger version (with less aliasing).</i></center>
+</td></tr></table></center>
+<p>
+After strings, we did sheets!  The sheets are polygon meshes with <i>mass</i>es at each vertex and springs connecting them on a rectangular grid.  Here are two examples of a sheet being poked:<p>
+<center><table border=0 width=100%><tr>
+<td valign=top><center><a href=sheet4.gif><img src=sheet4-small.gif border=0></a>
+<br>
+<i>A sheet fixed at the top, hanging in Earth's gravity, is suddenly displaced upwards from the bottom.<br>Click for larger version.</i></center>
+</td>
+<td valign=top><center>
+<a href=sheet5.gif><img src=sheet5-small.gif border=0></a>
+<br>
+<i>The same sheet, but fixed on all sides and poked in the middle.<br>Click for larger version.</i></center>
+</td></tr></table></center>
+<p>
+Finally, we decided to turn our models into jelly!  We associated a mass with each vertex of a model, and then connected all masses together with springs.  To make our motion more realistic, we weighted the spring constants by the distance between the masses, so that close masses interact more strongly than far masses.  Here are our results:<p>
+<center><table border=0 width=100%><tr>
+<td valign=top><center><a href=torus2.gif><img src=torus2-small.gif border=0></a>
+<br>
+<i>A torus, bouncing off of an invisible floor.<br>k is large and doesn't vary much.<br>Click for larger version.</i></center>
+</td>
+<td valign=top><center>
+<a href=torus4.gif><img src=torus4-small.gif border=0></a>
+<br>
+<i>The same torus, but with a different distribution of spring constants -- it's like jelly!<br>Click for larger version.</i></center>
+</td></tr>
+<tr>
+<td valign=top><center><a href=torus3-2.gif><img src=torus3-2-small.gif border=0></a>
+<br>
+<i>A torus, pinned at one point, falling due to gravity.<br>Click for larger version.</i></center>
+</td>
+<td valign=top><center>
+<a href=sphere.gif><img src=sphere-small.gif border=0></a>
+<br>
+<i>A sphere with a very sharp decrease in spring constant with distance.<br>Weird!<br>Click for larger version.</i></center>
+</td></tr>
+
+</table></center>
+<p>
+
+</div>
+
+<p>
+
+<p align=left><font size=-1>[<a href=../index.html>Back to Lab Index</a>]</font>
+</p>
+</body></html>
+

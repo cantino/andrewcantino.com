@@ -1,0 +1,503 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title>SQL and phpMyAdmin </title>
+	<meta name="author" content="Andrew Cantino">
+	<meta name="GENERATOR" content = "Almost Free Text v5.094; Copyright 1996-2004 Todd Coram. All rights reserved.">
+<style type="text/css">
+  <!--
+html { background: #eee; color: #000; }
+
+body { background: #eee; color: #000; margin: 0; padding: 0;}
+
+div.body {
+	background: #fff; color: #000;
+	margin: 0 1em 0 1em; padding: 1em;
+	font-family: serif;
+	font-size: 1em; line-height: 1.2em;
+	border-width: 0 1px 0 1px;
+	border-style: solid;
+	border-color: #aaa;
+}
+
+div.block {
+	background: #F8F8FF; color: #000;
+	margin: 1em; padding: 0 1em 0 1em;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #909090;
+}
+
+table {
+	background: #F8F8F8; color: #000;
+	margin: 1em;
+	border-width: 0 0 0 1px;
+	border-style: solid;
+	border-color: #C0C0C0;
+}
+
+td {
+	border-width: 0 1px 1px 0;
+	border-style: solid;
+	border-color: #C0C0C0;
+}
+
+th {
+	background: #F8F8FF;
+	border-width: 1px 1px 2px 0;
+	border-style: solid;
+	border-color: #C0C0C0;
+}
+
+
+/* body text, headings, and rules */
+
+p { margin: 0; text-indent: 0em; margin: 0 0 0.5em 0 }
+
+h1, h2, h3, h4, h5, h6 {
+	color: #206020; background: transparent;
+	font-family: Optima, Arial, Helvetica, sans-serif;
+	font-weight: normal;
+}
+
+h1 { font-size: 1.69em; margin: 1.4em 0 0.4em 0; }
+h2 { font-size: 1.44em; margin: 1.4em 0 0.4em 0; }
+h3 { font-size: 1.21em; margin: 1.4em 0 0.4em 0; }
+h4 { font-size: 1.00em; margin: 1.4em 0 0.4em 0; }
+h5 { font-size: 0.81em; margin: 1.4em 0 0.4em 0; }
+h6 { font-size: 0.64em; margin: 1.4em 0 0.4em 0; }
+
+hr {
+	color: transparent; background: transparent;
+	height: 0px; margin: 0.6em 0;
+	border-width: 1px ;
+	border-style: solid;
+	border-color: #999;
+}
+
+/* bulleted lists and definition lists */
+
+ul { margin: 0 1em 0.6em 2em; padding: 0; }
+li { margin: 0.4em 0 0 0; }
+
+dl { margin: 0.6em 1em 0.6em 2em; }
+dt { color: #206020; }
+
+tt { color: #602020; }
+
+/* links */
+
+a.link {
+	color: #33c; background: transparent;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #000; background: transparent;
+}
+
+body > a {
+	font-family: Optima, Arial, Helvetica, sans-serif;
+	font-size: 0.81em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	color: #206020; background: transparent;
+	font-family: Optima, Arial, Helvetica, sans-serif;
+	font-weight: normal;
+}
+
+  -->
+</style>
+</head>
+<body>
+<div class="body">
+
+<br><center><h1><a name="AFT-top">SQL and phpMyAdmin </a></h1></center>
+<br><center><h2>Andrew Cantino</h2></center>
+<center><img src="email.jpg" alt="" align=bottom></center><br clear=all>
+<hr>
+<!--  AFT Table of Contents (auto generated) -->
+<ul>
+<li> <a class="link" href="#Introduction">Introduction</a></li>
+<li> <a class="link" href="#SQL">SQL</a></li>
+<ul>
+<li> <a class="link" href="#Tables">Tables</a></li>
+<li> <a class="link" href="#SELECT">SELECT</a></li>
+<li> <a class="link" href="#INSERT">INSERT</a></li>
+<li> <a class="link" href="#UPDATE">UPDATE</a></li>
+<li> <a class="link" href="#DELETE">DELETE</a></li>
+<li> <a class="link" href="#Learn more">Learn more</a></li>
+</ul>
+<li> <a class="link" href="#MySQL">MySQL</a></li>
+<ul>
+<li> <a class="link" href="#Creating MySQL databases and users with cPanel">Creating MySQL databases and users with cPanel</a></li>
+</ul>
+<li> <a class="link" href="#Interacting with MySQL">Interacting with MySQL</a></li>
+<ul>
+<li> <a class="link" href="#Using phpMyAdmin">Using phpMyAdmin</a></li>
+<li> <a class="link" href="#Using MySQL on the command line">Using MySQL on the command line</a></li>
+</ul>
+<li> <a class="link" href="#MySQL and Perl">MySQL and Perl</a></li>
+<li> <a class="link" href="#SQL Security">SQL Security</a></li>
+<ul>
+<li> <a class="link" href="#Reading more">Reading more</a></li>
+<li> <a class="link" href="#Doing SQL securely">Doing SQL securely</a></li>
+</ul>
+<li> <a class="link" href="#Suggested Assignments">Suggested Assignments</a></li>
+<ul>
+<li> <a class="link" href="#Make your own databases">Make your own databases</a></li>
+<li> <a class="link" href="#MySQL and CGI">MySQL and CGI</a>
+
+</li>
+</ul>
+</ul>
+<hr>
+
+<center>
+<script type="text/javascript"><!--
+google_ad_client = "pub-3067017907226343";
+google_ad_width = 728;
+google_ad_height = 90;google_ad_format = "728x90_as";google_ad_type = "text"; google_ad_channel ="6334296398";
+google_color_border = "FFFFFF";
+google_color_bg = "FFFFFF";
+google_color_link = "0000FF";
+google_color_url = "008000";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+    </script>
+      </center>
+
+<!-- Start SectLevel1 -->
+<h2><a name="Introduction">Introduction</a></h2>
+<p class="Body">
+This lesson will explore databases and database interaction, as well as some important database security practices.  Lets start with SQL.
+</p>
+<!--End Section 1-->
+<h2><a name="SQL">SQL</a></h2>
+<p class="Body">
+SQL stands for <em>Structured Query Language</em>.  SQL is a standard method of interacting with databases, including MySQL, Ingres, Oracle databases, etc.  SQL isn't very hard to learn, so I will only include the basics here.  For an excellent, interactive introduction to SQL, please see <a class="link" href="http://sqlcourse.com/">sqlcourse.com</a>.
+</p>
+<!-- Start SectLevel2 -->
+<h3><a name="Tables">Tables</a></h3>
+<p class="Body">
+A table in SQL is a collection of records organized into rows and columns.  The column names for a given table are set before-hand.  For example, a possible table, call it <em>address_records</em>, could have the first column be 'first_name', the second column be 'last_name', and the last column be 'address'.  It might look like:
+<!-- 3 columns --><center><table cellspacing="0">
+<caption>&nbsp;&nbsp;<strong>address_records</strong>&nbsp;&nbsp;&nbsp;&nbsp; </caption>
+<tr><th> <strong>first_name</strong> </th><th> <strong>last_name</strong> </th><th> <strong>address</strong>&nbsp;&nbsp; </th></tr>
+<tr><td> andrew&nbsp;&nbsp;</td><td> cantino      </td><td> 370 lancaster ave </td></tr>
+<tr><td> some&nbsp;&nbsp;  </td><td> guy&nbsp;&nbsp;  </td><td> 123 fake st.      </td></tr>
+</table></center>
+</p>
+<!--End Section 2-->
+<h3><a name="SELECT">SELECT</a></h3>
+<p class="Body">
+The SQL <em>SELECT</em> statement is used to get records from a table.  Here are some examples to get you started:
+<div class="block"><pre>
+# Prints out all of the first names
+SELECT first_name FROM address_records;
+
+# Prints out the whole table
+SELECT * FROM address_records;
+
+# Print out addresses of people whose first name is 'andrew'
+SELECT address FROM address_records WHERE first_name = 'andrew';
+
+# Print first and last names whose address contains 'lancaster;
+SELECT first_name, last_name FROM address_records WHERE address LIKE '%lancaster%'  
+</pre></div>
+<ul>
+<li> Notice that the <em>WHERE</em> command lets us narrow our <em>SELECTS</em>.</li>
+<li> The <em>LIKE</em> command lets us search within fields.</li>
+<li> Use <a class="link" href="http://sqlcourse.com/">sqlcourse.com</a> to learn more!</li>
+</ul>
+</p>
+<!--End Section 2-->
+<h3><a name="INSERT">INSERT</a></h3>
+<p class="Body">
+To add to a table, do something like the following:
+<div class="block"><pre>
+INSERT INTO address_records
+  (first_name, last_name, address)
+  values ('Matt', 'Nocifore', 'Stokes');
+</pre></div>
+</p>
+<!--End Section 2-->
+<h3><a name="UPDATE">UPDATE</a></h3>
+<p class="Body">
+<em>UPDATE</em> lets you modify existing records.
+<div class="block"><pre>
+UPDATE address_records SET address = 'HCA' WHERE last_name = 'cantino';
+UPDATE address_records SET first_name = 'andrew', last_name = 'cantino' WHERE address = 'Stokes';
+</pre></div>
+</p>
+<!--End Section 2-->
+<h3><a name="DELETE">DELETE</a></h3>
+<p class="Body">
+<em>DELETE</em> removes records.
+<div class="block"><pre>
+DELETE from address_records;  # CAREFUL, this removes ALL records in address_records!!
+DELETE from address_records WHERE address LIKE '%fake%';
+DELETE from address_records WHERE first_name = 'some';
+</pre></div>
+</p>
+<!--End Section 2-->
+<h3><a name="Learn more">Learn more</a></h3>
+<ul>
+<li> SQL gives you many operators to use with the <em>WHERE</em> command, like <tt>=</tt>, <tt>&lt;</tt>, <tt>&gt;</tt>, <tt>&gt;=</tt>,<tt>LIKE</tt>, etc.</li>
+<li> SQL will let you sort, average, sum, min, max, count, etc. results.</li>
+<li> SQL is very powerful.  Learn more by using <a class="link" href="http://sqlcourse.com">sqlcourse.com</a> and <a class="link" href="http://sqlcourse2.com">sqlcourse2.com</a>.</li>
+</ul>
+<!--End Section 2-->
+<!-- End SectLevel2 -->
+<!--End Section 1-->
+<h2><a name="MySQL">MySQL</a></h2>
+<p class="Body">
+<a class="link" href="http://www.mysql.com/">MySQL</a> is a free, open source database server.  MySQL is probably the most common SQL database software used on the Internet, and we will be using it to create an example database to play with.  I will give a basic introduction here, but I highly recommend that you take the time to read this <a class="link" href="http://www.extropia.com/tutorials/sql/toc.html">extropia SQL tutorial</a>.
+</p>
+<!-- Start SectLevel2 -->
+<h3><a name="Creating MySQL databases and users with cPanel">Creating MySQL databases and users with cPanel</a></h3>
+<p class="Body">
+MySQL has databases and users, much like UNIX has users and groups.  We give certain users privileges on certain databases.  Lets create a new database and a new user with permissions to use it.
+<ul>
+<li> In cPanel, click on the <em>MySQL Databases</em> button.  This will take you to the <em>MySQL Account Maintenance</em> panel.  This panel lets us create new databases and users.  At the bottom of the panel is a link to <em>phpMyAdmin</em>, which we will talk about soon.</li>
+<li> Enter <em>testdb</em> in the text filed marked <em>Db:</em> about halfway down the page, then click <em>Add Db</em>.</li>
+<li> Return to the <em>MySQL Account Maintenance</em> panel, go to the section called <em>Users:</em>, and create a new user called <em>test</em> with a password of your choosing, then click <em>Add User</em>.</li>
+<li> Return to the <em>MySQL Account Maintenance</em> panel.  Your <em>testdb</em> should be listed under the <em>Databases:</em> heading.  Find the form at the bottom of this section that has a <em>Add User to Db</em> button.  Select the user called <em>&lt;username&gt;_test</em> (where username is your username, not <em>test</em>) in the <em>User:</em> select box.  Select the database called <em>&lt;username&gt;_testdb</em> (again, username is your username) in the <em>Db:</em> select box.  Make sure the <em>Privileges:</em> check box is set to <em>ALL</em>.  Click <em>Add User to Db</em>.</li>
+<li> Return to the <em>MySQL Account Maintenance</em> panel.  The user <em>&lt;username&gt;_test</em> should now be listed under <em>&lt;username&gt;_testdb</em> in the <em>Databases:</em> section.</li>
+</ul>
+</p>
+<!--End Section 2-->
+<!-- End SectLevel2 -->
+<!--End Section 1-->
+
+<center>
+<script type="text/javascript"><!--
+google_ad_client = "pub-3067017907226343";
+google_ad_width = 728;
+google_ad_height = 90;google_ad_format = "728x90_as";google_ad_type = "text"; google_ad_channel ="6334296398";
+google_color_border = "FFFFFF";
+google_color_bg = "FFFFFF";
+google_color_link = "0000FF";
+google_color_url = "008000";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+    </script>
+      </center>
+
+<h2><a name="Interacting with MySQL">Interacting with MySQL</a></h2>
+<p class="Body">
+There are two ways to work with our new database.  We can connect on the command line and interact directly with MySQL, or we can use a program called phpMyAdmin to interact with MySQL via a web browser.  First, I will show you how to use phpMyAdmin to create a table in our new database, then I will show you how to use MySQL directly on the command line.
+</p>
+<!-- Start SectLevel2 -->
+<h3><a name="Using phpMyAdmin">Using phpMyAdmin</a></h3>
+<ul>
+<li> First, go back to the <em>MySQL Databases</em> panel.  Click on the link to <em>phpMyAdmin</em> at the bottom of the page.</li>
+<li> Using the <em>Database</em> selector in the pane on the left of the phpMyAdmin window, select <em>&lt;username&gt;_testdb</em>.</li>
+<li> The right pane should read &quot;No tables found in database&quot; and provide an option for creating a new table.  Enter <em>address_records</em> for the name, and <em>3</em> for the fields, then submit the form.</li>
+<li> This window lets us setup our new table.  For the first field, enter <em>first_name</em>, leave the <strong>type</strong> as <em>VARCHAR</em>, and put the <strong>length</strong> as 15.  For the second field, enter <em>last_name</em>, also leave the <strong>type</strong> as <em>VARCHAR</em>, and also put the <strong>length</strong> as 15.  For the third field, enter <em>address</em>, also leave the <strong>type</strong> as <em>VARCHAR</em>, but put the <strong>length</strong> as 100.  Leave all the other fields alone.  Click <em>Go</em>.  The new table should appear on the left-hand side of the screen, and the right-hand side of the screen should show info about the new table.</li>
+<li> We've set all three fields to be of type <em>VARCHAR</em> or variable character length.  We set the max length of the two first fields to be 15 characters, and the address field to be 100 characters.</li>
+<li> Lets add a record to the table.  Click on the <em>Insert</em> tab at the top of the window.  Under <em>Value</em> for the <em>first_name</em> field, put your first name.  Under <em>Value</em> for the <em>last_name</em> field, put your last name.  Under <em>Value</em> for the <em>address</em> field, put your address.  Click <em>Go</em>.</li>
+<li> Congrats, you've made a MySQL table and put an element in it!  <em>phpMyAdmin</em> is very powerful, and is worth exploring further.</li>
+</ul>
+<!--End Section 2-->
+<h3><a name="Using MySQL on the command line">Using MySQL on the command line</a></h3>
+<p class="Body">
+Now, lets connect to MySQL from the UNIX shell.  <a class="link" href="l1.html#SSH">Login to your shell account</a> and type:
+<div class="block"><pre>
+mysql &lt;username&gt;_testdb -u &lt;username&gt;_test -p
+</pre></div>
+You will be prompted for the password for the <em>&lt;username&gt;_test</em> user.  This is the password you entered <a class="link" href="#Creating MySQL databases and users with cPanel">above</a>.  You should see something like this:
+<div class="block"><pre>
+-jailshell-2.05b$ mysql acantino_testdb -u acantino_test -p
+Enter password: 
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 32872 to server version: 4.0.22-standard
+
+Type 'help;' or '\h' for help. Type '\c' to clear the buffer.
+
+mysql&gt;
+</pre></div>
+This is the MySQL prompt -- rather like a UNIX prompt.  You use the MySQL prompt to enter SQL commands.  Lets try some:
+<div class="block"><pre>
+mysql&gt; describe address_records;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| first_name | varchar(15)  |      |     |         |       |
+| last_name  | varchar(15)  |      |     |         |       |
+| address    | varchar(100) |      |     |         |       |
++------------+--------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql&gt; select * from address_records;
++------------+-----------+---------+
+| first_name | last_name | address |
++------------+-----------+---------+
+| andrew     | cantino   | hca     |
++------------+-----------+---------+
+1 row in set (0.00 sec)
+
+mysql&gt; insert into address_records (first_name, last_name, address) values ('matt', 'nocifore', 'stokes');
+Query OK, 1 row affected (0.00 sec)
+
+mysql&gt; select * from address_records;
++------------+-----------+---------+
+| first_name | last_name | address |
++------------+-----------+---------+
+| andrew     | cantino   | hca     |
+| matt       | nocifore  | stokes  |
++------------+-----------+---------+
+2 rows in set (0.01 sec)
+</pre></div>
+Play around with the SQL commands that we learned before.  When you're done, type <em>quit</em>.
+</p>
+<!--End Section 2-->
+<!-- End SectLevel2 -->
+<!--End Section 1-->
+<h2><a name="MySQL and Perl">MySQL and Perl</a></h2>
+<p class="Body">
+To connect to MySQL from Perl, we use the Perl DBI MySQL module.  The DBI is a set of database interface modules for Perl.  Here is an example script that uses DBI:
+<div class="block"><pre>
+#!/usr/bin/perl -Tw
+use DBI;
+
+$dbh = DBI-&gt;connect(&quot;DBI:mysql:acantino_testdb:localhost&quot;,&quot;acantino_test&quot;,&quot;&lt;PASSWD&gt;&quot;);
+
+$sth = $dbh-&gt;prepare(&quot;select * from address_records&quot;);
+$sth-&gt;execute;
+
+while( ($fname, $lname, $address) = $sth-&gt;fetchrow() ) {
+        print &quot;'$fname $lname' lives at '$address'.\n&quot;;
+}
+
+$sth-&gt;finish;
+$dbh-&gt;disconnect;
+
+print &quot;Done.\n&quot;;
+</pre></div>
+<strong>Output:</strong>
+<pre>
+'andrew cantino' lives at 'hca'.
+'matt nocifore' lives at 'stokes'.
+</pre>
+<ul>
+<li> Notice that we're using the taint checking and warnings flags.</li>
+<li> <tt>$sth-&gt;fetchrow()</tt> returns a list of the elements of the next available table row.</li>
+<li> The <tt>while</tt> loop will continue until <tt>$sth-&gt;fetchrow()</tt> runs out of available rows.</li>
+</ul>
+</p>
+<p class="Body">
+The <em>MySQL Account Maintenance</em> panel kindly generates a Perl MySQL connection string for you.  The one for our example database should be:
+<div class="block"><pre>
+$dbh = DBI-&gt;connect(&quot;DBI:mysql:&lt;USERNAME&gt;_testdb:localhost&quot;,&quot;&lt;USERNAME&gt;_test&quot;,&quot;&lt;PASSWORD HERE&gt;&quot;);
+</pre></div>
+</p>
+<!--End Section 1-->
+
+<center>
+<script type="text/javascript"><!--
+google_ad_client = "pub-3067017907226343";
+google_ad_width = 728;
+google_ad_height = 90;google_ad_format = "728x90_as";google_ad_type = "text"; google_ad_channel ="6334296398";
+google_color_border = "FFFFFF";
+google_color_bg = "FFFFFF";
+google_color_link = "0000FF";
+google_color_url = "008000";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+    </script>
+      </center>
+
+<h2><a name="SQL Security">SQL Security</a></h2>
+<p class="Body">
+The main security issue with SQL is called the SQL injection attack.  Let's say that you had the following code: (<strong>Don't do this!</strong>)
+<div class="block"><pre>
+$sth = $dbh-&gt;prepare(&quot;select * from address_records where name='$name'&quot;);
+$sth-&gt;execute;
+</pre></div>
+If <em>$name</em> is coming from a user's input, then they can do an SQL injection attack.  What if they enter the following? 
+<div class="block"><pre>
+something' OR '1'='1
+</pre></div>
+The SQL query will look like:
+<div class="block"><pre>
+select * from address_records where name='something' OR '1'='1'
+</pre></div>
+One <strong>always</strong> equals one, so this will return every record in address_records!  Here's an even more destructive example.  What if they enter:
+<div class="block"><pre>
+something'; DROP DATABASE;
+</pre></div>
+As you can see, it's very important to escape any quote characters in variables you include in SQL commands.  However, you can't reliably do this with regular expressions, so you need to use <em>bound parameters</em>, as will be described momentarily.
+</p>
+<!-- Start SectLevel2 -->
+<h3><a name="Reading more">Reading more</a></h3>
+<p class="Body">
+For a definitive guide to SQL injection attacks, see <a class="link" href="http://www.unixwiz.net/techtips/sql-injection.html">SQL Injection Attacks by Example</a>.
+</p>
+<!--End Section 2-->
+<h3><a name="Doing SQL securely">Doing SQL securely</a></h3>
+<p class="Body">
+To do SQL securely, it's best to use <em>bound parameters</em>.  When you use bound parameters, your variables are passed to the SQL server separately from the SQL query string, so there's no way for an injection attack to occur.  In Perl, bound parameters look like this (example from <a class="link" href="http://www.unixwiz.net/techtips/sql-injection.html">SQL Injection Attacks by Example</a>):
+<div class="block"><pre>
+$sth = $dbh-&gt;prepare(&quot;SELECT email, userid FROM members WHERE email = ?;&quot;);
+$sth-&gt;execute($email);
+</pre></div>
+The question mark (<tt>?</tt>) is replaced by the value passed to the <em>$sth-&gt;execute()</em> function.  You may use multiple question marks -- they will be replaced in order by the values passed to <em>$sth-&gt;execute()</em>.
+</p>
+<hr>
+<!--End Section 2-->
+<!-- End SectLevel2 -->
+<!--End Section 1-->
+<h2><a name="Suggested Assignments">Suggested Assignments</a></h2>
+<!-- Start SectLevel2 -->
+<h3><a name="Make your own databases">Make your own databases</a></h3>
+<p class="Body">
+After you've completed <a class="link" href="#Creating MySQL databases and users with cPanel">Creating MySQL databases and users with cPanel</a>, <a class="link" href="#Using phpMyAdmin">Using phpMyAdmin</a>, and <a class="link" href="#Using MySQL on the command line">Using MySQL on the command line</a>, try making your own databases, users, and tables.  Here are some table suggestions:
+<ul>
+<li> Make a table for your phonebook.  At least, it should have first and last name and phone number.</li>
+<li> Make two tables.  One contains usernames, passwords, and a unique ID for each person.  (Lookup the SQL <em>unique</em> and 'auto_increment'' commands.)  The other contains IDs and records of some sort.  This setup would lets us have a user table and a data table that references the user table via the user table's unique IDs.  See the <a class="link" href="http://www.extropia.com/tutorials/sql/toc.html">extropia SQL tutorial</a>.</li>
+<li> Make something else.  Be creative.</li>
+</ul>
+</p>
+<!--End Section 2-->
+<h3><a name="MySQL and CGI">MySQL and CGI</a></h3>
+<p class="Body">
+You should know enough now to make simple Perl CGI scripts that work with databases.  Try to make one of these.  I'll be happy to assist.  Here are some ideas:
+<ul>
+<li> Online address book</li>
+<li> Online guest book</li>
+<li> Online note pad</li>
+<li> A simple chat room</li>
+<li> Some sort of dynamic webpage using Perl and MySQL</li>
+</ul>
+Don't forget about SQL injections -- make sure you're quoting everything.
+<hr>
+</p>
+<p class="Body">
+<a class="link" href=".">Back to Course Index</a>
+</p>
+<!--End Section 2-->
+<!-- End SectLevel2 -->
+<!--End Section 1-->
+<!-- End SectLevel1 -->
+<hr>
+<br>
+<p align="right"> <small>This document was generated using <a class="link" href="http://www.maplefish.com/todd/aft.html">AFT v5.094</a></small> </p>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-148948-3";
+urchinTracker();
+</script>
+</body>
+</html>

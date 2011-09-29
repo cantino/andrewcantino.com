@@ -1,0 +1,147 @@
+<html><head><title>Computer Graphics: Lab 3</title>
+<LINK REL=StyleSheet HREF="../graphics.css" TYPE="text/css">
+</head>
+<body bgcolor=white text=black>
+<center><font size=+2><b>Lab 3: Scanline Fill Algorithms</b><br>
+<font color=blue>Will Moss & Andrew Cantino</font></font></center>
+<p>
+<div style="margin: 5px;">
+In this <a href=http://palantir.swarthmore.edu/maxwell/classes/e26/F04/labs/lab03/>lab</a>, we implement a scanline fill algorithm for polygons.  Previously, in <a href=../lab2/>lab 2</a>, we created polygon and polyline objects, as well as implementations of scanline fill for circles, ellipses, and rectangles.
+</div>
+<p>
+<b>Sections:</b>
+<ul>
+<li><a href="#section1">Scanline Fill</a>
+<li><a href="#questions">Questions</a>
+<li><a href="#images">Images</a>
+<li><a href="#extensions">Extensions</a>
+</ul>
+<p>
+<div class="newsitem">
+<a name="section1"></a>
+<div class="newsitem_title">Scanline Fill</div><p>
+Our scanline fill algorithm implements the standard scanline fill algorithm (from class notes). We first build a list of the non-horizonatal edges in the polygon, storing the start and end y value for each edge, as well as its initial x value, and the change in x with respect to y. Starting at the minimum y value, we check to see which edges exist at that y value, and build a list of those "active" edges. Then by sorting the list of active edges, and drawing horizontal lines between the x values of pairs of edges, we are able to fill all the correct pixels on that scan line. We then update the list of active edges, by adding the dx value to the initial x value (since we are about to scan on the next line, and have therefore increased y by one) and checking to see if there are any new edges that should be active and whether any of the active edges are not longer active. We then repeat for every value of y that intersects any of the edges in the polygon.
+<br>
+<center><table border=0><tr><td valign=top><center><img src=lab3-req1.gif border=0><br><i>Required image one: A scanline filled polygon.</i></center></td></tr></table></center>
+<br>
+<center><table border=0 cellpadding=10><tr><td valign=top><center><img src=lab3-filled.gif border=0><br><i>Another scanline filled polygon.</i></center></td></tr>
+<tr><td valign=top>
+<center><img src=lab3-grad.gif border=0><br><i>A scanline gradient filled polygon!</i></center>
+</td></tr></table></center>
+</div>
+<p>
+<a name="questions"></a>
+<div class="newsitem">
+<div class="newsitem_title">Questions</div>
+<ol>
+<li><i>Is your polygon algorithm consistent with respect to screen coordinate issues, and does it produce rectangles that are the correct area? What changes to the algorithm did you have to make in order to make it consistent?</i><br>
+The polygon and scanline polygon filling algorithms are consistent with screen coordinates.  To make the algorithm consistent, we had to subtract 1 pixel in the y direction from the end of every edge.  To see that the polygons are consistent, take the following image as an example.  It is a filled <i>polygon</i> (not a <i>rect</i>).  The polygon is 5x5, defined as (0, 0), (5, 0), (5, 5), (0, 5), and the image is 10x10.  The square fills exactly 1/4 of the images, demonstrating that it is of the correct area, thus mathematically consistent.<br>
+<center><a href=lab3-math.gif><img src=lab3-math-small.gif border=0></a></center>
+<li><i>How many filled polygons of a reasonable (400 pixels less then area less then 1000 pixels) size and complexity (5-7 edges) can your algorithm draw in  1 second?</i><br>
+On average, we could draw 4763 polygons/sec, with a standard deviation of 670 polygons/sec.
+<li><i>How many filled circles of a reasonable size (10 pixels less then r less then 20 pixels) can your algorithm draw in 1 second?</i><br>
+On average, we could draw 17,999 circles/sec, with a standard deviation of 1,598 circles/sec.
+<li><i>If you extended this assignment in any way, describe what you did and how you did it.  Include pictures, or links to pictures that show what you did.</i><br>
+<a href="#extensions">Please see our extensions section.</a>
+</ol>
+</div>
+<p>
+<a name="images"></a>
+<div class="newsitem">
+<div class="newsitem_title">Images</div>
+<center>
+<table border=0 width=100%><tr>
+<td valign=top><center><img src=3Dcar.gif border=0>
+<br><i>Required image 2: an awesome 3D car! (By Will)<br>
+Updated since the last lab to use our new filling techniques<br>
+and added road detail with pattern filling.</i></center>
+</td></tr></table>
+<br>
+<table border=0 width=100%><tr>
+<td valign=top><center><a href=train.gif><img src=train-small.gif border=0></a>
+<br><i>Required image 2: totally cool gradient train! (By Andrew)<br></i></center>
+</td></tr></table>
+<br>
+<table border=0 width=100%><tr>
+<td valign=top><center><a href=portfolio7-a.gif><img src=portfolio7-a.gif border=0></a>
+<br><i>A colorful bull's eye (Andrew's Portfolio 7)<br></i></center>
+</td></tr></table>
+<br>
+<table border=0 width=100%><tr>
+<td valign=top><center><a href=portfolio7-w.jpg><img src=portfolio7-w.jpg border=0></a>
+<br><i>Still life with Stewie (Will's Portfolio 7)<br></i></center>
+</td></tr></table>
+<br>
+<table border=0 width=100%><tr>
+<td valign=top><center><a href=portfolio8-a.gif><img src=portfolio8-a.gif border=0></a>
+<br><i>AC stands for...?  (Andrew's Portfolio 8)<br></i></center>
+</td></tr></table>
+<br>
+<table border=0 width=100%><tr>
+<td valign=top><center><a href=portfolio8-w.jpg><img src=portfolio8-w-small.jpg border=0></a>
+<br><i>Faded Circles (Will's Portfolio 8)<br></i></center>
+</td></tr></table>
+</center>
+</div>
+<p>
+<a name="extensions"></a>
+<div class="newsitem">
+<div class="newsitem_title">Extensions</div>
+<br><b>Pattern Filling</b><br>
+We added a pen pattern option, so that we can draw pixels with a pattern fill.  This works on all drawing operations because it works at the level of the pen.  Here is how it works:<br>
+<pre>
+     newPixelX = (positionX - patternOriginX) % patternWidth
+     newPixelY = (positionY - patternOriginY) % patternHeight
+</pre>
+Here are the new methods:<br>
+<ul>
+<li>void setPenPattern(const image &i) -- Set the pen pattern.  Takes an image as input.
+<li>void setPatternOrigin(const point &p) -- Set the reference point from which patterns are drawn.  (Polygons know to set this as one of their points, so that patterns move with polygons.)
+<li>void disablePattern() -- Turn drawing of the stored pen pattern off.
+<li>void enablePattern() -- Turn drawing of the stored pen pattern on.
+<li>void clearPattern() -- Remove the stored pattern and try to manage memory.
+</ul>
+<br>
+<center>
+<table border=0 width=100%>
+<tr>
+<td valign=top><center><a href=lab3-pattern1.gif><img src=lab3-pattern1-small.gif border=0></a>
+<br><i>A filled polygon with a pattern.</i></center></td><td valign=top><center><a href=lab3-pattern2.gif><img src=lab3-pattern2-small.gif border=0></a>
+<br><i>The same polygon shifted.<br>Notice how the pattern origin moves with the polygon.</i></center></td>
+</tr></table></center>
+<p>
+<b>Flood Fill:</b><br>
+We actually added flood filling in <a href=../lab2/>the last lab</a>.
+<p>
+<b>Gradients: The Next Generation:</b><br>
+In  <a href=../lab2/>the last lab</a> we added limited gradient filling with flood fill.  In this lab we extend gradient filling in the following ways:<br>
+<ul>
+<li>Gradients can now extend in any direction, instead of simply left to right.<br>
+Making this work involves projecting a given point (x, y) onto the vector defining the gradient direction, then scaling that by the possible length of the gradient and shifting it so that it matches the start position of the gradient.  Stepping through RGB colorspace is done parametrically.
+<li>Gradients can follow any linear path through RGB color space.
+<li>We can do circular gradients.  (Please see the gradient train's wheels as an example.)
+</ul>
+Enough talk, lets see them examples!<br>
+<center>
+<table border=0 width=100% cellpadding=10><tr>
+<td valign=top><center><a href=grad1.gif><img src=grad1.gif border=0></a>
+<br><i>A pretty filled rect with a diagonal gradient<br>and interesting color scheme.</i></center></td><td valign=top><center><a href=grad2.gif><img src=grad2.gif border=0></a>
+<br><i>And a circle.</i></center></td>
+</tr>
+</table>
+<br>
+<table border=0 width=100%><tr>
+<td valign=top><center><a href=grad3.gif><img src=grad3-small.gif border=0></a>
+<br><i>Another rectangle.</i></center></td></tr></table>
+<br>
+<table border=0 width=100%><tr>
+<td valign=top><center><a href=gradLines.gif><img src=gradLines.gif border=0></a>
+<br><i>We can gradient lines too!</i></center></td>
+</tr></table>
+</center>
+</div>
+<p>
+<p align=left><font size=-1>[<a href=../index.html>Back to Lab Index</a>]</font>
+</p>
+</body></html>
+

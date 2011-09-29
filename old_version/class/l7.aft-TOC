@@ -1,0 +1,21 @@
+C--- AFT Table of Contents (auto generated)
+	* {-Introduction@Introduction-}
+	* {-SQL@SQL-}
+		* {-Tables@Tables-}
+		* {-SELECT@SELECT-}
+		* {-INSERT@INSERT-}
+		* {-UPDATE@UPDATE-}
+		* {-DELETE@DELETE-}
+		* {-Learn more@Learn more-}
+	* {-MySQL@MySQL-}
+		* {-Creating MySQL databases and users with cPanel@Creating MySQL databases and users with cPanel-}
+	* {-Interacting with MySQL@Interacting with MySQL-}
+		* {-Using phpMyAdmin@Using phpMyAdmin-}
+		* {-Using MySQL on the command line@Using MySQL on the command line-}
+	* {-MySQL and PERL@MySQL and PERL-}
+	* {-SQL Security@SQL Security-}
+		* {-Reading more@Reading more-}
+		* {-Doing SQL securely@Doing SQL securely-}
+	* {-Suggested Assignments@Suggested Assignments-}
+		* {-Make your own databases@Make your own databases-}
+		* {-MySQL and CGI@MySQL and CGI-}

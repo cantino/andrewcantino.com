@@ -1,0 +1,26 @@
+C--- AFT Table of Contents (auto generated)
+	* {-cPanel@cPanel-}
+		* {-Accessing your cPanel@Accessing your cPanel-}
+		* {-cPanel organization@cPanel organization-}
+	* {-Some cPanel Sections@Some cPanel Sections-}
+		* {-Change Password@Change Password-}
+		* {-File Manager@File Manager-}
+		* {-MySQL Databases@MySQL Databases-}
+		* {-Statistics@Statistics-}
+		* {-Some other useful panels@Some other useful panels-}
+	* {-.htaccess and cPanel@.htaccess and cPanel-}
+		* {-Apache and htaccess files@Apache and htaccess files-}
+		* {-Htpasswd files@Htpasswd files-}
+		* {-A note about UNIX dot files@A note about UNIX dot files-}
+		* {-Using cPanel for htaccess generation@Using cPanel for htaccess generation-}
+		* {-Learning more@Learning more-}
+	* {-UNIX File Permissions@UNIX File Permissions-}
+		* {-Users and groups@Users and groups-}
+		* {-Viewing file permissions@Viewing file permissions-}
+		* {-File permissions@File permissions-}
+		* {-Changing file permissions@Changing file permissions-}
+	* {-Suggested Assignments@Suggested Assignments-}
+		* {-Explore cPanel for yourself!@Explore cPanel for yourself!-}
+		* {-Play with .htaccess files.@Play with .htaccess files.-}
+		* {-Use chmod@Use chmod-}
+		* {-Do more PERL@Do more PERL-}

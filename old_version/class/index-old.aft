@@ -1,0 +1,51 @@
+#---SET-HTML s=&nbsp;
+*Title: PERL, SQL, and Web Publishing Security 
+*Author: Andrew Cantino
+*Image-center: email.jpg
+
+--------------------
+
+*TOC
+
+--------------------
+
+*Course Introduction
+Welcome!  This is the homepage for ''PERL, SQL, and Web Publishing Security'', an informal summer course taught through Networking & Systems at Haverford College, 2005.
+
+The course will be a month long training program covering a number of advanced topics commonly used in web environments that provide rich dynamic content.  Although advanced topics will be covered, the training will begin at an introductory level, and no prior programming background is required.  We will start with a brief introduction to HTML and UNIX, then move on to PERL scripting and other advanced topics.
+
+Those participating in the class will work in their own private web environment which is controlled through a web interface and through the conventional UNIX shell.  For those who are familiar with commercial web hosting providers, your work on our server will be hosted in a standard cPanel environment.  The intent of this summer training is to expose the broader computing center staff (along with others) to advanced publishing topics, the cPanel interface and to demonstrate what is necessary to manage, support and secure dynamic web sites.
+
+Class notes will be available online (linked below).
+
+* Attendees
+If you are planning to attend this class, and your name is not yet on the [list of registered attendees (:reg/show.cgi)], then please [register (:reg/)].
+
+* Discussion Board
+I've setup a discussion board for this course.  Please use this board to discuss, ask questions, and comment on the course.  You will need to register, which only takes a minute or two.
+
+[Class Discussion Board (:/talk/)]
+
+*Lessons
+This course is divided into a series of lessons.  The links below lead to class notes for each of these lessons.  I have tried to write these notes as stand-alone tutorials.  Hopefully they will be helpful.  Parts of these notes are based off of my [ExCo course (http://elm.fig.haverford.edu/~andrew/)], taught in 2003.
+	#. [Lesson 1: The Internet, HTML, and UNIX (:l1.html)]
+	#. [Lesson 2: Introduction to PERL (:l2.html)]
+	#. [Lesson 3: cPanel (:l3.html)] 
+	#. [Lesson 4: Files and CGI (:l4.html)]
+	#. [Lesson 5: PERL Security and Regular Expressions (:l5.html)]
+	#. [Lesson 6: Fantastico (:l6.html)]
+	#. [Lesson 7: SQL and phpMyAdmin (:l7.html)]
+	#. [Lesson 8: Conclusions (:l8.html)]
+
+* Course Calendar
+Lectures will be every Monday and Thursday of June except for Monday, June 13th, which has been moved to Wednesday, June 15th.  All meetings will be at 2:00 PM in the Language Learning Center, 2nd floor, Stokes Hall.
+^<<filtered
+%s%%s%%s%%s%%s%June%s%2005
+%s%S%s%%s%M%s%Tu%s%%s%W%s%Th%s%%s%F%s%%s%S
+%s%%s%%s%%s%%s%%s%%s%%s%%s%%s%1%s%%s%[2 (:l1.html)]%s%%s%3%s%%s%4
+%s%5%s%%s%[6 (:l2.html)]%s%%s%7%s%%s%8%s%%s%[9 (:l3.html)]%s%10%s%11
+12%s%13%s%14%s%[15 (:l4.html)]%s%[16 (:l5.html)]%s%17%s%18
+19%s%[20 (:l6.html)]%s%21%s%22%s%[23 (:l7.html)]%s%24%s%25
+26%s%27%s%28%s%29%s%[30 (:l8.html)]
+^>>
+

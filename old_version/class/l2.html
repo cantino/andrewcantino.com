@@ -1,0 +1,774 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title>Introduction to Perl</title>
+	<meta name="author" content="Andrew Cantino">
+	<meta name="GENERATOR" content = "Almost Free Text v5.094; Copyright 1996-2004 Todd Coram. All rights reserved.">
+<style type="text/css">
+  <!--
+html { background: #eee; color: #000; }
+
+body { background: #eee; color: #000; margin: 0; padding: 0;}
+
+div.body {
+	background: #fff; color: #000;
+	margin: 0 1em 0 1em; padding: 1em;
+	font-family: serif;
+	font-size: 1em; line-height: 1.2em;
+	border-width: 0 1px 0 1px;
+	border-style: solid;
+	border-color: #aaa;
+}
+
+div.block {
+	background: #F8F8FF; color: #000;
+	margin: 1em; padding: 0 1em 0 1em;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #909090;
+}
+
+table {
+	background: #F8F8F8; color: #000;
+	margin: 1em;
+	border-width: 0 0 0 1px;
+	border-style: solid;
+	border-color: #C0C0C0;
+}
+
+td {
+	border-width: 0 1px 1px 0;
+	border-style: solid;
+	border-color: #C0C0C0;
+}
+
+th {
+	background: #F8F8FF;
+	border-width: 1px 1px 2px 0;
+	border-style: solid;
+	border-color: #C0C0C0;
+}
+
+
+/* body text, headings, and rules */
+
+p { margin: 0; text-indent: 0em; margin: 0 0 0.5em 0 }
+
+h1, h2, h3, h4, h5, h6 {
+	color: #206020; background: transparent;
+	font-family: Optima, Arial, Helvetica, sans-serif;
+	font-weight: normal;
+}
+
+h1 { font-size: 1.69em; margin: 1.4em 0 0.4em 0; }
+h2 { font-size: 1.44em; margin: 1.4em 0 0.4em 0; }
+h3 { font-size: 1.21em; margin: 1.4em 0 0.4em 0; }
+h4 { font-size: 1.00em; margin: 1.4em 0 0.4em 0; }
+h5 { font-size: 0.81em; margin: 1.4em 0 0.4em 0; }
+h6 { font-size: 0.64em; margin: 1.4em 0 0.4em 0; }
+
+hr {
+	color: transparent; background: transparent;
+	height: 0px; margin: 0.6em 0;
+	border-width: 1px ;
+	border-style: solid;
+	border-color: #999;
+}
+
+/* bulleted lists and definition lists */
+
+ul { margin: 0 1em 0.6em 2em; padding: 0; }
+li { margin: 0.4em 0 0 0; }
+
+dl { margin: 0.6em 1em 0.6em 2em; }
+dt { color: #206020; }
+
+tt { color: #602020; }
+
+/* links */
+
+a.link {
+	color: #33c; background: transparent;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #000; background: transparent;
+}
+
+body > a {
+	font-family: Optima, Arial, Helvetica, sans-serif;
+	font-size: 0.81em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	color: #206020; background: transparent;
+	font-family: Optima, Arial, Helvetica, sans-serif;
+	font-weight: normal;
+}
+
+  -->
+</style>
+</head>
+<body>
+<div class="body">
+
+<br><center><h1><a name="AFT-top">Introduction to Perl</a></h1></center>
+<br><center><h2>Andrew Cantino</h2></center>
+<center><img src="email.jpg" alt="" align=bottom></center><br clear=all>
+<center><img src="camel.gif" alt="" align=bottom></center><br clear=all>
+<hr>
+<!--  AFT Table of Contents (auto generated) -->
+<ul>
+<li> <a class="link" href="#Introduction">Introduction</a></li>
+<li> <a class="link" href="#Programming vs. Scripting">Programming vs. Scripting</a></li>
+<li> <a class="link" href="#Introduction to Programming">Introduction to Programming</a></li>
+<ul>
+<li> <a class="link" href="#Like Mathematics">Like Mathematics</a></li>
+<li> <a class="link" href="#Algorithms">Algorithms</a></li>
+</ul>
+<li> <a class="link" href="#Perl">Perl</a></li>
+<ul>
+<li> <a class="link" href="#A first Perl program">A first Perl program</a></li>
+<li> <a class="link" href="#Another example">Another example</a></li>
+<ul>
+<li> <a class="link" href="#Variables">Variables</a></li>
+<li> <a class="link" href="#The . operator">The . operator</a></li>
+</ul>
+<li> <a class="link" href="#Taking user input">Taking user input</a></li>
+</ul>
+<li> <a class="link" href="#Numbers in Perl">Numbers in Perl</a></li>
+<li> <a class="link" href="#Strings">Strings</a></li>
+<li> <a class="link" href="#Conditionals and Loops">Conditionals and Loops</a></li>
+<ul>
+<li> <a class="link" href="#Branching with if">Branching with if</a></li>
+<li> <a class="link" href="#while loops">while loops</a></li>
+<li> <a class="link" href="#for loops">for loops</a></li>
+</ul>
+<li> <a class="link" href="#Comparison Operators">Comparison Operators</a></li>
+<li> <a class="link" href="#Functions">Functions</a></li>
+<li> <a class="link" href="#Arrays!">Arrays!</a></li>
+<ul>
+<li> <a class="link" href="#Array examples">Array examples</a></li>
+</ul>
+<li> <a class="link" href="#Hashes (or associative arrays or dictionaries)">Hashes (or associative arrays or dictionaries)</a></li>
+<li> <a class="link" href="#References">References</a></li>
+<li> <a class="link" href="#Suggested Assignments">Suggested Assignments</a></li>
+<ul>
+<li> <a class="link" href="#Try these examples out">Try these examples out</a></li>
+<li> <a class="link" href="#Write your own program">Write your own program</a></li>
+</ul>
+<li> <a class="link" href="#Next time!">Next time!</a>
+
+</li>
+</ul>
+<hr>
+
+<center>
+<script type="text/javascript"><!--
+google_ad_client = "pub-3067017907226343";
+google_ad_width = 728;
+google_ad_height = 90;google_ad_format = "728x90_as";google_ad_type = "text"; google_ad_channel ="6334296398";
+google_color_border = "FFFFFF";
+google_color_bg = "FFFFFF";
+google_color_link = "0000FF";
+google_color_url = "008000";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+    </script>
+      </center>
+
+<!-- Start SectLevel1 -->
+<h2><a name="Introduction">Introduction</a></h2>
+<p class="Body">
+Now that we've covered HTML, UNIX, and the command line, it's time to actually start programming!  Some content in this lesson is adapted from <em>Learning Perl</em>, by Randal L. Schwartz, which I highly recommend if you want to continue learning Perl beyond these classes.
+</p>
+<!--End Section 1-->
+<h2><a name="Programming vs. Scripting">Programming vs. Scripting</a></h2>
+<p class="Body">
+It's worth taking a moment to discuss the differences between compiled programming languages and scripting languages<a name="REFfNOTE1">&nbsp</a><sup><a class="link" href="#fNOTE1">1</a></sup>.  Compiled languages, such as C and C++, are converted by a compiler into your computer's native assembly language for execution on its CPU.  This is good because it allows direct execution on your CPU, tending to result in fast code.  However, programs written in compiled languages must be re-compiled every time they are edited, which is slow.
+</p>
+<p class="Body">
+On the other hand, scripting languages are run inside of an interpreter that acts as an intermediary, reading the code file, interpreting the code, and issuing commands to the CPU.  Because the code must be interpreted (basically, dynamically compiled at run-time), scripting languages tend to be slower than compiled languages.  However, the gain for this speed loss is significant.  Interpreted languages can do things that it are very difficult to do in compiled languages.  Interpreted languages don't need to be compiled, come with very advanced features built-in, and can do weird things, like being self-referential.  Many modern programming languages blur the distinction between compiled and interpreted.  Java, Python, and to some extent Perl, are all compiled to bytecode before being executed.
+</p>
+<!--End Section 1-->
+<h2><a name="Introduction to Programming">Introduction to Programming</a></h2>
+<p class="Body">
+Lets start programming!
+</p>
+<!-- Start SectLevel2 -->
+<h3><a name="Like Mathematics">Like Mathematics</a></h3>
+<p class="Body">
+Computer programming borrows much from mathematics.  Just like in math, we have <em>variables</em> (<tt>$x</tt>, <tt>%y</tt>, <tt>$myVar</tt>), <em>functions</em> (<tt>sin()</tt>, <tt>cos()</tt>, <tt>myFunc()</tt>, <tt>sort()</tt>), and <em>operators</em> (<tt>*</tt>, <tt>+</tt>, <tt>/</tt>, <tt>%</tt>, <tt>.</tt>).  Additionally, most programming languages adopt a similar sequence of operations as mathematics, so that <tt>2 * 3 + 5 = 11</tt> not <tt>16</tt>.
+</p>
+<!--End Section 2-->
+<h3><a name="Algorithms">Algorithms</a></h3>
+<p class="Body">
+A computer program is an algorithm--a logical sequence of operations or tasks to get something done.  When we program, we carefully specify every step of a process.  Remember, a computer only does what you tell it to.  If it does something wrong, then you (or someone else) failed to specify exactly what it should be doing.
+</p>
+<!--End Section 2-->
+<!-- End SectLevel2 -->
+<!--End Section 1-->
+<h2><a name="Perl">Perl</a></h2>
+<p class="Body">
+Perl (Practical Extraction and Report Language) started in 1987 and has since become extremely popular as a system administrator tool and an online CGI programming language.  (CGI will be covered in a future lesson.)  For a good overview of Perl's features, see <a class="link" href="http://www.perl.org/about.html">perl.org</a>.  Perl is flexible and powerful, but sometimes cryptic.  The tagline of Perl is &quot;There's More Than One Way to Do It.&quot;  However, that doesn't mean that all possible solutions are good solutions.
+</p>
+<!-- Start SectLevel2 -->
+<h3><a name="A first Perl program">A first Perl program</a></h3>
+<div class="block"><pre>
+#!/usr/bin/perl
+print &quot;Hello, world!\n&quot;;
+</pre></div>
+<p class="Body">
+<strong>Output:</strong> <tt>Hello, world!</tt>
+<ul>
+<li> The beginning of every Perl program should start with <em>#!/usr/bin/perl</em>.  This is called the <em>shebang line</em> and it tells the UNIX system which interpreter should be used on this file.  In this case, <em>perl</em> located at <em>/usr/bin/perl</em>.</li>
+<li> Perl commands end with a semi-colon.</li>
+<li> The command <tt>print</tt> can be used to print to the screen, a webpage, or a file, depending on syntax.</li>
+<li> To make a return character in a <tt>print</tt>, you need to stick <tt>\n</tt> at the end.</li>
+</ul>
+</p>
+<!--End Section 2-->
+<h3><a name="Another example">Another example</a></h3>
+<div class="block"><pre>
+#!/usr/bin/perl
+$j = &quot;Hello, &quot;;
+$k = &quot;world!&quot;;
+print $j . $k . &quot;\n&quot;;
+</pre></div>
+<p class="Body">
+<strong>Output:</strong> <tt>Hello, world!</tt>
+</p>
+<!-- Start SectLevel3 -->
+<h4><a name="Variables">Variables</a></h4>
+<ul>
+<li> A <em>variable</em> in Perl is like a variable in algebra.</li>
+<li> In Perl, a <em>scalar</em> variable is denoted by <tt>$variablename</tt>.  A <em>scalar</em> variable is a single-valued variable, as opposed to a <em>list</em> or <em>array</em>.</li>
+<li> Unlike many compiled languages, variables in Perl can contain just about anything -- strings, numbers, objects, even pictures.</li>
+<li> The <tt>print</tt> command can take strings (as in the first example), or variables, as you see here.</li>
+<li> For example, variables can contain strings:</li>
+</ul>
+<div class="block"><pre>
+$j = &quot;Hello, world!&quot;;
+</pre></div>
+<ul>
+<li> Or numbers:</li>
+</ul>
+<div class="block"><pre>
+$j = 42;
+</pre></div>
+<!--End Section 3-->
+<h4><a name="The . operator">The . operator</a></h4>
+<p class="Body">
+The <tt>.</tt> operator concatenates (joins) strings together.  For example:
+</p>
+<div class="block"><pre>
+$j = &quot;Hello, &quot; . &quot;world!&quot;;
+</pre></div>
+<!--End Section 3-->
+<!-- End SectLevel3 -->
+<!--End Section 2-->
+
+<center>
+<script type="text/javascript"><!--
+google_ad_client = "pub-3067017907226343";
+google_ad_width = 728;
+google_ad_height = 90;google_ad_format = "728x90_as";google_ad_type = "text"; google_ad_channel ="6334296398";
+google_color_border = "FFFFFF";
+google_color_bg = "FFFFFF";
+google_color_link = "0000FF";
+google_color_url = "008000";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+    </script>
+      </center>
+
+<h3><a name="Taking user input">Taking user input</a></h3>
+<div class="block"><pre>
+#!/usr/bin/perl
+# This program asks for your name, and then greets you!
+print &quot;Hello!  What is your name? &quot;;
+$name = &lt;STDIN&gt;;
+chomp($name);
+print &quot;Well, hello $name!  Nice to meet you!\n&quot;;
+</pre></div>
+<p class="Body">
+<strong>Output:</strong>
+<pre>
+Hello!  What is your name? <em>Andrew</em>
+Well, hello Andrew!  Nice to meet you!
+</pre>
+</p>
+<ul>
+<li> In Perl, you can <em>comment</em> a line by putting the <tt>#</tt> character before your comment.  This will bypass the Perl interpreter.</li>
+<li> <tt>&lt;STDIN&gt;</tt> is a Perl <em>filehandle</em> that allows you to read from the keyboard.  In this example, it puts whatever you type on the keyboard into the variable called <tt>$name</tt>.  <tt>&lt;STDIN&gt;</tt>, when assigning to a <em>scalar</em> variable, will only return the first line of what you type, so when you hit return, it's done.</li>
+<li> <tt>chomp()</tt> is a useful Perl function that will take the last character off of a string IF it is a return character.  We <tt>chomp()</tt> our input because when the user hit return to send the input, that return character (<tt>\n</tt>) was included in the <tt>$name</tt> string variable as well as whatever the user typed.  We <tt>chomp()</tt> to remove that terminal <tt>\n</tt>.  (Another useful Perl function is <tt>chop()</tt>, which removes the last character no matter what.)</li>
+<li> We also see in this example that print can take a variable inside of a string!</li>
+</ul>
+<!--End Section 2-->
+<!-- End SectLevel2 -->
+<!--End Section 1-->
+<h2><a name="Numbers in Perl">Numbers in Perl</a></h2>
+<ul>
+<li> Numbers in Perl can be represented as you would expect.  All of these are valid numbers:</li>
+<ul>
+<li> 42</li>
+<li> 1.47</li>
+<li> 5.6e9</li>
+<li> -10</li>
+</ul>
+<li> You can manipulate numbers in many ways.  Example:</li>
+</ul>
+<div class="block"><pre>
+#!/usr/bin/perl
+$j = 42;
+$k = 10.56;
+$c = $j/$k + 5;
+$d = ($c - 10)*6 - 1;
+</pre></div>
+<!--End Section 1-->
+<h2><a name="Strings">Strings</a></h2>
+<ul>
+<li> A <em>string</em> is a string of characters, such as <tt>&quot;Hello&quot;</tt> or <tt>&quot;The quick brown fox jumps over the lazy dog.&quot;</tt></li>
+<li> Strings can also be combined in many ways in Perl:</li>
+</ul>
+<div class="block"><pre>
+#!/usr/bin/perl
+$j = &quot;I&quot;;
+$k = &quot; stutter&quot;;
+$c = $j . ($k x 5) . &quot;!\n&quot;;
+print $c;
+</pre></div>
+<p class="Body">
+<strong>Output:</strong> <tt>I stutter stutter stutter stutter stutter!</tt>
+</p>
+<ul>
+<li> Here we have used the <tt>.</tt> operator to join strings.</li>
+<li> We have also introduced <tt>x</tt>: a new operator that is like multiplication, but for strings.</li>
+<li> Perl has both single and double-quoted strings.  Lets only worry about double-quoted strings for now.</li>
+<li> If you want to make some special characters in Perl, you need to <em>escape</em> them.  Escaping a character means putting a backslash (<tt>&#92;</tt>) in front of it.  For example:</li>
+<ul>
+<li> <tt>\n</tt> -- newline</li>
+<li> <tt>\t</tt> -- tab</li>
+<li> <tt>&#92;&#92;</tt> -- an actual backslash</li>
+<li> <tt>\&quot;</tt> -- a double-quote</li>
+</ul>
+</ul>
+<!--End Section 1-->
+<h2><a name="Conditionals and Loops">Conditionals and Loops</a></h2>
+<p class="Body">
+Lets start with a pretty complicated example that illustrates the use of conditionals and loops.  Conditionals let us execute some Perl statements<a name="REFfNOTE2">&nbsp</a><sup><a class="link" href="#fNOTE2">2</a></sup> conditionally on the results of other statements.  We will introduce <tt>if</tt>, <tt>while</tt>, and <tt>for</tt> here.  Another loop statement is the <tt>foreach</tt> statement, and that will be introduced in a little while.
+<div class="block"><pre>
+#!/usr/bin/perl -w
+print &quot;Enter your name: &quot;;
+$name = &lt;STDIN&gt;;
+chomp($name);
+print &quot;Hello $name!  How many times should I greet you? &quot;;
+$greet = &lt;STDIN&gt;;
+chomp($greet);
+if ($greet &gt; 0) {
+     $j = 0;
+     while($j &lt; $greet) {
+          print &quot;Hello $name! ($j)\n&quot;;
+          $j++;
+     }
+} else {
+     print &quot;Okay, I guess I won't greet you then.\n&quot;;
+}
+print &quot;All done!\n&quot;;
+</pre></div>
+The <tt>#!/usr/bin/perl -w</tt> line looks a bit different than usual.  I've included the <tt>-w</tt> <em>flag</em>.  The <tt>-w</tt> flag causes Perl to print out <em>warnings</em> when there are possible errors in the code.  This is useful for debugging.
+ 
+Can you figure out what that example is doing?  I'll now discuss conditionals and loops in more depth.
+</p>
+<!-- Start SectLevel2 -->
+<h3><a name="Branching with if">Branching with if</a></h3>
+<p class="Body">
+Take a look at this pseudocode<a name="REFfNOTE3">&nbsp</a><sup><a class="link" href="#fNOTE3">3</a></sup>: 
+<div class="block"><pre>
+if (logical expression) {
+     do something
+} else {
+     do something else
+}
+</pre></div>
+</p>
+<p class="Body">
+The <tt>if</tt> statement executes the code in the <em>block</em> inside the <tt>{}</tt> characters.  The else is an alternative case.  You can skip it if you want.  You can also have multiple cases.  More pseudocode:
+<div class="block"><pre>
+if (logical expression) {
+     do something
+} elsif (another logical expression) {
+     do something else
+} elsif (yet another logical expression) {
+     do something for this third case
+} else {
+     otherwise, do this
+}
+</pre></div>
+</p>
+<!--End Section 2-->
+<h3><a name="while loops">while loops</a></h3>
+<div class="block"><pre>
+$j = 10;
+while($j &gt; 0) {
+     $j = $j - 1;   # Or I could use $j--; or $j -= 1;
+     print &quot;Counting down.  Now I'm at $j\n&quot;;
+}
+</pre></div>
+<p class="Body">
+<strong>Output:</strong>
+<div class="block"><pre>
+Counting down.  Now I'm at 9
+Counting down.  Now I'm at 8
+Counting down.  Now I'm at 7
+Counting down.  Now I'm at 6
+Counting down.  Now I'm at 5
+Counting down.  Now I'm at 4
+Counting down.  Now I'm at 3
+Counting down.  Now I'm at 2
+Counting down.  Now I'm at 1
+Counting down.  Now I'm at 0
+</pre></div>
+</p>
+<p class="Body">
+Notice that the while loop executes <em>while</em> a conditional is <em>true</em>.  (Also, know that <tt>0</tt> is equivalent to <em>false</em>, and any other number or string is <em>true</em>.  Therefore, <tt>while (1) {}</tt> is an infinite loop, as is <tt>while (&quot;andrew&quot;) {}</tt>, but <tt>while (0) {}</tt> never even runs the <tt>while</tt> block because it's <em>false</em>.)
+</p>
+<!--End Section 2-->
+<h3><a name="for loops">for loops</a></h3>
+<div class="block"><pre>
+for($j = 0; $j &lt; 10; $j++) {
+     print &quot;Now counting up.  Now I'm at $j\n&quot;;
+}
+# Or another example like the while loop above
+for($j = 10; $j &gt; 0; $j--) {
+     print &quot;Counting down.  Now I'm at $j\n&quot;;
+}
+</pre></div>
+<p class="Body">
+<strong>Output:</strong>
+<div class="block"><pre>
+Now counting up.  Now I'm at 0
+Now counting up.  Now I'm at 1
+	...
+Now counting up.  Now I'm at 8
+Now counting up.  Now I'm at 9
+Counting down.  Now I'm at 10
+Counting down.  Now I'm at 9
+	...
+Counting down.  Now I'm at 2
+Counting down.  Now I'm at 1
+</pre></div>
+</p>
+<p class="Body">
+As you can see, <tt>for</tt> loops can be used as concise <tt>while</tt> loops.  The first part of the <tt>for</tt> statement typically assigns a starting value to a variable.  The second part (after the first semicolon) is the conditional -- the loop will continue until this conditional fails.  The third part usually increments or decrements the loop variable.  In the first example above, the variable is incremented with the <tt>++</tt> operator, identical to <tt>$j = $j + 1</tt>.  In the second example, the variable is decremented with the <tt>--</tt> operator, identical to <tt>$j = $j - 1</tt>.  The <tt>++</tt> and <tt>--</tt> operators are basically useful shorthand<a name="REFfNOTE4">&nbsp</a><sup><a class="link" href="#fNOTE4">4</a></sup>.
+</p>
+<!--End Section 2-->
+<!-- End SectLevel2 -->
+<!--End Section 1-->
+
+<center>
+<script type="text/javascript"><!--
+google_ad_client = "pub-3067017907226343";
+google_ad_width = 728;
+google_ad_height = 90;google_ad_format = "728x90_as";google_ad_type = "text"; google_ad_channel ="6334296398";
+google_color_border = "FFFFFF";
+google_color_bg = "FFFFFF";
+google_color_link = "0000FF";
+google_color_url = "008000";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+    </script>
+      </center>
+
+<h2><a name="Comparison Operators">Comparison Operators</a></h2>
+<p class="Body">
+As you probably gathered from above, Perl has a number of useful comparison operators.  Here are a few for numbers:
+<ul>
+<li> <tt>&lt;</tt> and <tt>&gt;</tt> are <em>less than</em> and <em>greater than</em>.</li>
+</ul>
+<div class="block"><pre>
+if ($j &lt; $k) {
+	...
+</pre></div>
+<ul>
+<li> <tt>&lt;=</tt> and <tt>&gt;=</tt> are <em>less than or equal to</em> and <em>greater than or equal to</em>.</li>
+<li> <tt>==</tt> is <em>equal to</em>.  Be careful!  You have to use <tt>==</tt> and not <tt>=</tt> when comparing things, or you'll actually be assigning them!</li>
+</ul>
+<div class="block"><pre>
+$j = 5;
+$k = $j;
+if ($j == $k) {  # This statement is always true.
+	...
+</pre></div>
+<ul>
+<li> <tt>!=</tt> is <em>not equal to</em>.  You can also use <tt>not ()</tt> to negate an entire expression.</li>
+</ul>
+<div class="block"><pre>
+while ($stop != 1) {
+	if (not ($j == $k)) {
+		...
+</pre></div>
+</p>
+<p class="Body">
+The above Boolean<a name="REFfNOTE5">&nbsp</a><sup><a class="link" href="#fNOTE5">5</a></sup> operators work <strong>only</strong> for numbers.  If you use them on strings, Perl will convert the strings to numbers and then apply the operations.  Here are some string comparison operators:
+<ul>
+<li> <tt>lt</tt> and <tt>gt</tt> are <em>less than</em> and <em>greater than</em> for strings.  These comparisons will use alphabetical-order-based comparison.<a name="REFfNOTE6">&nbsp</a><sup><a class="link" href="#fNOTE6">6</a></sup></li>
+<li> <tt>eq</tt> is <em>equal to</em> for strings.</li>
+</ul>
+<div class="block"><pre>
+if ($name eq &quot;Andrew&quot;) {
+	...
+</pre></div>
+<ul>
+<li> <tt>ne</tt> is <em>not equal to</em> for strings.</li>
+</ul>
+</p>
+<p class="Body">
+Finally, you should know the Boolean Logic operators <tt>&amp;&amp;</tt>, <tt>||</tt>, and <tt>!</tt>.  We saw <tt>!</tt> (<em>NOT</em>) before, but lets look at the other two: <em>AND</em> and <em>OR</em>.
+<div class="block"><pre>
+# The following will be True if $j &gt; 5 or $j &lt; 1
+if ($j &gt; 5 || $j &lt; 1) {
+	...
+# The following will be True if $name ne &quot;Andrew&quot; and $count &lt; 10
+if ($name ne &quot;Andrew&quot; &amp;&amp; $count &lt; 10) {
+	...
+</pre></div>
+</p>
+<!--End Section 1-->
+<h2><a name="Functions">Functions</a></h2>
+<p class="Body">
+Functions in Perl are like functions in math.  (Actually, everything we have been doing is really a function or an operator, which is pretty much a function.)
+<div class="block"><pre>
+#!/usr/bin/perl
+print power(5,2);     # Prints 25
+$j = power(2,2);      # $j is now 4
+                       # power(number,power) returns
+                       # number raised to power.
+sub power {
+     local($i,$t);
+     local($n, $p) = @_;
+     $t = $n;
+     for($i = 1; $i &lt; $p; $i++) {
+          $t = $t * $n;
+     }
+     return $t;
+}
+</pre></div>
+</p>
+<ul>
+<li> <tt>sub &lt;function name&gt; {}</tt> defines a new function inside the <tt>{}</tt> <em>block</em>.</li>
+<li> <tt>local()</tt> is a command that makes variables <em>local</em> to a given function.  When a variable is <em>local</em>, it's <em>scope</em> is that of the function in which it is defined, meaning that it can only be accessed from within that function.  By default, all variables in Perl have global scope, so they can be accessed anywhere.  This means that if we have a variable <tt>$j</tt> in our program and another variable <tt>$j</tt> in a function, unless we use a <tt>local()</tt> call in the function, they will be the same <tt>$j</tt> and editing one will also edit the other.  <tt>my()</tt> is another function that changes the scope of a variable, read more on it <a class="link" href="http://perl.about.com/od/howtoprograminperl/l/aa022801a.htm">here</a>.</li>
+<li> <tt>local($n, $p) = @_;</tt> is cryptic and may be fully explained later, but you need it to get the values passed to the function, in this case, the number and the power to which it will be raised.  Basically, <tt>@_</tt> is a special Perl array that contains the values passed to the function, and we're taking the first two values, calling them <tt>$n</tt> and <tt>$p</tt>, and giving them a local scope.</li>
+<li> <tt>return $t;</tt> will return the final result of the function, passing it back to wherever the function was called from.  Think of this result as being substituted anywhere you see <tt>power()</tt>.</li>
+</ul>
+<!--End Section 1-->
+<h2><a name="Arrays!">Arrays!</a></h2>
+<p class="Body">
+Arrays are lists of values.  It's best to learn by example, I think, so here we go:
+<div class="block"><pre>
+@array = (&quot;leeds&quot;, &quot;barclay&quot;, &quot;jones&quot;, &quot;lunt&quot;, &quot;hca&quot;);
+print $array[0] . &quot;\n&quot;;  #This prints 'leeds'
+print $array[2] . &quot;\n&quot;;  #This prints 'jones'
+$array[1] = &quot;comfort&quot;;   #Now the list is: leeds, comfort, jones, lunt, hca
+print &quot;Everything I know:\n&quot;;
+foreach $dorm (@array) {
+     print &quot;  $dorm\n&quot;;
+}
+</pre></div>
+<strong>Output:</strong>
+<div class="block"><pre>
+leeds
+jones
+Everything I know:
+  leeds
+  comfort
+  jones
+  lunt
+  hca
+</pre></div>
+</p>
+<ul>
+<li> The at sign (<tt>@</tt>) signifies an array.  As we learned earlier, the dollar sign (<tt>$</tt>) signifies a <em>scalar</em> -- a single variable or a single element of an array.  The <tt>@</tt> sign points to the <em>entire</em> array, and is used when you need to talk about the whole array at once, not just a single element.</li>
+<li> Arrays in Perl (and most languages) are zero-based, meaning the first element is 0, not 1, and the last is n-1, not n, where n is the number of elements in the array.  Hence, to get the first element above, we accessed <tt>$array[0]</tt>.</li>
+<li> Now we've met <tt>foreach</tt>.  <tt>foreach</tt> is a very powerful loop statement of the form: <tt>foreach $variable (@array)</tt> .  The <tt>foreach</tt> will execute n times (where n is the number of elements in <tt>@array</tt>), and each time the next element in <tt>@array</tt> will be copied into <tt>$variable</tt>.  The <tt>foreach</tt> above is equivalent to:</li>
+</ul>
+<div class="block"><pre>
+for ($j = 0; $j &lt; 5; $j++) {
+     print $array[$j] . &quot;\n&quot;;
+}
+</pre></div>
+<!-- Start SectLevel2 -->
+<h3><a name="Array examples">Array examples</a></h3>
+<div class="block"><pre>
+@array = (5, 2, 27, &amp;power(2,5), &quot;andrew&quot;);
+$array[3] = $array[0] + $array[1];
+push @array, &quot;another element&quot;;
+print pop(@array); 	#will print &quot;another element&quot;
+</pre></div>
+<ul>
+<li> In Perl, the same array can contain numbers and strings.</li>
+<li> <tt>push</tt> puts a new element onto the end of an existing array.</li>
+<li> <tt>pop</tt> takes off the last element of an array and returns it.  Hence, <tt>pop(@array)</tt> takes <tt>&quot;another element&quot;</tt> off of <tt>@array</tt> and passes it to <tt>print</tt>, which prints it.</li>
+</ul>
+<!--End Section 2-->
+<!-- End SectLevel2 -->
+<!--End Section 1-->
+<h2><a name="Hashes (or associative arrays or dictionaries)">Hashes (or associative arrays or dictionaries)</a></h2>
+<p class="Body">
+Hashes are sets of key/value pairs.  Take the following example:
+<div class="block"><pre>
+%names = ('matt'=&gt;'nocifore', 'andrew'=&gt;'cantino', 1=&gt;'one');
+print &quot;Looking up 'matt': &quot; . $names{'matt'} . &quot;\n&quot;;
+$names{'nick'} = &quot;travers&quot;; 	#Added a new name to the hash
+$names{'ali'} = &quot;rosenberg&quot;; 	#Added a new name to the hash
+
+print &quot;Everything I know:\n&quot;;
+foreach $item (keys(%names)) {
+     print &quot;  $item: $names{$item}\n&quot;;
+}
+
+print &quot;Now in alphabetical order:\n&quot;;
+foreach $item (sort(keys(%names))) {
+     print &quot;  $item: $names{$item}\n&quot;;
+}
+</pre></div>
+<strong>Output:</strong>
+<div class="block"><pre>
+Looking up 'matt': nocifore
+Everything I know:
+  ali: rosenberg
+  1: one
+  andrew: cantino
+  matt: nocifore
+  nick: travers
+Now in alphabetical order:
+  1: one
+  ali: rosenberg
+  andrew: cantino
+  matt: nocifore
+  nick: travers
+</pre></div>
+</p>
+<ul>
+<li> The <tt>%</tt> character signifies a hash.  As before, the <tt>$</tt> character accesses a single element of the hash.</li>
+<li> You access an element in an hash with the <tt>{}</tt> operator after the array name as a scalar.  I.e., <tt>$names{'matt'}</tt>.</li>
+<li> The first line of the example defines a new hash called <tt>%names</tt> that initially contains the key <tt>'matt'</tt> with the value <tt>'nocifore'</tt>, the key <tt>'andrew'</tt> with the value <tt>'cantino'</tt>, and the key <tt>1</tt> with the value <tt>'one'</tt>.</li>
+<li> The second line shows how, using a key, one can access a value in an hash.  <tt>$names{'matt'}</tt> will return <tt>'nocifore'</tt>.</li>
+<li> The third line adds a new key/value pair to the existing hash.  Notice that when referring to a single element of the array, even in an assignment, we use <tt>$</tt>, not <tt>%</tt>.  <tt>%names</tt> would refer to the whole array.</li>
+<li> <tt>keys(%array)</tt> returns a normal array (list) of all of the keys in <tt>%names</tt>.</li>
+<li> <tt>sort()</tt> sorts a normal array (list) in alphabetical order.</li>
+</ul>
+<!--End Section 1-->
+
+<center>
+<script type="text/javascript"><!--
+google_ad_client = "pub-3067017907226343";
+google_ad_width = 728;
+google_ad_height = 90;google_ad_format = "728x90_as";google_ad_type = "text"; google_ad_channel ="6334296398";
+google_color_border = "FFFFFF";
+google_color_bg = "FFFFFF";
+google_color_link = "0000FF";
+google_color_url = "008000";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+    </script>
+      </center>
+
+<h2><a name="References">References</a></h2>
+<p class="Body">
+We will cover more Perl in the next few weeks, but here is a list of useful Perl resources:
+<ul>
+<li> <a class="link" href="http://perldoc.perl.org/perlfunc.html">Perl</a> -- The authoritative list of Perl built in functions.</li>
+<li> <a class="link" href="http://perldoc.perl.org/index-language.html">Perl Language Reference</a></li>
+<li> <a class="link" href="http://www.rexswain.com/perl5.html">Rex Swain's HTMLified Perl 5 Reference Guide</a></li>
+</ul>
+</p>
+<hr>
+<!--End Section 1-->
+<h2><a name="Suggested Assignments">Suggested Assignments</a></h2>
+<!-- Start SectLevel2 -->
+<h3><a name="Try these examples out">Try these examples out</a></h3>
+<p class="Body">
+Use what we learned from the last lesson to make a new file in your UNIX shell called <tt>example.pl</tt>.
+<div class="block"><pre>
+ssh acantino@acantino.people.haverford.edu
+acantino@acantino.people.haverford.edu's password: 
+-jailshell-2.05b$ pico example.pl
+</pre></div>
+</p>
+<p class="Body">
+Type or paste in one of the example programs from this lesson, then save it.  Then, run it by entering
+<div class="block"><pre>
+perl example.pl
+</pre></div>
+</p>
+<p class="Body">
+Once you get it working, edit the file again with pico (<tt>pico example.pl</tt> again) and play with making a few changes in the Perl code.  By far the best way to learn to code is by doing it!
+</p>
+<!--End Section 2-->
+<h3><a name="Write your own program">Write your own program</a></h3>
+<p class="Body">
+Try some or all of these ideas for your own programs.  To learn more, read <a class="link" href="http://www.perl.com/pub/q/documentation">the Perl documentation</a> (or use <tt>perldoc</tt> on the shell -- <tt>man perldoc</tt>) and <a class="link" href="http://www.rexswain.com/perl5.html">Rex Swain's HTMLified Perl 5 Reference Guide</a>.  Also, feel free to contact me.
+</p>
+<p class="Body">
+Program ideas:
+<ul>
+<li> Program that asks the user to think of a number, then tries to guess it by asking if it's 'guess' is too low or too high.</li>
+<li> A program that prints out the first x prime numbers.</li>
+<li> A program that takes in some user input, then prints out a form with the input filled in.</li>
+<li> Anything you can imagine!</li>
+</ul>
+</p>
+<!--End Section 2-->
+<!-- End SectLevel2 -->
+<!--End Section 1-->
+<h2><a name="Next time!">Next time!</a></h2>
+<p class="Body">
+Next time we do files and online CGI!
+</p>
+<hr>
+<p class="Body">
+<a class="link" href=".">Back to Course Index</a>
+</p>
+<!--End Section 1-->
+<!-- End SectLevel1 -->
+<hr>
+<p class="Body">
+<a name="fNOTE1">&nbsp</a>
+[<a class="link" href="#REFfNOTE1">1</a>] - It seems that this distinction isn't made too much anymore.  As the processing power of computers increases, interpreted languages, with their ease-of-use and flexibility, are becoming more and more appealing as general programming solutions.
+<br>
+<a name="fNOTE2">&nbsp</a>
+[<a class="link" href="#REFfNOTE2">2</a>] - <a class="link" href="http://www.unix.org.ua/orelly/perl/perlnut/ch04_03.htm">http://www.unix.org.ua/orelly/perl/perlnut/ch04_03.htm</a>
+<br>
+<a name="fNOTE3">&nbsp</a>
+[<a class="link" href="#REFfNOTE3">3</a>] - 'Pseudocode is a short hand way of describing a computer program. Rather than use the specific syntax of a computer language, more general wording is used.' -- <a class="link" href="http://nicklas.byriel-pedersen.dk/Glossary/Glossary.htm">http://nicklas.byriel-pedersen.dk/Glossary/Glossary.htm</a>
+<br>
+<a name="fNOTE4">&nbsp</a>
+[<a class="link" href="#REFfNOTE4">4</a>] - They're also in-place, and order matters, so $j-- is different than --$j.  Also, $j++ is the same as $j+=1 .
+<br>
+<a name="fNOTE5">&nbsp</a>
+[<a class="link" href="#REFfNOTE5">5</a>] - Boolean refers to Boolean Logic, named after George Boole.  Boolean Logic is true/false or two-valued logic, and is the logic that computers use.
+<br>
+<a name="fNOTE6">&nbsp</a>
+[<a class="link" href="#REFfNOTE6">6</a>] - <a class="link" href="http://www.htmlite.com/perl014a.php">http://www.htmlite.com/perl014a.php</a>
+<br>
+<br>
+<p align="right"> <small>This document was generated using <a class="link" href="http://www.maplefish.com/todd/aft.html">AFT v5.094</a></small> </p>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-148948-3";
+urchinTracker();
+</script>
+</body>
+</html>
+

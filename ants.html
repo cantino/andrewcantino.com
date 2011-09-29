@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Andrew Cantino</title>
+    <link href='http://fonts.googleapis.com/css?family=Nobile:400,400italic' rel='stylesheet' type='text/css'>
+    <script src='scripts/jquery-1.6.1.js'></script>
+    <script src='scripts/vector.js'></script>
+    <script src='scripts/ants.js'></script>
+    <script>
+      $(function() {
+        var width = 800;
+        var height = 400;
+
+        var canvas = $("<canvas width=" + width + " height=" + height + " id='ant-canvas'></canvas>");
+        var start = $("<button id='startStop'>Stop</button>");
+        var pheromones = $("<button>Display Pheromone Trails</button>");
+        var controls = $("<div></div>").append(start).append(pheromones);
+        $("#ants").append(controls).append(canvas);
+
+        window.world = new World(width, height, canvas);
+        window.world.start();
+
+        start.click(function() {
+          if (window.world.stopNow) {
+            start.text("Stop");
+            window.world.start();
+          } else {
+            start.text("Start");
+            window.world.stop();
+          }
+          return false;
+        });
+        pheromones.click(function() {
+          if (world.showPheromones) {
+            pheromones.text("Display Pheromone Trails");
+            window.world.showPheromones = false;
+          } else {
+            pheromones.text("Hide Pheromone Trails");
+            window.world.showPheromones = true;
+          }
+          return false;
+        });
+      });
+    </script>
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/expando.css">
+
+    <style>
+      body {
+        padding: 0;
+        margin:  0;
+      }
+
+      #ants {
+        font-size: 12px;
+        line-height: 12px;
+        /*padding: 5px;*/
+        /*margin: 10px 0;*/
+        /*border: 1px solid #333;*/
+        /*box-shadow: 1px 1px 3px #999;*/
+        /*-moz-box-shadow: 1px 1px 1px #999;*/
+        /*display: table;*/
+      }
+    </style>
+  </head>
+  <body>
+    <div id='ants'></div>
+    This simulation only works in the most recent generation of web browsers (Chrome, Firefox, Safari).
+    You can click to add new food, and clicking the button at the top left will display the ants' pheromone trails.
+    A while ago I simulated both ant foraging and firefly synchronization <a href="http://andrewcantino.com/sl/ants/" class='external' target='_blank'>inside of Second Life</a>.
+  </body>
+</html>

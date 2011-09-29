@@ -1,0 +1,403 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Andrew Cantino</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Andrew Cantino is an experimentalist and web developer. He applies machine learning techniques to unusual problems and enjoys creating open source software.">
+    <meta name="author" content="Andrew Cantino">
+    <link rel="author" href="humans.txt" />
+
+    <!--<link href='http://fonts.googleapis.com/css?family=Nobile:400,400italic' rel='stylesheet' type='text/css'>-->
+
+    <script src='scripts/jquery.min.js'></script>
+    <script src='scripts/jquery-ui.min.js'></script>
+
+    <script src='scripts/fancybox/jquery.fancybox-1.3.4.pack.js'></script>
+    <link rel="stylesheet" type="text/css" href="scripts/fancybox/jquery.fancybox-1.3.4.css">
+
+    <script>
+			function hideExpandAll() {
+				$(".expandall").animate({ bottom: "-70px"}, 1000, function() {
+			    $(".expandall").fadeOut();
+			  });
+			}
+			
+			function hideExplanation() {
+				$(".explanation").animate({ bottom: "-70px"}, 1000, function() {
+          $(".explanation").fadeOut();
+        });
+			}
+
+			$(function() {
+        var expansionCount = 0;
+				var explanationIsVisible = true, expandAllIsVisible = false;
+
+        function expando($elem) {
+          $elem.find("a[href]:not(.skipRewrite)").attr("target", "_blank").addClass("external").each(function() {
+//            $(this).append("<img src='linkout_icon.png' border=0 class='linkIndicator'/>");
+          });
+          $elem.find(".expando").each(function() {
+            var initial = $(this).children(".initial").show();
+            var expanded = $(this).children(".expanded").hide();
+            if (initial.children("a").length) {
+							var scope = initial.children("a");
+						} else {
+							var scope = initial.wrap("<a>").parent();
+              initial = initial.parent();
+						}
+						
+						var expand = function(force) {
+							scope.addClass('activated');
+              initial.hide();
+              if (expanded.data("callback")) {
+                callbacks[expanded.data("callback")](expanded);
+              }
+              expanded.show();
+
+              expanded.css("color", "#EF7A28").animate({ color: "#444" }, 2000);
+              expanded.children(".break").animate({ marginBottom: "30px" }, 300);
+
+							if (!force && !scope.closest(".explanation").length) {
+	              expansionCount++;
+
+	              if (explanationIsVisible && expansionCount > 2) {
+									hideExplanation();
+									explanationIsVisible = false;
+	              } else if (!expandAllIsVisible && expansionCount > 6) {
+	                $(".expandall").animate({ bottom: "0px"}, 1000);
+									expandAllIsVisible = true;
+								} else if (expandAllIsVisible) {
+									if (!$(".wrapper .expander:not(.activated)").length) {
+										hideExpandAll();
+									}
+								}
+							}
+						};
+
+						scope.addClass("expander").data("expand", expand).click(function() {
+							expand();
+							return false;
+						});
+          });
+        }
+
+        var callbacks = {
+          resetExplanation: function() {
+            $(".explanation").find(".initial").each(function() {
+              $(this).show();
+              $(this).parent("a").show();
+            });
+            $(".explanation").find(".expanded").hide();
+          }
+        };
+
+        $(".showAnts, .showContact").fancybox({
+          width: 820,
+          height: 600,
+          type: 'iframe'
+        });
+
+				$(".expandall a").click(function() {
+					$(".expander:not(.activated)").each(function() { $(this).data("expand") && $(this).data("expand")(true); });
+					hideExpandAll();
+					return false;
+				});
+
+        expando($(".start"));
+        expando($(".explanation"));
+        $(".wrapper, .explanation").fadeIn();
+      });
+		</script>
+    <link rel="stylesheet" type="text/css" href="stylesheets/expando.css" />
+  </head>
+
+  <body>
+    <div class='wrapper' style="display: none">
+      <div class='title'>
+        <img src='images/me-right.jpg' />
+        <span class='firstLetter'>A</span>NDREW <span class='firstLetter'>C</span>ANTINO
+      </div>
+      <div class='start'>
+        I'm an
+        <span class="expando">
+          <span class="initial"><a>experimentalist</a> and</span>
+          <span class="expanded">
+            experimentalist. I love making
+            <span class="expando">
+              <span class="initial"><a>online toys</a> and </span>
+              <span class="expanded">
+                online toys.  For example, I made an adaptive <a href="http://iterationprojects.com/rps/">rock-paper-scissors bot</a> that does
+                <span class="expando">
+                  <span class="initial">better than chance.</span>
+                  <span class="expanded"><span style='font-size: 0.8em'>somewhat</span> better than chance.</span>
+                </span>
+                I also enjoy
+              </span>
+            </span>
+            observing and
+            <span class="expando">
+              <span class="initial"><a>simulating emergent processes</a> from nature.</span>
+              <span class="expanded">
+                simulating emergent processes and self-organizing systems, mostly from the natural world.  One recent creation is <a class='showAnts skipRewrite fakeExpander' href="ants.html">an HTML5 canvas-based simulation of ants exploring</a> and
+                <span class="expando">
+                  <span class="initial">working together</span>
+                  <span class="expanded">communicating via pheromone signals.  These pheromone signals are local, and the ants don't know anything about each other, yet the resulting emergent system displays complex behaviors, allowing the ants to</span>
+                </span>
+                to gather food.
+              </span>
+            </span>
+            <div class='break'></div>
+            My job is as a
+          </span>
+        </span>
+        <span class="expando">
+          <span class="initial"><a>web developer</a>.</span>
+          <span class="expanded">
+            web developer, applying
+            <span class="expando">
+              <span class="initial"><a>agile practices</a> to</span>
+              <span class="expanded">
+                agile software development methodologies including pair-programming and
+                <span class="expando">
+                  <span class="initial"><a>test-driven development</a> to</span>
+                  <span class="expanded">test-driven development (<span style='font-size: 0.8em'>my experience has been that testing reliably results in better code, and test driving, where appropriate, helps to minimize errors and to spread knowledge</span>) to</span>
+                </span>
+              </span>
+            </span>
+            <span class="expando">
+              <span class="initial"><a>frontend</a> and</span>
+              <span class="expanded">
+                frontend development in
+                <span class="expando">
+                  <span class="initial"><a>JavaScript</a>,</span>
+                  <span class="expanded">Javascript (and CoffeeScript, Processing, and sometimes Java),</span>
+                </span>
+                HTML5, and
+                <span class="expando">
+                  <span class="initial"><a>CSS</a>,</span>
+                  <span class="expanded">CSS (straight, on the rocks, or with SASS and/or HAML),</span>
+                </span>
+                and
+              </span>
+            </span>
+            <span class="expando">
+              <span class="initial"><a>backend</a> web development.</span>
+              <span class="expanded">
+                backend development with
+                <span class="expando">
+                  <span class="initial">Ruby</span>
+                  <span class="expanded">Ruby both on and off Rails</span>
+                </span>
+                and various
+                <span class="expando">
+                  <span class="initial"><a>UNIX tools</a>.</span>
+                  <span class="expanded">esoteric UNIX tools with 3-4 letter acronyms.</span>
+                </span>
+              </span>
+            </span>
+
+            I work with
+            <span class="expando">
+              <span class="initial">clients</span>
+              <span class="expanded">
+                <a href="http://pivotallabs.com">Pivotal Labs</a> and other clients
+              </span>
+            </span>
+            and develop my own
+            <span class="expando">
+              <span class="initial"><a>projects</a>.</span>
+              <span class="expanded">
+                projects, such as
+                <span class="expando">
+                  <span class="initial"><a>UnderTheSite</a>,</span>
+                  <span class="expanded">UnderTheSite (<a href="http://underthesite.com">underthesite.com</a>), a tool for examining the workings of websites,</span>
+                </span>
+                <span class="expando">
+                  <span class="initial"><a>Freebie Finder</a>,</span>
+                  <span class="expanded">Freebie Finder (<a href="http://absurdlycool.com">absurdlycool.com</a>), an automated free stuff search engine and aggregator,</span>
+                </span>
+                and other
+                <span class="expando">
+                  <span class="initial"><a>older projects</a>.</span>
+                  <span class="expanded">
+                    older projects, including:
+                    <ul>
+                      <li><a href="http://recreationparks.net">RecreationParks.net</a> - a database of 50,000+ public parks in the US (now sold to AllTrails, Inc)</li>
+                      <li><a href="http://startupwarrior.com">Startup Warrior</a> - an interactive map of tech companies (now sold)</li>
+                      <li><a href="http://iterationprojects.com/address/">Flexible Address Parser</a> - a Perl script that can parse US mailing addresses in many formats</li>
+                      <li><a href="https://github.com/fizx/parsley/">Parsley</a> - a language and companion website for building web scrapers</li>
+                      <li><a href="http://iterationprojects.com/evolve/">CSSEvolve</a> - a tool to evolve CSS styles through a process of simulated natural selection</li>
+                    </ul>
+                  </span>
+                </span>
+              </span>
+            </span>
+            <div class='break'></div>
+          </span>
+        </span>
+
+        I enjoy using
+        <span class="expando">
+          <span class="initial"><a>machine learning techniques</a> and</span>
+          <span class="expanded">
+            machine learning techniques that I studied
+            <span class="expando">
+              <span class="initial">in <a>graduate school</a> and</span>
+              <span class="expanded">
+                while doing my Masters research</a> at Georgia Tech.  My research focused on
+                <span class="expando">
+                  <span class="initial"><a>artificial intelligence</a>,</span>
+                  <span class="expanded">
+                    artificial intelligence.  Specifically, I researched TTD-MDPs, a technique for generating a distribution of trajectories through a Markov Decision Process.
+                    With my co-authors I published a couple of
+                    <span class="expando">
+                      <span class="initial"><a>papers</a>.</span>
+                      <span class="expanded">
+                        papers:
+                        <div class="reference">David L. Roberts, Andrew S. Cantino, and Charles L. Isbell. <a href="/papers/aiide07-tours-short.pdf" target="_blank">Player Autonomy versus Designer Intent: A Case Study of Interactive Tour Guides</a>. In Proceedings of the Third Conference and Artificial Intelligence for Interactive Digital Entertainment (<a href="http://www.aiide.org/" target="_blank">AIIDE-07</a>), Palo Alto, California, 2007.</div>
+                        <div class="reference">Andrew Cantino, David L. Roberts, and Charles L. Isbell. <a href="/papers/aamas07-tours.pdf" target="_blank">Autonomous Nondeterministic Tour Guides: Improving Quality of Experience with TTD-MDPs</a>. In Proceedings of the Sixth International Joint Conference on Autonomous Agents and Multiagent Systems (<a href="http://www.aamas2007.org/" target="_blank">AAMAS-07</a>), Honolulu, Hawai'i, 2007.</div>
+                      </span>
+                    </span>
+                    I also researched
+                  </span>
+                </span>
+                <span class="expando">
+                  <span class="initial">stochastic optimization</span>
+                  <span class="expanded">
+                     stochastic optimization for motion control of high degree-of-freedom manipulators, like octopus arms and elephant trunks,
+                  </span>
+                </span>
+                and
+                <span class="expando">
+                  <span class="initial"><a>machine learning in web applications</a>.</span>
+                  <span class="expanded">
+                    machine learning in web applications.
+                    Notably, I developed a remotely hosted tool that analyzed both historical traffic flows through a website and a visitor's personal cursor motion in order to estimate a probability distribution over page links.  Links that a visitor is likely to click are either enlarged or pre-selected, thus improving page flow (and the link's Fitts's Law properties).
+                    <div class='break'></div>
+                  </span>
+                </span>
+                Prior to Georgia Tech, I graduated from Haverford College with a BS in
+                <span class="expando">
+                  <span class="initial"><a>Physics</a>.</span>
+                  <span class="expanded">
+                    Physics and a concentration in Computational Science, focusing on
+                    <span class="expando">
+                      <span class="initial"><a>Physics Education</a>.</span>
+                      <span class="expanded">
+                        Physics Education, which culminated in the development of three
+                        <span class="expando">
+                          <span class="initial">educational physics applets</span>
+                          <span class="expanded">educational physics applets
+                            (<a href="http://andrewcantino.com/java/DampedDrivenHarmonicOscillator/">Damped, driven harmonic oscillators</a>, <a href="http://andrewcantino.com/java/CoupledOscillators/">coupled harmonic oscillators and Hilbert Space</a>, and <a href="http://andrewcantino.com/java/BeadedString/">waves on a beaded string</a>)
+                          </span>
+                        </span>
+                        that are featured in the newly released Physics textbook <a href="http://www.oup.com/us/companion.websites/9780195393491/">Waves and Oscillations: A Prelude to Quantum Mechanics</a> by Walter Smith.
+                        Before that I developed a low-cost, distributed data-processing cluster to look for radio pulsar signals.
+                      </span>
+                    </span>
+                  </span>
+                </span>
+                <div class='break'></div>
+                I also enjoy
+              </span>
+            </span>
+          </span>
+        </span>
+        writing
+        <span class="expando">
+          <span class="initial"><a>open source software</a>.</span>
+          <span class="expanded">
+            open source software, some of which includes
+            <ul>
+              <li><a href="http://selectorgadget.com">SelectorGadget</a> - Bookmarklet for CSS selector generation</li>
+              <li><a href="https://github.com/iterationlabs/ruby-readability">ruby-readability</a> - Ruby port of Readability, a tool for extracting text from webpages</li>
+              <li><a href="https://github.com/iterationlabs/my_obfuscate">MyObfuscate</a> - Ruby stream processor for the selective rewriting of MySQL dumps in order to protect user privacy</li>
+              <li><a href="https://github.com/iterationlabs/reckon">Reckon</a> - Bayesian learning Ruby gem for command line accounting with <a href="http://ledger-cli.org/">Ledger</a></li>
+            </ul>
+            <div class='break'></div>
+          </span>
+        </span>
+
+        I
+        <span class="expando">
+          <span class="initial">live in <a>San Francisco</a>.</span>
+          <span class="expanded">
+            usually live in San Francisco, but am currently backpacking with my wife through
+            <span class="expando">
+              <span class="initial"><a>South America</a> and</span>
+              <span class="expanded">Ecuador, Peru, Bolivia, and Argentina.  Then, after the holidays, we're going to</span>
+            </span>
+            <span class="expando">
+              <span class="initial">Asia.</span>
+              <span class="expanded">China, Thailand, Laos, and Cambodia.</span>
+            </span>
+          </span>
+        </span>
+
+        <span class="expando">
+          <span class="initial">You can <a>contact</a> me in various ways.</span>
+          <span class="expanded">
+            You should <a href="http://blog.andrewcantino.com">read my blog</a> and <a href="http://twitter.com/tectonic">@follow me on Twitter</a>.  You can also <a class='showContact skipRewrite fakeExpander' href="contact.html">email me</a>.
+          </span>
+        </span>
+
+      </div>
+    </div>
+
+    <div class='bottomBox expandall'>
+      <span class="expBox">
+				You can <a class='skipRewrite fakeExpander' href="#">see everything</a> if you're lazy.
+			</span>
+		</div>
+
+    <div class='explanation bottomBox'>
+      <span class="expBox">
+        You should click around, this page will
+        <span class="expando">
+          <span class="initial">grow on you.</span>
+          <span class="expanded">
+            <span class="expando">
+              <span class="initial"><a>exceed your expectations</a>.</span>
+              <span class="expanded">
+                <span class="expando">
+                  <span class="initial"><a>expand your horizons</a>.</span>
+                  <span class="expanded">
+                    <span class="expando">
+                      <span class="initial"><a>be surprisingly deep</a>.</span>
+                      <span class="expanded">
+                        <span class="expando">
+                          <span class="initial"><a>start to get recursive</a>.</span>
+                          <span class="expanded" data-callback="resetExplanation">
+                          </span>
+                        </span>
+                      </span>
+                    </span>
+                  </span>
+                </span>
+              </span>
+            </span>
+          </span>
+        </span>
+        Thanks to <a href="http://www.telescopictext.com/">telescopictext</a> for the inspiration.
+      </span>
+    </div>
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-148948-5']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+
+    <!--[if lt IE 7 ]>
+      <script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
+      <script>window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})</script>
+    <![endif]-->
+  </body>
+</html>

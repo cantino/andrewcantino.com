@@ -1,0 +1,219 @@
+#---SET-HTML bslash=&#92;
+#---SET-HTML gt=&gt;
+*Title: Files and CGI in PERL 
+*Author: Andrew Cantino
+*Image-center: email.jpg
+*Image-center: camel.gif 
+
+---------
+
+*TOC
+
+---------
+
+* Introduction
+Last time we were introduced to PERL and some basic PERL programming.  Now lets learn about files and online CGI scripts.
+
+* Files
+** An Example
+^<<
+$filename = "/home/acantino/testfile";
+open(FILE, "$filename") || die("Unable to open $filename: $!\n");
+$firstLine = <FILE>;
+$secondLine = <FILE>;
+@theRest = <FILE>;
+close(FILE);
+chomp($firstLine);
+chomp($secondLine);
+print "The first line of the file is: $firstLine\n";
+print "And the second line is: $secondLine\n";
+print "Here is the rest of the file:\n";
+foreach $line (@theRest) {
+     chomp($line);
+     print "$line\n";
+}
+^>>
+I put the following in ''testfile'':
+^<<
+some first text
+some second text
+some more
+and more
+and the end of the file!
+^>>
+Script _Output:_
+^<<
+The first line of the file is: some first text
+And the second line is: some second text
+Here is the rest of the file:
+some more
+and more
+and the end of the file!
+^>>
+
+	* |open(FILE, "$filename") \|\| die("Unable to open $filename: $!\n");| opens a file.  The |FILE| tag is called a file handle and can be any string, all caps by convention.  We will use other names for file handles later, especially if we need more than one.  The file that is opened is |$filename|, which in this case has been set to |/home/acantino/testfile|.
+	* The |\|\| die...| clause is used to catch an error.  If |open()| returns an error, then the |die()| command will be executed[Note: Wow, violent language.].  The |die()| command prints out the string that you pass to it, and then quits the program.  The |$!| variable is a special PERL variable that contains the last error message.  Printing |$!| is useful for debuging your program.
+	* To read a line from a file, do |$variable = <FILEHANDLE>;|.  To read (the remaining contents) of a file into an array, do |@array = <FILEHANDLE>;|.  Notice that this is identical to how we accessed the |STDIN| input file handle before.
+	* When you're done with a file, remember to |close(FILEHANDLE);|.
+
+** File Modes
+You can open a file in a few different modes.  Here's a demonstration:
+^<<
+$filename = "countfile";
+open(INPUT, "$filename") || die("Unable to open $filename for reading: $!\n");
+$data = <INPUT>;
+close(INPUT);
+open(OUTPUT, ">$filename") || die("Unable to open $filename for output: $!\n");
+print OUTPUT ($data + 1);
+close(OUTPUT);
+^>>
+
+	* This example is a counter.  Everytime you run it, the number in |countfile| goes up by one.  This could be easily turned into a visiter counter for your webpage.
+	* As the example shows, to open a file for output, you open is as |">filename"|[Note: As will be discussed in the PERL security lesson, it is sometimes advisable to separate the mode and file path: open(FILE, '%gt%', $path)].  The |>| is the output mode.
+	* To open a file for input you just open it as |"filename"|, for output (_overwrites the file without asking!_) you open as |">filename"|, and for appending (or adding a line to the end of the existing file) use |">>filename"|.
+	* To print to a file, use |print FILEHANDLE "string";|[Note: Print always takes a filehandle, but the default handle is STDIO, which is the screen.]
+
+* CGI
+	* CGI (or [Common Gateway Interface (http://hoohoo.ncsa.uiuc.edu/cgi/intro.html)]) scripts are used to make dynamic content for webpages, such as [Go (http://go.haverford.edu)] or [Google (http://google.com)].
+	* A CGI script is run just like you would any webpage, by going to it's URL; for example, we will be working with a script called date.cgi that can be found [here (:date.cgi)].  When you go to this URL, the webserver will detect that you are asking for a CGI script.  Instead of returning the text of the script, it will actually run the script and return to you whatever the script outputs.
+	* Here is the date CGI:
+^<<
+#!/usr/bin/perl -T
+$ENV{'PATH'} = '/bin:/usr/bin:/usr/local/bin';
+use CGI;
+$c = new CGI;
+print $c->header();
+print "<html><head><title>My first script!</title></head>\n";
+print "Hello, this is my first CGI script!<br>\n";
+$date = `/bin/date`;
+chomp($date);
+print "The date is: $date\n";
+print "</body></html>";
+^>>
+
+This script can be found online [here (:date.cgi)].  There's a bunch of new stuff here, so lets go through it slowly.
+** Taint Checking
+We've slightly modified the shebang line, including a new |-T| option.  Options included at the end of the shebang line are passed to perl when the script is run.  The |-T| option is ''taint checking'', and is a very important security precaution for CGI scripts.  I will discuss PERL/CGI security and taint checking on Thursday.
+
+
+The |$ENV{'PATH'}...| line is also part of our taint checking, and will be explained on Thursday.  Basically, it updates the |PATH| environmental variable to make sure that it is secure.
+** Objects
+The |use| command tells PERL to use an external library of code.  We've used the external |CGI|[Note: http://search.cpan.org/~lds/CGI.pm-3.10/CGI.pm] library, which provides some useful code for writing CGI scripts.  |CGI| is a ''package'', which PERL treats like an ''object''.  PERL, like most modern programming languages, is ''object-oriented'', meaning that you can create data structures called ''objects'' that encapsulate other data structures and functions.  I'm not really going to teach object-oriented programming in this class, but we will be using a small amount of it here.  All you need to know is that |$c = new CGI;| creates a new instance of a |CGI| object and puts it in $c.  Once we have an instance of an object, we can access data and functions contained within it via the |->| operator.
+** CGI Headers
+When the web server runs a CGI script, the script's output is returned to your web browser.  Therefore, anything we print in our CGI script will end up as part of the page that you see when you go to the script in your web browser.  However, for your browser to understand what it is receiving, we need to send it a ''Content-type'' HTTP header before we send any data.  If we don't do this, the web browser won't know whether it's receiving HTML, text, an image, or something else.  We could print the HTTP header like this:
+^<<
+print "Content-type: text/html\n\n";
+^>>
+But the |CGI| library provides an easier method.  |$c->header()| is a function in the |CGI| package that returns an HTTP header as a string.  Therefore, calling |print $c->header()| prints out that header.  See [this site (http://stein.cshl.org/WWW/CGI/#header)] for more |header()| options.
+** The body of the script
+	* After printing the HTTP header, our example prints out some basic HTML.  Remember, the output of the CGI script goes directly to the web browser, so if you want to output a formatted HTML page, you need to print out HTML.
+	* |$date = `/bin/date`;| uses the ''backtick'' operator: |``|.  The backtick operator runs the UNIX shell command between the first and last backticks and returns the command's output.  In this case, we run the |/bin/date| program, and include it's output in the |$date| variable.  You have to be careful when using backticks because they run their contents on the UNIX shell.  On Thursday, we will talk about ways that the backtick can be abused by an attacker to hack your script, and how to avoid this by using taint checking.
+	* The rest of the CGI script just prints out the date and finishes the HTML.  Pretty simple!
+
+* UNIX Permissions for CGI Scripts
+If your CGI script runs fine on the UNIX shell (when run with |perl script.cgi|), but gives a server error when accessed over the web, then a number of things could be going wrong:
+	* First, make sure that you've printed out the HTTP header.
+	* Second, make sure that you have a correct shebang line:
+^<<
+#!/usr/bin/perl
+^>>
+	* Third, make sure that the CGI script has correct file permissions.  As discussed in a previous lesson, the UNIX system has different users and groups.  In many cases, for the web server to be able to run your CGI script, the script needs to be world readable and executable.  You can do this with the |chmod| command:
+^<<
+chmod 755 scriptname.cgi
+^>>
+
+* Links.cgi script
+Now we're going to develop a CGI application.
+** HTML Forms
+A really useful CGI script probably needs to be able to take information from the user.  We've all seen online forms that let one fill in information to search, send e-mail, sign a guestbook, or otherwise interact with a website.  We're going to be developing a CGI script to collect links on a webpage.  Lets first build the HTML form:
+^<<
+<html><head><title>Our form!</title></head>
+<body bgcolor=white text=black>
+<center><b>Our form!</b></center>
+<form method=post action=http://andrew.absurdlycool.com/class/links/links.cgi>
+<input name=mode type=hidden value=1>
+Url Name: <input name=name type=text><br>
+URL: <input name=url type=text value="http://"><br>
+<input type=submit name=submit value="Submit!"></form>
+<p>
+<a href=links.cgi?mode=2>See the list!</a>
+</body></html>
+^>>
+[See the form in action (:links)].
+	* The |<form method=post action=http://.../links.cgi>| HTML tag is used to start a form.  The ''action'' option specifies the URL of the CGI script.  The ''method'' specifies the HTTP method, which can be either |POST| or |GET|.  This form uses the |POST| method.  Notice that there is also a link to the |links.cgi| script at the bottom of our HTML page.  In this link, we use |links.cgi?mode=2|.  This is |GET|.  |GET| is used to send data directly to a script as part of it's URL.  In this case, we've told |links.cgi| that |mode=2| in the URL using |GET|.
+	* |<input name=url type=text value="http://">| is used to create a form input field.  The |name| option specifies the name of the input field, the |type| option specifies the type of the input field (could be ''text'', ''hidden'', ''password'', etc.), and the |value| option specifies a default value for the input field.  We use a hidden input field to set the value of |mode| in the HTML form to |1|.  You will soon see what we use the mode for in the CGI script.
+	* HTML forms can have many other kinds of elements, such as list boxes, check boxes, pulldown menus, etc.[Note: http://www.w3.org/TR/REC-html40/interact/forms.html]
+
+* The PERL script
+^<<
+#!/usr/bin/perl -T
+$datafile = "/home/acantino/public_html/links/data";
+$errorLog = "/home/acantino/public_html/links/error";
+open (STDERR, ">>$errorLog");
+use CGI;
+$c = new CGI();
+print $c->header();
+$mode = $c->param('mode');
+if ($mode == 1) {
+        # Take input
+        $name = $c->param('name');
+        $url = $c->param('url');
+        unless ($url =~ m/^http\:\/\/.+?\..+/i) {
+                print "Sorry, that is not a URL!\n";
+                exit;
+        }
+        if ($name eq "") {
+                print "Please enter a webpage name!\n";
+                exit;
+        }
+        open(OUT, ">>$datafile") || die("Unable to open $datafile: $!\n");
+        print OUT $name . '|' . $url . "\n";
+        close(OUT);
+        print "<html><head><title>Thanks</title></head>\n";
+        print "<body><center>Thanks!</center></body></html>";
+        exit;
+} elsif ($mode == 2) {
+        print "<html><head><title>Our Links!</title></head>\n";
+        print "<body><center>Here are some links!</center><p>";
+        open(IN, "$datafile") || die("Unable to open $datafile: $!\n");
+        while($a = <IN>) {
+                chomp($a);
+                ($name, $url) = split(/\|/, $a);
+                print "<a href=\"$url\">$name</a><br>\n";
+        }
+        close(IN);
+        print "</body></html>";
+        exit;
+} else {
+        print "Unknown mode!\n";
+}
+^>>
+Whew!  To see this script in action, go to [http://andrew.absurdlycool.com/class/links/ (:links)]!  There's a lot going on here, so we'll walk through it step by step.  First of all, can you see what the script does?  It's a place where you can leave links for other people[Note: This is sometimes called a link free-for-all.].  People can submit new links and see what's already there.  Give it a try!
+
+	* |open (STDERR, ">>$errorLog");| is a useful trick that redirects |STDERR|, the Standard Error file handle, to an output file of our choosing.  This is useful because we can log any CGI errors to a file instead of to the system error logs, which we may not have access to.  Errors will only be logged if they occur after this line in your program, so it should appear early in your code.  See an explanation [here (http://www.pti.co.il/talks/Fundamentals/redirecting\_standard\_file\_handles\_from\_inside.html)].
+	* |$c->param('name')| accesses the value of the ''name'' input field from our HTML form.  Here CGI comes together!  Our form is using |POST|, so when someone fills out the form and hits submit in their browser, the form data is sent to the web server, which passes the data on to our script[Note: The web server passes the data to us in an environmental variable.].  The PERL CGI library parses the incoming data and makes it available to us via the |param(''keyword'')| function.
+	* What does ''mode'' do?  I wrote this script to have two modes: mode 1 allows the addition of a new link to the database and mode 2 displays all the links in the datebase.  In the PERL code, I use mode as a switch to decide which types of actions to perform.  If we wanted to do more things, we could always just add more modes!
+	* The command |unless| is exactly the same as |if (not ...)|.  Recall that |not|, or |!|, is an operator that negates a Boolean expression.  In other words, |unless| is the opposite of |if|.
+	* The |$url =~ m/^http\:\/\/.+?\..+/i| code is called a ''regular expression'' or RegEx.  Regular expressions are extreamly powerful pattern matching tools that we will be covering next week[Note: If you're impatient, look at 'man perlre'.].  For now, just know that this regular expression returns ''true'' if |$url| looks like a URL, and ''false'' otherwise.
+	* The |split(/%bslash%\|/, $a)| command is a useful one.  It will split a string into an array.  In this case, we are splitting by the pipe (\|) character.  It needs a backslash in front of it because the pipe has a special meaning in PERL, but here we only want it to be a character.  Another useful command is |join|.  |join| is the opposite of |split|.  Here is some example code that outputs ''andrew\|bob\|tom\|ben'':
+^<<
+@array = ('andrew', 'bob', 'tom', 'ben');
+$string = join('|', @array);
+print $string;
+^>>
+	* |exit| causes the PERL program to quit.
+	* |while($a = <IN>) {| is some tricky short-hand.  We're using assignment (|=|) instead of comparison (|==| or |eq|) here.  Recall that |''scalar'' = <''filehandle''>| puts the next line of ''filehandle'' into ''scalar''.  When a PERL operation succeeds, it returns ''true''.  Therefore, when this is put inside of a |while| loop, the |while| loop will continue as long as data can be read from the file.  The result: the next line of |IN| is assigned to |$a| every time the |while| is executed, and the |while| loop will continue to execute as long as these assignments succeed, because they're always returning ''true''.  This will read the whole file into |$a|, one line at a time.
+
+---------
+
+* Suggested Assignments
+** Write a CGI script of your own!
+You now know enough to write many kinds of CGI scripts.  Try a simple one first!  Here are a few suggestions:
+	* A guestbook
+	* A simple chat page
+	* A program that tells you when the last visiter (before you) was
+	* A webpage with a counter
+
+---------
+
+[Back to Course Index (:.)]

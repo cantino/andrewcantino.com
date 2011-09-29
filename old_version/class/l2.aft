@@ -1,0 +1,416 @@
+#---SET-HTML bslash=&#92;
+*Title: Introduction to PERL
+*Author: Andrew Cantino
+*Image-center: email.jpg
+*Image-center: camel.gif 
+
+---------
+
+*TOC
+
+---------
+
+* Introduction
+Now that we've covered HTML, UNIX, and the command line, it's time to actually start programming!  Some content in this lesson is adapted from ''Learning Perl'', by Randal L. Schwartz, which I highly recommend if you want to continue learning PERL beyond these classes.
+
+* Programming vs. Scripting
+
+It's worth taking a moment to discuss the differences between compiled programming languages and scripting languages[Note: It seems that this distinction isn't made too much anymore.  As the processing power of computers increases, interpreted languages, with their ease-of-use and flexibility, are becoming more and more appealing as general programming solutions.].  Compiled languages, such as C and C++, are converted by a compiler into your computer's native assembly language for execution on its CPU.  This is good because it allows direct execution on your CPU, tending to result in fast code.  However, programs written in compiled languages must be re-compiled every time they are edited, which is slow.
+
+On the other hand, scripting languages are run inside of an interpreter that acts as an intermediary, reading the code file, interpreting the code, and issuing commands to the CPU.  Because the code must be interpreted (basically, dynamically compiled at run-time), scripting languages tend to be slower than compiled languages.  However, the gain for this speed loss is significant.  Interpreted languages can do things that it are very difficult to do in compiled languages.  Interpreted languages don't need to be compiled, come with very advanced features built-in, and can do weird things, like being self-referential.  Many modern programming languages blur the distinction between compiled and interpreted.  Java, Python, and to some extent PERL, are all compiled to bytecode before being executed.
+
+
+* Introduction to Programming
+Lets start programming!
+**Like Mathematics
+Computer programming borrows much from mathematics.  Just like in math, we have ''variables'' (|$x|, |%y|, |$myVar|), ''functions'' (|sin()|, |cos()|, |myFunc()|, |sort()|), and ''operators'' (|*|, |+|, |/|, |%|, |.|).  Additionally, most programming languages adopt a similar sequence of operations as mathematics, so that |2 * 3 + 5 = 11| not |16|.
+**Algorithms
+A computer program is an algorithm--a logical sequence of operations or tasks to get something done.  When we program, we carefully specify every step of a process.  Remember, a computer only does what you tell it to.  If it does something wrong, then you (or someone else) failed to specify exactly what it should be doing.
+* PERL
+PERL (Practical Extraction and Report Language) started in 1987 and has since become extremely popular as a system administrator tool and an online CGI programming language.  (CGI will be covered in a future lesson.)  For a good overview of PERL's features, see [perl.org (http://www.perl.org/about.html)].  PERL is flexible and powerful, but sometimes cryptic.  The tagline of PERL is "There's More Than One Way to Do It."  However, that doesn't mean that all possible solutions are good solutions.
+** A first PERL program
+^<<
+#!/usr/bin/perl
+print "Hello, world!\n";
+^>>
+_Output:_ |Hello, world!|
+	* The beginning of every PERL program should start with ''#!/usr/bin/perl''.  This is called the ''shebang line'' and it tells the UNIX system which interpreter should be used on this file.  In this case, ''perl'' located at ''/usr/bin/perl''.
+	* PERL commands end with a semi-colon.
+	* The command |print| can be used to print to the screen, a webpage, or a file, depending on syntax.
+	* To make a return character in a |print|, you need to stick |\n| at the end.
+
+** Another example
+^<<
+#!/usr/bin/perl
+$a = "Hello, ";
+$b = "world!";
+print $a . $b . "\n";
+^>>
+_Output:_ |Hello, world!|
+*** Variables
+	* A ''variable'' in PERL is like a variable in algebra.
+	* In PERL, a ''scalar'' variable is denoted by |$variablename|.  A ''scalar'' variable is a single-valued variable, as opposed to a ''list'' or ''array''.
+	* Unlike many compiled languages, variables in PERL can contain just about anything -- strings, numbers, objects, even pictures.
+	* The |print| command can take strings (as in the first example), or variables, as you see here.
+	* For example, variables can contain strings:
+
+
+	$a = "Hello, world!";
+
+
+	* Or numbers:
+
+	$a = 42;
+
+
+*** The . operator
+The |.| operator concatenates (joins) strings together.  For example:
+
+	$a = "Hello, " . "world!";
+
+** Taking user input
+^<<
+#!/usr/bin/perl
+# This program asks for your name, and then greets you!
+print "Hello!  What is your name? ";
+$name = <STDIN>;
+chop($name);
+print "Well, hello $name!  Nice to meet you!\n";
+^>>
+
+_Output:_
+^<<filtered
+Hello!  What is your name? ''Andrew''
+Well, hello Andrew!  Nice to meet you!
+^>>
+
+	* In PERL, you can ''comment'' a line by putting the |#| character before your comment.  This will bypass the PERL interpreter.
+	* |<STDIN>| is a PERL ''filehandle'' that allows you to read from the keyboard.  In this example, it puts whatever you type on the keyboard into the variable called |$name|.  |<STDIN>|, when assigning to a ''scalar'' variable, will only return the first line of what you type, so when you hit return, it's done.
+	* |chop()| is a useful PERL function that will take the last character off of a string.  We |chop()| our input because when the user hit return to send the input, that return character (|\n|) was included in the |$name| string variable as well as whatever the user typed.  We |chop()| to remove that terminal |\n|.  (Another useful PERL function is |chomp()|, which only removes the last character if it is a |\n| carriage return character.  That's really what we want here.)
+	* We also see in this example that print can take a variable inside of a string!
+
+* Numbers in PERL
+	* Numbers in PERL can be represented as you would expect.  All of these are valid numbers:
+		* 42
+		* 1.47
+		* 5.6e9
+		* -10
+	* You can manipulate numbers in many ways.  Example:
+^<<
+#!/usr/bin/perl
+$a = 42;
+$b = 10.56;
+$c = $a/$b + 5;
+$d = ($c - 10)*6 - 1;
+^>>
+
+* Strings
+	* A ''string'' is a string of characters, such as |"Hello"| or |"The quick brown fox jumps over the lazy dog."|
+	* Strings can also be combined in many ways in PERL:
+^<<
+#!/usr/bin/perl
+$a = "I";
+$b = " stutter";
+$c = $a . ($b x 5) . "!\n";
+print $c;
+^>>
+
+_Output:_ |I stutter stutter stutter stutter stutter!|
+
+	* Here we have used the |.| operator to join strings.
+	* We have also introduced |x|: a new operator that is like multiplication, but for strings.
+	* PERL has both single and double-quoted strings.  Lets only worry about double-quoted strings for now.
+	* If you want to make some special characters in PERL, you need to ''escape'' them.  Escaping a character means putting a backslash (|%bslash%|) in front of it.  For example:
+		* |\n| -- newline
+		* |\t| -- tab
+		* |%bslash%%bslash%| -- an actual backslash
+		* |\"| -- a double-quote
+
+* Conditionals and Loops
+Lets start with a pretty complicated example that illustrates the use of conditionals and loops.  Conditionals let us execute some PERL statements[Note: http://www.unix.org.ua/orelly/perl/perlnut/ch04_03.htm] conditionally on the results of other statements.  We will introduce |if|, |while|, and |for| here.  Another loop statement is the |foreach| statement, and that will be introduced in a little while.
+^<<
+#!/usr/bin/perl -w
+print "Enter your name: ";
+$name = <STDIN>;
+chop($name);
+print "Hello $name!  How many times should I greet you? ";
+$greet = <STDIN>;
+chop($greet);
+if ($greet > 0) {
+     $a = 0;
+     while($a < $greet) {
+          print "Hello $name! ($a)\n";
+          $a++;
+     }
+} else {
+     print "Okay, I guess I won't greet you then.\n";
+}
+print "All done!\n";
+^>>
+The |#!/usr/bin/perl -w| line looks a bit different than usual.  I've included the |-w| ''flag''.  The |-w| flag causes PERL to print out ''warnings'' when there are possible errors in the code.  This is useful for debugging.
+ 
+Can you figure out what that example is doing?  I'll now discuss conditionals and loops in more depth.
+** Branching with if
+Take a look at this pseudocode[Note: 'Pseudocode is a short hand way of describing a computer program. Rather than use the specific syntax of a computer language, more general wording is used.' -- http://nicklas.byriel-pedersen.dk/Glossary/Glossary.htm]: 
+^<<
+if (logical expression) {
+     do something
+} else {
+     do something else
+}
+^>>
+
+The |if| statement executes the code in the ''block'' inside the |{}| characters.  The else is an alternative case.  You can skip it if you want.  You can also have multiple cases.  More pseudocode:
+^<<
+if (logical expression) {
+     do something
+} elsif (another logical expression) {
+     do something else
+} elsif (yet another logical expression) {
+     do something for this third case
+} else {
+     otherwise, do this
+}
+^>>
+
+** while loops
+^<<
+$a = 10;
+while($a > 0) {
+     $a = $a - 1;   # Or I could use $a--; or $a -= 1;
+     print "Counting down.  Now I'm at $a\n";
+}
+^>>
+_Output:_
+^<<
+Counting down.  Now I'm at 9
+Counting down.  Now I'm at 8
+Counting down.  Now I'm at 7
+Counting down.  Now I'm at 6
+Counting down.  Now I'm at 5
+Counting down.  Now I'm at 4
+Counting down.  Now I'm at 3
+Counting down.  Now I'm at 2
+Counting down.  Now I'm at 1
+Counting down.  Now I'm at 0
+^>>
+
+Notice that the while loop executes ''while'' a conditional is ''true''.  (Also, know that |0| is equivalent to ''false'', and any other number or string is ''true''.  Therefore, |while (1) {}| is an infinite loop, as is |while ("andrew") {}|, but |while (0) {}| never even runs the |while| block because it's ''false''.)
+
+** for loops
+^<<
+for($a = 0; $a < 10; $a++) {
+     print "Now counting up.  Now I'm at $a\n";
+}
+# Or another example like the while loop above
+for($a = 10; $a > 0; $a--) {
+     print "Counting down.  Now I'm at $a\n";
+}
+^>>
+_Output:_
+^<<
+Now counting up.  Now I'm at 0
+Now counting up.  Now I'm at 1
+	...
+Now counting up.  Now I'm at 8
+Now counting up.  Now I'm at 9
+Counting down.  Now I'm at 10
+Counting down.  Now I'm at 9
+	...
+Counting down.  Now I'm at 2
+Counting down.  Now I'm at 1
+^>>
+
+As you can see, |for| loops can be used as concise |while| loops.  The first part of the |for| statement typically assigns a starting value to a variable.  The second part (after the first semicolon) is the conditional -- the loop will continue until this conditional fails.  The third part usually increments or decrements the loop variable.  In the first example above, the variable is incremented with the |++| operator, identical to |$a = $a + 1|.  In the second example, the variable is decremented with the |--| operator, identical to |$a = $a - 1|.  The |++| and |--| operators are basically useful shorthand[Note: They're also in-place, and order matters, so $a-- is different than --$a.  Also, $a++ is the same as $a+=1 .].
+
+* Comparison Operators
+As you probably gathered from above, PERL has a number of useful comparison operators.  Here are a few for numbers:
+	* |<| and |>| are ''less than'' and ''greater than''.
+^<<
+if ($a < $b) {
+	...
+^>>
+	* |<=| and |>=| are ''less than or equal to'' and ''greater than or equal to''.
+	* |==| is ''equal to''.  Be careful!  You have to use |==| and not |=| when comparing things, or you'll actually be assigning them!
+^<<
+$a = 5;
+$b = $a;
+if ($a == $b) {  # This statement is always true.
+	...
+^>>
+	* |!=| is ''not equal to''.  You can also use |not ()| to negate an entire expression.
+^<<
+while ($stop != 1) {
+	if (not ($a == $b)) {
+		...
+^>>
+
+The above Boolean[Note: Boolean refers to Boolean Logic, named after George Boole.  Boolean Logic is true/false or two-valued logic, and is the logic that computers use.] operators work _only_ for numbers.  If you use them on strings, PERL will convert the strings to numbers and then apply the operations.  Here are some string comparison operators:
+	* |lt| and |gt| are ''less than'' and ''greater than'' for strings.  These comparisons will use alphabetical-order-based comparison.[Note: http://www.htmlite.com/perl014a.php]
+	* |eq| is ''equal to'' for strings.
+^<<
+if ($name eq "Andrew") {
+	...
+^>>
+	* |ne| is ''not equal to'' for strings.
+
+Finally, you should know the Boolean Logic operators |&&|, |\|\||, and |!|.  We saw |!| (''NOT'') before, but lets look at the other two: ''AND'' and ''OR''.
+^<<
+# The following will be True if $a > 5 or $a < 1
+if ($a > 5 || $a < 1) {
+	...
+# The following will be True if $name ne "Andrew" and $count < 10
+if ($name ne "Andrew" && $count < 10) {
+	...
+^>>
+
+* Functions
+Functions in PERL are like functions in math.  (Actually, everything we have been doing is really a function or an operator, which is pretty much a function.)
+^<<
+#!/usr/bin/perl
+print &power(5,2);     # Prints 25
+$a = &power(2,2);      # $a is now 4
+                       # power(number,power) returns
+                       # number raised to power.
+sub power {
+     local($i,$t);
+     local($n, $p) = @_;
+     $t = $n;
+     for($i = 1; $i < $p; $i++) {
+          $t = $t * $n;
+     }
+     return $t;
+}
+^>>
+
+	* |sub <function name> {}| defines a new function inside the |{}| ''block''.
+	* It is suggested, though not always required, that you include a |&| character before the names of functions when you call them.
+	* |local()| is a command that makes variables ''local'' to a given function.  When a variable is ''local'', it's ''scope'' is that of the function in which it is defined, meaning that it can only be accessed from within that function.  By default, all variables in PERL have global scope, so they can be accessed anywhere.  This means that if we have a variable |$a| in our program and another variable |$a| in a function, unless we use a |local()| call in the function, they will be the same |$a| and editing one will also edit the other.  |my()| is another function that changes the scope of a variable, read more on it [here (http://perl.about.com/od/howtoprograminperl/l/aa022801a.htm)].
+	* |local($n, $p) = @\_;| is cryptic and may be fully explained later, but you need it to get the values passed to the function, in this case, the number and the power to which it will be raised.  Basically, |@\_| is a special PERL array that contains the values passed to the function, and we're taking the first two values, calling them |$n| and |$p|, and giving them a local scope.
+	* |return $t;| will return the final result of the function, passing it back to wherever the function was called from.  Think of this result as being substituted anywhere you see |power()|.
+
+* Arrays!
+Arrays are lists of variables.  It's best to learn by example, I think, so here we go:
+^<<
+@array = ("leeds", "barclay", "jones", "lunt", "hca");
+print $array[0] . "\n";  #This prints 'leeds'
+print $array[2] . "\n";  #This prints 'jones'
+$array[1] = "comfort";   #Now the list is: leeds, comfort, jones, lunt, hca
+print "Everything I know:\n";
+foreach $dorm (@array) {
+     print "  $dorm\n";
+}
+^>>
+_Output:_
+^<<
+leeds
+jones
+Everything I know:
+  leeds
+  comfort
+  jones
+  lunt
+  hca
+^>>
+
+	* The at sign (|@|) signifies an array.  As we learned earlier, the dollar sign (|$|) signifies a ''scalar'' -- a single variable or a single element of an array.  The |@| sign points to the ''entire'' array, and is used when you need to talk about the whole array at once, not just a single element.
+	* Arrays in PERL (and most languages) are zero-based, meaning the first element is 0, not 1, and the last is n-1, not n, where n is the number of elements in the array.  Hence, to get the first element above, we accessed |$array\[0]|.
+	* Now we've met |foreach|.  |foreach| is a very powerful loop statement of the form: |foreach $variable (@array)| .  The |foreach| will execute n times (where n is the number of elements in |@array|), and each time the next element in |@array| will be copied into |$variable|.  The |foreach| above is equivalent to:
+
+^<<
+for ($a = 0; $a < 5; $a++) {
+     print $array[$a] . "\n";
+}
+^>>
+
+** Array examples
+^<<
+@array = (5, 2, 27, &power(2,5), "andrew");
+$array[3] = $array[0] + $array[1];
+push @array, "another element";
+print pop(@array); 	#will print "another element"
+^>>
+
+	* In PERL, the same array can contain numbers and strings.
+	* |push| puts a new element onto the end of an existing array.
+	* |pop| takes off the last element of an array and returns it.  Hence, |pop(@array)| takes |"another element"| off of |@array| and passes it to |print|, which prints it.
+
+* Associative arrays (or hashes or dictionaries)
+Associative arrays are sets of key/value pairs.  Take the following example:
+^<<
+%names = ('matt'=>'nocifore', 'andrew'=>'cantino', 1=>'one');
+print "Looking up 'matt': " . $names{'matt'} . "\n";
+$names{'nick'} = "travers"; 	#Added a new name in the associative array
+$names{'ali'} = "rosenberg"; 	#Added a new name in the associative array
+
+print "Everything I know:\n";
+foreach $item (keys(%names)) {
+     print "  $item: $names{$item}\n";
+}
+
+print "Now in alphabetical order:\n";
+foreach $item (sort(keys(%names))) {
+     print "  $item: $names{$item}\n";
+}
+^>>
+_Output:_
+^<<
+Looking up 'matt': nocifore
+Everything I know:
+  ali: rosenberg
+  1: one
+  andrew: cantino
+  matt: nocifore
+  nick: travers
+Now in alphabetical order:
+  1: one
+  ali: rosenberg
+  andrew: cantino
+  matt: nocifore
+  nick: travers
+^>>
+
+	* The |%| character signifies an associative array.  As before, the |$| character accesses a single element of the associative array.
+	* You access an element in an accociative array with the |{}| operator after the array name as a scalar.  I.e., |$names{'matt'}|.
+	* The first line of the example defines a new associative array called |%names| that initially contains the key |'matt'| with the value |'nocifore'|, the key |'andrew'| with the value |'cantino'|, and the key |1| with the value |'one'|.
+	* The second line shows how, using a key, one can access a value in an associative array.  |$names{'matt'}| will return |'nocifore'|.
+	* The third line adds a new key/value pair to the existing associative array.  Notice that when referring to a single element of the array, even in an assignment, we use |$|, not |%|.  |%names| would refer to the whole array.
+	* |keys(%array)| returns a normal array (list) of all of the keys in |%names|.
+	* |sort()| sorts a normal array (list) in alphabetical order.
+
+* References
+We will cover more PERL in the next few weeks, but here is a list of useful PERL resources:
+	* [PERLFUNC (http://perldoc.perl.org/perlfunc.html)] -- The authoritative list of PERL built in functions.
+	* [PERL Language Reference (http://perldoc.perl.org/index-language.html)]
+	* [Rex Swain's HTMLified Perl 5 Reference Guide (http://www.rexswain.com/perl5.html)]
+
+---------
+
+* Suggested Assignments
+** Try these examples out
+Use what we learned from the last lesson to make a new file in your UNIX shell called |example.pl|.
+^<<
+ssh acantino@acantino.people.haverford.edu
+acantino@acantino.people.haverford.edu's password: 
+-jailshell-2.05b$ pico example.pl
+^>>
+
+Type or paste in one of the example programs from this lesson, then save it.  Then, run it by entering
+	perl example.pl
+
+Once you get it working, edit the file again with pico (|pico example.pl| again) and play with making a few changes in the PERL code.  By far the best way to learn to code is by doing it!
+** Write your own program
+Try some or all of these ideas for your own programs.  To learn more, read [the PERL documentation (http://www.perl.com/pub/q/documentation)] (or use |perldoc| on the shell -- |man perldoc|) and [Rex Swain's HTMLified Perl 5 Reference Guide (http://www.rexswain.com/perl5.html)].  Also, feel free to contact me.
+
+Program ideas:
+	* Program that asks the user to think of a number, then tries to guess it by asking if it's 'guess' is too low or too high.
+	* A program that prints out the first x prime numbers.
+	* A program that takes in some user input, then prints out a form with the input filled in.
+	* Anything you can imagine!
+
+* Next time!
+Next time we do files and online CGI!
+
+---------
+
+[Back to Course Index (:.)]

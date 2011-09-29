@@ -1,0 +1,229 @@
+#---SET-HTML bslash=&#92;
+*Title: SQL and phpMyAdmin 
+*Author: Andrew Cantino
+*Image-center: email.jpg
+
+---------
+
+*TOC
+
+---------
+
+* Introduction
+This lesson will explore databases and database interaction, as well as some important database security practices.  Lets start with SQL.
+* SQL
+SQL stands for ''Structured Query Language''.  SQL is a standard method of interacting with databases, including MySQL, Ingres, Oracle databases, etc.  SQL isn't very hard to learn, so I will only include the basics here.  For an excellent, interactive introduction to SQL, please see [sqlcourse.com (http://sqlcourse.com/)].
+** Tables
+A table in SQL is a collection of records organized into rows and columns.  The column names for a given table are set before-hand.  For example, a possible table, call it ''address\_records'', could have the first column be 'first\_name', the second column be 'last\_name', and the last column be 'address'.  It might look like:
+	!               _address\_records_                 !
+	!--------------------------------------------------!
+	! _first\_name_ ! _last\_name_ ! _address_         !
+	!--------------------------------------------------!
+	! andrew        ! cantino      ! 370 lancaster ave !
+	! some          ! guy          ! 123 fake st.      !
+
+** SELECT
+The SQL ''SELECT'' statement is used to get records from a table.  Here are some examples to get you started:
+^<<
+# Prints out all of the first names
+SELECT first_name FROM address_records;
+
+# Prints out the whole table
+SELECT * FROM address_records;
+
+# Print out addresses of people whose first name is 'andrew'
+SELECT address FROM address_records WHERE first_name = 'andrew';
+
+# Print first and last names whose address contains 'lancaster;
+SELECT first_name, last_name FROM address_records WHERE address LIKE '%lancaster%'  
+^>>
+	* Notice that the ''WHERE'' command lets us narrow our ''SELECTS''.
+	* The ''LIKE'' command lets us search within fields.
+	* Use [sqlcourse.com (http://sqlcourse.com/)] to learn more!
+
+** INSERT
+To add to a table, do something like the following:
+^<<
+INSERT INTO address_records
+  (first_name, last_name, address)
+  values ('Matt', 'Nocifore', 'Stokes');
+^>>
+** UPDATE
+''UPDATE'' lets you modify existing records.
+^<<
+UPDATE address_records SET address = 'HCA' WHERE last_name = 'cantino';
+UPDATE address_records SET first_name = 'andrew', last_name = 'cantino' WHERE address = 'Stokes';
+^>>
+** DELETE
+''DELETE'' removes records.
+^<<
+DELETE from address_records;  # CAREFUL, this removes ALL records in address_records!!
+DELETE from address_records WHERE address LIKE '%fake%';
+DELETE from address_records WHERE first_name = 'some';
+^>>
+** Learn more
+	* SQL gives you many operators to use with the ''WHERE'' command, like |=|, |<|, |>|, |>=|,|LIKE|, etc.
+	* SQL will let you sort, average, sum, min, max, count, etc. results.
+	* SQL is very powerful.  Learn more by using [sqlcourse.com (http://sqlcourse.com)] and [sqlcourse2.com (http://sqlcourse2.com)].
+
+* MySQL
+[MySQL (http://www.mysql.com/)] is a free, open source database server.  MySQL is probably the most common SQL database software used on the Internet, and we will be using it to create an example database to play with.  I will give a basic introduction here, but I highly recommend that you take the time to read this [extropia SQL tutorial (http://www.extropia.com/tutorials/sql/toc.html)].
+** Creating MySQL databases and users with cPanel
+MySQL has databases and users, much like UNIX has users and groups.  We give certain users privileges on certain databases.  Lets create a new database and a new user with permissions to use it.
+	* In cPanel, click on the ''MySQL Databases'' button.  This will take you to the ''MySQL Account Maintenance'' panel.  This panel lets us create new databases and users.  At the bottom of the panel is a link to ''phpMyAdmin'', which we will talk about soon.
+	* Enter ''testdb'' in the text filed marked ''Db:'' about halfway down the page, then click ''Add Db''.
+	* Return to the ''MySQL Account Maintenance'' panel, go to the section called ''Users:'', and create a new user called ''test'' with a password of your choosing, then click ''Add User''.
+	* Return to the ''MySQL Account Maintenance'' panel.  Your ''testdb'' should be listed under the ''Databases:'' heading.  Find the form at the bottom of this section that has a ''Add User to Db'' button.  Select the user called ''<username>\_test'' (where username is your username, not ''test'') in the ''User:'' select box.  Select the database called ''<username>\_testdb'' (again, username is your username) in the ''Db:'' select box.  Make sure the ''Privileges:'' check box is set to ''ALL''.  Click ''Add User to Db''.
+	* Return to the ''MySQL Account Maintenance'' panel.  The user ''<username>\_test'' should now be listed under ''<username>\_testdb'' in the ''Databases:'' section.
+
+* Interacting with MySQL
+There are two ways to work with our new database.  We can connect on the command line and interact directly with MySQL, or we can use a program called phpMyAdmin to interact with MySQL via a web browser.  First, I will show you how to use phpMyAdmin to create a table in our new database, then I will show you how to use MySQL directly on the command line.
+
+** Using phpMyAdmin
+	* First, go back to the ''MySQL Databases'' panel.  Click on the link to ''phpMyAdmin'' at the bottom of the page.
+	* Using the ''Database'' selector in the pane on the left of the phpMyAdmin window, select ''<username>\_testdb''.
+	* The right pane should read "No tables found in database" and provide an option for creating a new table.  Enter ''address_records'' for the name, and ''3'' for the fields, then submit the form.
+	* This window lets us setup our new table.  For the first field, enter ''first\_name'', leave the _type_ as ''VARCHAR'', and put the _length_ as 15.  For the second field, enter ''last\_name'', also leave the _type_ as ''VARCHAR'', and also put the _length_ as 15.  For the third field, enter ''address'', also leave the _type_ as ''VARCHAR'', but put the _length_ as 100.  Leave all the other fields alone.  Click ''Go''.  The new table should appear on the left-hand side of the screen, and the right-hand side of the screen should show info about the new table.
+	* We've set all three fields to be of type ''VARCHAR'' or variable character length.  We set the max length of the two first fields to be 15 characters, and the address field to be 100 characters.
+	* Lets add a record to the table.  Click on the ''Insert'' tab at the top of the window.  Under ''Value'' for the ''first\_name'' field, put your first name.  Under ''Value'' for the ''last\_name'' field, put your last name.  Under ''Value'' for the ''address'' field, put your address.  Click ''Go''.
+	* Congrats, you've made a MySQL table and put an element in it!  ''phpMyAdmin'' is very powerful, and is worth exploring further.
+
+** Using MySQL on the command line
+Now, lets connect to MySQL from the UNIX shell.  [Login to your shell account (:l1.html#SSH)] and type:
+^<<
+mysql <username>_testdb -u <username>_test -p
+^>>
+You will be prompted for the password for the ''<username>\_test'' user.  This is the password you entered [above (Creating MySQL databases and users with cPanel)].  You should see something like this:
+^<<
+-jailshell-2.05b$ mysql acantino_testdb -u acantino_test -p
+Enter password: 
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 32872 to server version: 4.0.22-standard
+
+Type 'help;' or '\h' for help. Type '\c' to clear the buffer.
+
+mysql>
+^>>
+This is the MySQL prompt -- rather like a UNIX prompt.  You use the MySQL prompt to enter SQL commands.  Lets try some:
+^<<
+mysql> describe address_records;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| first_name | varchar(15)  |      |     |         |       |
+| last_name  | varchar(15)  |      |     |         |       |
+| address    | varchar(100) |      |     |         |       |
++------------+--------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from address_records;
++------------+-----------+---------+
+| first_name | last_name | address |
++------------+-----------+---------+
+| andrew     | cantino   | hca     |
++------------+-----------+---------+
+1 row in set (0.00 sec)
+
+mysql> insert into address_records (first_name, last_name, address) values ('matt', 'nocifore', 'stokes');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from address_records;
++------------+-----------+---------+
+| first_name | last_name | address |
++------------+-----------+---------+
+| andrew     | cantino   | hca     |
+| matt       | nocifore  | stokes  |
++------------+-----------+---------+
+2 rows in set (0.01 sec)
+^>>
+Play around with the SQL commands that we learned before.  When you're done, type ''quit''.
+
+* MySQL and PERL
+To connect to MySQL from PERL, we use the PERL DBI MySQL module.  The DBI is a set of database interface modules for PERL.  Here is an example script that uses DBI:
+^<<
+#!/usr/bin/perl -Tw
+use DBI;
+
+$dbh = DBI->connect("DBI:mysql:acantino_testdb:localhost","acantino_test","<PASSWD>");
+
+$sth = $dbh->prepare("select * from address_records");
+$sth->execute;
+
+while( ($fname, $lname, $address) = $sth->fetchrow() ) {
+        print "'$fname $lname' lives at '$address'.\n";
+}
+
+$sth->finish;
+$dbh->disconnect;
+
+print "Done.\n";
+^>>
+_Output:_
+^<<filtered
+'andrew cantino' lives at 'hca'.
+'matt nocifore' lives at 'stokes'.
+^>>
+	* Notice that we're using the taint checking and warnings flags.
+	* |$sth->fetchrow()| returns a list of the elements of the next available table row.
+	* The |while| loop will continue until |$sth->fetchrow()| runs out of available rows.
+
+The ''MySQL Account Maintenance'' panel kindly generates a PERL MySQL connection string for you.  The one for our example database should be:
+^<<
+$dbh = DBI->connect("DBI:mysql:<USERNAME>_testdb:localhost","<USERNAME>_test","<PASSWORD HERE>");
+^>>
+
+* SQL Security
+The main security issue with SQL is called the SQL injection attack.  Let's say that you had the following code: (_Don't do this!_)
+^<<
+$sth = $dbh->prepare("select * from address_records where name='$name'");
+$sth->execute;
+^>>
+If ''$name'' is coming from a user's input, then they can do an SQL injection attack.  What if they enter the following? 
+^<<
+something' OR '1'='1
+^>>
+The SQL query will look like:
+^<<
+select * from address_records where name='something' OR '1'='1'
+^>>
+One _always_ equals one, so this will return every record in address_records!  Here's an even more destructive example.  What if they enter:
+^<<
+something'; DROP DATABASE;
+^>>
+As you can see, it's very important to escape any quote characters in variables you include in SQL commands.  However, you can't reliably do this with regular expressions, so you need to use ''bound parameters'', as will be described momentarily.
+
+** Reading more
+For a definitive guide to SQL injection attacks, see [SQL Injection Attacks by Example (http://www.unixwiz.net/techtips/sql-injection.html)].
+
+** Doing SQL securely
+To do SQL securely, it's best to use ''bound parameters''.  When you use bound parameters, your variables are passed to the SQL server separately from the SQL query string, so there's no way for an injection attack to occur.  In Perl, bound parameters look like this (example from [SQL Injection Attacks by Example (http://www.unixwiz.net/techtips/sql-injection.html)]):
+^<<
+$sth = $dbh->prepare("SELECT email, userid FROM members WHERE email = ?;");
+$sth->execute($email);
+^>>
+The question mark (|?|) is replaced by the value passed to the ''$sth->execute()'' function.  You may use multiple question marks -- they will be replaced in order by the values passed to ''$sth->execute()''.
+
+
+---------
+
+* Suggested Assignments
+** Make your own databases
+After you've completed [Creating MySQL databases and users with cPanel], [Using phpMyAdmin], and [Using MySQL on the command line], try making your own databases, users, and tables.  Here are some table suggestions:
+	* Make a table for your phonebook.  At least, it should have first and last name and phone number.
+	* Make two tables.  One contains usernames, passwords, and a unique ID for each person.  (Lookup the SQL ''unique'' and 'auto\_increment'' commands.)  The other contains IDs and records of some sort.  This setup would lets us have a user table and a data table that references the user table via the user table's unique IDs.  See the [extropia SQL tutorial (http://www.extropia.com/tutorials/sql/toc.html)].
+	* Make something else.  Be creative.
+
+** MySQL and CGI
+You should know enough now to make simple PERL CGI scripts that work with databases.  Try to make one of these.  I'll be happy to assist.  Here are some ideas:
+	* Online address book
+	* Online guest book
+	* Online note pad
+	* A simple chat room
+	* Some sort of dynamic webpage using PERL and MySQL
+Don't forget about SQL injections -- make sure you're quoting everything.
+---------
+
+[Back to Course Index (:.)]

@@ -1,0 +1,22 @@
+#---SET-HTML s=&nbsp;
+*Title: PERL, SQL, and Web Publishing Security 
+*Author: Andrew Cantino
+*Image-center: email.jpg
+
+*Course Introduction
+Welcome!  This is the homepage for ''PERL, SQL, and Web Publishing Security'', an informal summer course taught through Networking & Systems at Haverford College in June, 2005.  The intent of this summer training was to expose the broader computing center staff (along with others) to advanced publishing topics, the cPanel interface, and to demonstrate what is necessary to manage, support and secure dynamic web sites.
+
+_While the course is over, these online class notes are thorough and are written to stand alone.   They may prove helpful to those wishing to learn about online content delivery, cPanel, Perl, CGI, and online security._  References to ''people.haverford.edu'' and ''ACC'' refer back to the origins of the course, but the topics discussed are general.  Simply substitute your own UNIX shell/cPanel hosting account.
+
+These notes cover a number of advanced topics commonly used in web environments that provide rich dynamic content.  Although advanced topics are covered, the training starts at an introductory level, and no prior programming background is required.  We start with a brief introduction to HTML and UNIX, then move on to PERL scripting and other advanced topics.
+
+*Lessons
+This course is divided into a series of lessons.  The links below lead to class notes for each of these lessons.  I have tried to write these notes as stand-alone tutorials.  Hopefully they will be helpful.  Parts of these notes are based off of my [ExCo course (http://elm.fig.haverford.edu/~andrew/)], taught in 2003.
+        #. [Lesson 1: The Internet, HTML, and UNIX (:l1.html)]
+        #. [Lesson 2: Introduction to PERL (:l2.html)]
+        #. [Lesson 3: cPanel (:l3.html)] 
+        #. [Lesson 4: Files and CGI (:l4.html)]
+        #. [Lesson 5: PERL Security and Regular Expressions (:l5.html)]
+        #. [Lesson 6: Fantastico (:l6.html)]
+        #. [Lesson 7: SQL and phpMyAdmin (:l7.html)]
+        #. [Lesson 8: Conclusions (:l8.html)]

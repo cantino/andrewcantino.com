@@ -1,0 +1,91 @@
+<html>
+	<head>
+		<title>Ant Simulation in Second Life</title>
+	</head>
+	<body bgcolor=white text=black>
+
+		<center>
+			<b>Ant Harvesting Simulation</b> in Second Life
+			<br>
+			Andrew Cantino<br>
+			April, 2007
+		</center>
+
+		<b>Introduction</b><br>
+		<p>In this project, I have created a simulation of ant harvesting
+		behavior.  While I make no claims that the mechanics of this simulation
+		are what real ants actually do, I was inspired by research into real
+		ants, and so some parts of the simulation are arguably realistic.</p>
+
+		<p>My simulation is run in <a href="http://secondlife.com/">Second
+		Life</a>, an online 3D environment where all content is user created --
+		it is much like a 3D World Wide Web.  As such, it is very appealing as
+		an environment for testing and prototyping interesting ideas, both
+		programmatically and geometrically.  There are a number of science and
+		math related projects in Second Life, including some involving Artificial Life <a href="http://news.nationalgeographic.com/news/2007/03/070308-second-life.html">[1]</a> 
+		<a href="http://nwn.blogs.com/nwn/2006/05/god_game.html">[2]</a>.</p>
+
+		<b>Real Ants</b><br>
+		<p>Army ants move and forage in large columns made up of thousands of
+		ants.  When an army ant finds some prey, it will head back to the
+		column, leaving a chemical recruitment trail.  When it encounters other
+		army ants it will signal them to "search."  It will continue to wander
+		around the column recruiting ants for some time.  When searching ants
+		encounter the recruitment trail, they follow it to the prey.  Some of
+		them will also become recruiters.  If no recruitment trail is found
+		after some time, the recruited ants will continue on their way. [3]</p>
+		
+		<p>Recruitment strategies vary from one ant species to another.  A simple
+		recruitment system seen in some ants (such as Camponotus sericeus) is
+		dubbed "tandem running" [3].  In this strategy, a recruited ant must be
+		lead to the prey through physical contact with a recruiting ant.  In a
+		more advanced form, called "group recruitment," (seen in C. socius) the
+		ants are oriented by a recruiter and then follow a chemical trail.  In
+		"mass recruitment," ants will follow the trail after a recruiter tells
+		them to "search" for it.  This is seen in Solenopsis invicta and Eciton
+		hamatum, and is what I model.  Army ants hunt prey that can defend
+		themselves against small numbers of ants, so this rapid recruitment is
+		essential for successful harvesting behavior. [3]</p>
+
+		<b>My Simulation</b><br>
+		<p>Play the movie below to learn about my simulation, and to watch it in
+		action.  Please be sure to have your sound enabled.</p>
+		<center>
+			<div style="border: 0 solid #0000ff; padding: 10px; margin: 10px; width: 670px;">
+				<OBJECT CLASSID="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B" WIDTH="650" HEIGHT="500" CODEBASE="http://www.apple.com/qtactivex/qtplugin.cab">
+					<PARAM name="SRC" VALUE="ants2.mov">
+					<PARAM name="AUTOPLAY" VALUE="false">
+					<PARAM name="CONTROLLER" VALUE="true">
+					<EMBED SRC="ants2.mov" WIDTH="660" HEIGHT="500" AUTOPLAY="false" CONTROLLER="true" PLUGINSPAGE="http://www.apple.com/quicktime/download/"></EMBED>
+				</OBJECT>
+				<br>
+				<a href="http://www.youtube.com/watch?v=ehEzRUu4_RM">Or, view this movie on YouTube.</a>
+			</div>
+		</center>
+
+		<b>Future Work</b><br>
+		<p>Further work could look at self-organization in ant colonies.  For
+		example, some ant species tend to organize such that each colony has its
+		own area for foraging [4].  Additionally, further work could explore ant
+		evolution.  Ants are selected at the group level, not the individual
+		level, which leads to colony-oriented behavior [5]. Finally, ants have
+		many fascinating behaviors that would be worth modeling, including ant
+		food type specialization, group hunting, colony movement, visual
+		orientation, raids on other social insects [4], etc.</p>
+		
+		<b>Press</b><br>
+		<p>I released a version of the above video on <a href="http://youtube.com/watch?v=ehEzRUu4_RM">YouTube</a> in early April, and it was picked up by <a href="http://nwn.blogs.com/nwn/2007/04/the_second_life.html">New World Notes</a>, a Second Life blog.  The blogger, Hamlet Au, interviewed me and saw the ants in Second Life for the article.  Subsequently, his article was picked up by <a href="http://www.boingboing.net/2007/04/06/virtual_ants_simulat.html">Boing Boing</a>, <a href="http://kotaku.com/gaming/ants/clip-ant-simulator-hits-sl-250761.php">Kotaku</a>, <a href="http://www.greythumb.org/blog/index.php?/archives/201-Virtual-ants-in-Second-Life.html">Grey Thumb</a>, <a href="http://pacificrimx.wordpress.com/2007/04/09/ants-invade-second-life/">PacificRim Exchange</a>, and <a href="http://www.converj.com/blogs/converjed/archives/001854.html">Converjed</a>.</p>
+		
+		<p><a href="http://andrewcantino.com/">Questions or comments?</a></p>
+		
+		<hr>
+		<i>References</i><br>
+		<div>
+			<a href="http://news.nationalgeographic.com/news/2007/03/070308-second-life.html">[1]</a> "<a href="http://news.nationalgeographic.com/news/2007/03/070308-second-life.html">Virtual Critters Thrive, Evolve in Online World</a>," Mason Inman, National Geographic News, March 8, 2007<br>
+			<a href="http://nwn.blogs.com/nwn/2006/05/god_game.html">[2]</a> "<a href="http://nwn.blogs.com/nwn/2006/05/god_game.html">God Game</a>," Wagner James Au, New World Notes<br>
+			[3] "Mass Recruitment by Army Ants," Ruth Chadab and Carl W. Rettenmeyer, Science, New Series, Vol. 188, No. 4193. (Jun. 13, 1975), pp. 1124-1125.<br>
+			[4] "Foraging Pattern, Colony Distribution, and Foraging Range of the Florida Harvester Ant, Pogonomyrmex Badius," Janet S. Harrison and John B. Gentry, Ecology, Vol. 62, No. 6. (Dec., 1981), pp. 1467-1473.<br>
+			[5] "Ecology of Foraging by Ants," C. R. Carroll and D. H. Janzen, Annual Review of Ecology and Systematics, Vol. 4. (1973), pp. 231-257.<br>
+		</div>
+	</body>
+</html>

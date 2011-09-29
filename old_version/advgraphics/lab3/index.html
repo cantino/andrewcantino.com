@@ -1,0 +1,126 @@
+<html><head><title>Advanced Computer Graphics: Lab 3, a Ray Tracer</title>
+<LINK REL=StyleSheet HREF="../graphics.css" TYPE="text/css">
+</head>
+<body bgcolor=white text=black>
+<center><font size=+2><b>Lab 3: A Simple Ray Tracer</b><br>
+<font color=blue>Andrew Cantino</font></font></center>
+<p>
+<div style="margin: 5px;">
+In this lab for <A href=http://palantir.swarthmore.edu/maxwell/classes/e126/S05/>Advanced Computer Graphics</a>, I add a ray-tracing option to my modeling/rendering system from last semester.
+</div>
+<p>
+<b>Sections:</b>
+<ul>
+<li><a href="#raytrace">Ray Tracer</a>
+<li><a href="#images">Images</a>
+<li><a href="#references">References</a>
+<li><a href="#downloads">Downloads!</a>
+</ul>
+<p>
+<div class="newsitem">
+<a name="raytrace"></a>
+<div class="newsitem_title">Introduction</div><p>
+<b>A False Start</b><br>
+I started by designing an interface in Cocoa, thinking that, like the last two labs, I would do this one in Cocoa from the ground up.  However, on second thought, I realized that it would be much simpler to add a ray tracer to my existing modeling system from last semester.  All that would be needed would be some new primitives and the basic ray tracing algorithm.
+<p>
+<b>Integration into the Scanline Renderer</b><br>
+In order to integrate into last semester's scanline rendering and modeling system, I added a new output method to our view class.  Additionally, the following changes were made:
+<ul>
+<li>ray class -- has a vector3D location and a vector3D normalized direction, knows how to extend itself by a constant t.
+<li>intersect class -- represents a ray/object intersection; contains the intersection location, t-value (distance along the ray to the intersection point), surface material properties, and surface normal. 
+<li>xformWorld -- a new method to apply an arbitrary transformation matrix recursively to the entire model hierarchy.  This is very similar to the methods from last semester that output triangles in their final locations in the CVV.  However, now we can transform the world in any way as a pre-process to the ray tracing using this recursive method.  Each supported primitive type (currently polygon3D, polygonMesh3D, and sphere) must implement xformWorld.  Additionally, xformWorld returns a list of all of the lights in the world in their final positions.
+<li>doIntersect -- given a ray, an intersect list, and a model (usually a model hierarchy), doIntersect recursively goes through the model hierarchy and does intersection checks on each object, adding any intersections to the intersect list.  Each supported primitive type (currently polygon3D, polygonMesh3D, and sphere) must implement doIntersect.
+<li>Intersection code for polygons ported from shadow ray code from last semester; intersection code for spheres added.
+<li>sphere class -- contains intersection code, a location, and a radius; built into the same class hierarchy as used last semester.
+</ul>
+<p>
+The ray tracer pseudo-code looks like the following:<pre>
+raytrace:
+	Translate -VRP, alignAxes to the uvec, vup, and vpn vectors (all orthonormalized)
+	Translate by d (this is not really necessary)
+	Apply xformWorld with the above transformations and receive the light list
+	for (x = -screenX / 2, y = -screenY / 2; x < screenX / 2, y < screenY / 2; x++, y++)
+		colorVector pColor = colorVector(0, 0, 0);
+		for (jitter = 0; jitter < number of samples per pixel; jitter++)
+			Pick a random jittered sub-pixel location --
+				jx = (du/(double)screenX) * (drand48() - .5)
+				jy = (dv/(double)screenY) * (drand48() - .5)
+			Make a ray from the origin to a pixel on a 'screen' at z = d:
+				(x/(double)(screenX / 2.0))*du + jx, (y/(double)(screenY / 2.0))*dv + jy, d)
+			Call doRayTrace recursively with the model hierarchy, the ray, and a
+					recurse depth limit (explained below), receive colorVector c
+			If c is (0,0,0), then set it to the background color
+			Add c to pColor, weighting it by one over the number of jitter samples per pixel.
+		Draw the pixel at (x + screenX / 2, y + screenY / 2) with color = 255*pColor
+
+doRayTrace:
+	Call doIntersect on the ray and model hierarchy
+	Sort the resulting intersect list based on distance
+	If intersection(s) were found, look at the closest one
+		colorVector c is lit by ambient lighting based on the intersection material properties
+		For every light in the model hierarchy
+			If not backface
+				Send a shadow ray to the light source
+				If not in shadow, add to c lambertian and phong lighting based on
+						the intersection location and material properties
+		If the surface is reflective, and we're not at our recursion limit
+			Call doRayTrace on a reflection ray in the direction of perfect reflection
+							and a decremented recursion depth counter
+			Add the resulting colorVector, weighted by the reflectivity, to c
+	Return c</pre>
+<p>
+
+All of these changes were built (hopefully) nondestructively into the system from last semester.  A given model hierarchy should be renderable with either the raytracer or the scanline system simply by calling a different output method in the view class.  However, not all output modes are allowed on all primitives.  For example, sphere doesn't know how to output itself as a triangle list at this point, but a modeling hierarchy made up only of polygons should, in theory, be renderable with either output method.
+
+
+</div>
+<p>
+<div class="newsitem">
+<a name="images"></a>
+<div class="newsitem_title">Images and Results!</div><p>
+Here is the first image that I ray traced, showing a polygon:<br>
+<center><img src=img/image1.gif alt=""></center><br>
+This image shows a polygon with a point light source close by:<br>
+<center><img src=img/image3.gif alt=""></center><br>
+Here is a somewhat glitchy rendering of a polygon model of a sphere:<br>
+<center><img src=img/image2.gif alt=""></center><br>
+An early algebraic sphere lit by a single light source:<br>
+<center><img src=img/image5.gif alt=""></center><br>
+A light orbiting a sphere:<br>
+<center><img src=img/spin.gif alt=""></center><br>
+A light orbiting around two spheres.  Anti-aliased and shadowed.<br>
+<center><img src=img/orbit-s-aa.gif alt=""></center><br>
+Two spheres reflecting eachother:<br>
+<center><img src=img/spheresreflecting.jpg alt=""></center><br>
+Lots and lots of shadowed, anti-aliased, reflecting spheres!<br>
+<center><img src=img/spheres.jpg alt=""><br>
+<img src=img/spheres2.jpg alt=""><br>
+<img src=img/spheres3.jpg alt=""></center><br>
+...and rendered with a slightly different reflectivity (kR) weighting:<br>
+<center><img src=img/spheres1-g.jpg alt=""></center><br>
+
+</div>
+<p>
+<div class="newsitem">
+<a name="references"></a>
+<div class="newsitem_title">References</div><p>
+The following sources were used extensively:
+<ul>
+<li><a href=/~andrew/graphics>Andrew and Will's modeling and rendering system from 1st semester</a>
+<li><a href="http://www.amazon.com/exec/obidos/tg/detail/-/1584500379/qid=1113615882/sr=1-1/ref=sr_1_1/104-9750630-3608709?v=glance&s=books">Mathematics for 3D Game Programming & Computer Graphics</a>, 2nd Edition, by Eric Lengyel.
+<li><a href="http://www.amazon.com/exec/obidos/tg/detail/-/047130414X/qid=1113615857/sr=8-1/ref=sr_8_xs_ap_i1_xgl14/104-9750630-3608709?v=glance&s=books&n=507846">Object-oriented Ray Tracing in C++</a>, by Nicholas Wilt -- very useful, basis of my ray class and sphere intersection code, also helpful with reflectivity.
+</ul>
+</div>
+<p>
+<div class="newsitem">
+<a name="downloads"></a>
+<div class="newsitem_title">Downloads!</div><p>
+<ul>
+<li><a href=lab3.tar.gz>Source</a>
+</ul>
+</div>
+<p>
+<p align=left><font size=-1>[<a href=../index.html>Back to Lab Index</a>]</font>
+</p>
+</body></html>
+

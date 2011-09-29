@@ -1,0 +1,159 @@
+<html><head><title>Computer Graphics: Lab 6</title>
+<LINK REL=StyleSheet HREF="../graphics.css" TYPE="text/css">
+</head>
+<body bgcolor=white text=black>
+<center><font size=+2><b>Lab 6: 3-D Viewing Pipeline</b><br>
+<font color=blue>Andrew Cantino & Will Moss</font></font></center>
+<p>
+<div style="margin: 5px;">
+This is <a href=http://palantir.swarthmore.edu/maxwell/classes/e26/F04/labs/lab06/>lab 6</a> of <a href=
+http://palantir.swarthmore.edu/maxwell/classes/e26/F04>Computer Graphics</a>.
+</div>
+<p>
+<b>Sections:</b>
+<ul>
+<li><a href="#project">The 3D Perspective Projection Process</a>
+<li><a href="#images">Required Images</a>
+<li><a href="#questions">Questions & Answers</a>
+<li><a href="#extensions">Extensions</a>
+</ul>
+<p>
+<div class="newsitem">
+<a name="project"></a>
+<div class="newsitem_title">The 3D Perspective Projection Process</div><p>
+The perspective projection process involves calculating what the 3D world would look like from the point of view (POV) of an arbitrary camera in 3D space.  <I>Perspective</I> refers to the fact that more distant objects end up looking smaller, and to the mathematical fact that parallel lines in the 3D world may not end up looking parallel in the 2D perspective projection (i.e., the classic example of a road or a railroad track running off into the distance -- the tracks converge to a single point.)
+
+Mathematically, perspective projection is a series of matrix transforms, summarized as follows:
+ <ol>
+<li>First, we define a camera in 3D space.  Our camera is defined by the following parameters:
+<ul>
+<li>The <b>VRP</b>, or View Reference Point, which is the location of the center of the view plane (the plane that the world is to be projected onto) in 3D space.  (Think of it as the location of the camera in 3D space.)
+<li>The <b>VPN</b>, or View Plane Normal, which is a 3D vector pointing in the direction that the camera is looking (conceptually, think of this vector as starting in space at the <b>VRP</b> and pointing towards the objects that we are looking at).  This vector is defined to be normal to the view plane.
+<li>The <b>VUP</b>, or View Up Vector, which is a vector pointing in the 'up' direction of the view plane.  Together, the <b>VRP</b>, <b>VPN</b>, and <b>VUP</b> vectors let us define the view plane in 3D space.
+<li>We also define <b>d</b>, the location on the <b>VPN</b> at which our center of projection is located.  This is the <I>negative</I> direction, <I>behind</I> the <b>VPN</b>.  Think of this as our focal length.
+<li>We also need <b>du</b> and <b>dv</b>, which define the size of the view plane in world-coordinate lengths as measured from the <b>VRP</b> along it's x and y axes.
+<li>To be able to do clipping, we need the <b>F</b> and <b>B</b> clip planes, which are simply the closest and farthest distances, respectively, from the <b>VRP</b> along the <b>VPN</b> that we can see.
+<li>Finally, we need the actual screen size of the image that the camera should return, <b>screenX</b> and <b>screenY</b>.
+</ul>
+<li>Now, in order to perform the perspective projection, we go through a series of steps.  First, we move the VRP to the origin, so that the camera is now at (0,0).
+<li>Now we want to make sure that our view plane is defined by three orthonormal vectors, so we normalize <b>VPN</b> and <b>VUP</b> and create a new vector <b>UVEC</b> defined as <b>VUP</b> cross <b>VPN</b>.  Now we remake <b>VUP</b> as the cross product of <b>VPN</b> and the new <b>UVEC</b>, giving us three orthonormal axes, which lets us perform an axes alignment so that the view plane axes line up with (x, y, z).
+<li>Now that the view plane is situated at the origin and it's axes match with (x, y, z), we can shift along the z axis so that the focal point is at the origin (shift by <b>d</b>).
+<li>Now the world is situated so the origin is the focal point of our 'camera' and as we look in the z direction we see what the camera would see.  We scale to what is called the <b>CVV</b> or Canonical View Volume, which is a cube with x running from -1 to 1, y running from -1 to 1, and z running from 0 to 1.  This volume makes clipping easy (which we will add at a later point.)
+<li>We're ready to do the actual projection!  We project onto the image plane by applying a matrix transformation that scales the x and y values of a point by it's z value, thus making things farther away look smaller.  (The matrix is simply [1 0 0 0; 0 1 0 0; 0 0 1 0; 0 0 1/d 0] where d is <b>d</b>/<b>B</b>.)
+<li>That's it!  Now we just scale to our desired image size using <b>screenX</b> and <b>screenY</b> and we're done!  We draw it to the screen...and do whatever magical pixel shading, lighting, shadows, etc. we will need.  Easy!
+</ol>
+
+</div>
+<p>
+<a name="images"></a>
+<div class="newsitem">
+<div class="newsitem_title">Required Images</div>
+Here are the required images for this lab:
+<p>
+<center>
+<table border=0 width=100%><tr>
+<td valign=top><center><img src=req1.gif border=0>
+<br>
+<i>Required Image 1: looking straight-on at a cube.</i></center>
+</td>
+<td valign=top><center><img src=req2.gif border=0><br>
+<i>Required Image 2: Mmmmm, 3-point perspective...</i></center>
+</td></tr></table>
+</center>
+</div>
+
+<p>
+
+<div class="newsitem">
+<a name="questions"></a>
+<div class="newsitem_title">Questions & Answers</div><p>
+<ol>
+<li><i>What are the (x,y) values for the eight corners of the cube in the first required image?</i><br>
+(0, 0, 0)&nbsp;&nbsp;&nbsp;(1, 0, 0)&nbsp;&nbsp;&nbsp;(1, 1, 0)&nbsp;&nbsp;&nbsp;(0, 1, 0)&nbsp;&nbsp;&nbsp;(0, 0, 1)&nbsp;&nbsp;&nbsp;(1, 0, 1)&nbsp;&nbsp;&nbsp;(1, 1, 1)&nbsp;&nbsp;&nbsp;(0, 1, 1)
+<p>
+<li><i>How does modifying the distance between the COP and the VRP affect the appearance of the cube in the first required image?</i><br>
+Changing the distance between the COP and the VRP (which is definated as d in our simplified view model) is equivalent to changing the focal length of the imaginary lens.  As d increases, we are effectively zooming in, and therefore the cube fills a larger percentage of the screen.  As d decreases, we zoom out, and the cube gets smaller and fills less of the screen.
+<table cellpadding=5><tr>
+<td><center>
+<img src="q2a.gif"><br>
+<font size='-1'>d = 3</font>
+</center></td>
+<td><center>
+<img src="req1.gif"><br>
+<font size='-1'>d = 2</font>
+</center></td>
+<td><center>
+<img src="q2b.gif"><br>
+<font size='-1'>d = 1</font>
+</center></td>
+</tr></table>
+<p>
+<li><i>How does modifying the direction of VUP modify the appearance of the cube in the first required image?</i><br>
+Since it is a cube, there are four possible values for VUP that will produce the same image.  In the case the required image, VUP points along the y-axis.  If we were to change this, it would have the effect of rotating the image around the midpoint, creating a cube that did not have its sides parallel to the edges of the image.
+<table cellpadding=5><tr>
+<td><center>
+<img src="req1.gif"><br>
+<font size='-1'>VUP = (0, 1, 0)</font>
+</center></td>
+<td><center>
+<img src="q3a.gif"><br>
+<font size='-1'>VUP = (.5, 1, 0)</font>
+</center></td>
+<td><center>
+<img src="q3b.gif"><br>
+<font size='-1'>VUP = (1, 1, 0)</font>
+</center></td>
+<td><center>
+<img src="q3c.gif"><br>
+<font size='-1'>VUP = (1, .5, 0)</font>
+</center></td>
+<td><center>
+<img src="req1.gif"><br>
+<font size='-1'>VUP = (1, 0, 0)</font>
+</center></td>
+</tr></table>
+<p>
+<li><i>How does modifying the size of the view window modify the appearance of the cube in the first required image?</i><br>
+This has a similar effect to changing d.  If we enlarge the view window, we will see more of the world, and therefore less of the cube.  If we decrease the size of the view window, we see less of the world and therefore more of the cube.
+<table cellpadding=5><tr>
+<td><center>
+<img src="q4a.gif"><br>
+<font size='-1'>(du, dv) = (2, 2)</font>
+</center></td>
+<td><center>
+<img src="req1.gif"><br>
+<font size='-1'>(du, dv) = (1, 1)</font>
+</center></td>
+<td><center>
+<img src="q4b.gif"><br>
+<font size='-1'>(du, dv) = (.5, .5)</font>
+</center></td>
+</tr></table>
+Note: There is an alliasing effect when (du, dv) = (2, 2).  This is easily removed by rendering the image in the larger screen.
+</ol>
+</div>
+
+<p>
+
+<div class="newsitem">
+<a name="extensions"></a>
+<div class="newsitem_title">Extensions</div><p>
+<b>Orthographic Projection: Parallel Projection</b><br>
+We did parallel projection by dropping the z coordinate instead of applying the perspective projection matrix.  Here is an example.  Notice how parallel lines are now straight, unlike in the example above.<br>
+<center>
+<table border=0 width=100%><tr>
+<td valign=top><center><img src=parallel.gif border=0>
+<br>
+<i>Reminds me of drafting class from middle school!</i></center>
+</td></tr></table>
+</center>
+<p>
+<b>Polygon and Point Lists</b><br>
+Looking ahead, it looks like being able to flatten a model into a list of points and polygons would be useful, so we have implemented that in this lab.  Models can now <i>render</i> themselves, taking a vector of pointers to <i>point3D</i>s and a list of <i>polygonRef3D</i>s by reference and adding to the lists as needed.  <i>polygonRef3D</i>s are designed to reference their points from points in the point list, which will make polygon meshes, triangle strips, and triangle fans much more easy to work with, as, to avoid aliasing issues, they need polygons that can share points.  Additionally, this system will make it easy to add alpha-buffering, as well as polygon meshes, triangle strips, triangle fans, and other such complicated surfaces and structures, in another lab.
+</div>
+
+<p>
+<p align=left><font size=-1>[<a href=../index.html>Back to Lab Index</a>]</font>
+</p>
+</body></html>
+

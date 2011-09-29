@@ -1,0 +1,147 @@
+/* Useful for making color scheme: http://wellstyled.com/tools/colorscheme2/index-en.html */
+
+body {
+	font-family: Verdana, Arial, sans-serif;
+	font-size: 10pt;
+	line-height: 1.7em;
+	background-color: #FFF;
+	margin: 0px;
+}
+
+.contact {
+	line-height: 1.4em;
+	background-color: rgb(230,211,191);
+	margin: 5px;
+}
+
+.contact p {
+	padding: 0px;
+	margin: 0px;
+}
+
+#feedback {
+	margin-left: auto;
+	margin-right: auto;
+	padding: 5px;
+	background-color: #C99F7C;
+	display: none;
+}
+
+#header {
+	margin: 0px;
+	padding: 0px;
+	/*text-align: right;*/
+	border: 0px;
+	border-bottom: 0px solid #000;
+	height: 150px;
+	/*line-height: 200px;*/
+}
+
+#wtop {
+	position: absolute;
+	padding: 0px;
+	margin: 0px;
+}
+
+div#wtop div#header div {
+	padding: 102px 15px 15px 350px;
+	margin: 0px;
+	font-size: 48px;
+}
+
+.reference {
+	font-size: .8em;
+	line-height: 1.4em;
+	border-left: 4px solid #A97F5C;
+	padding-left: 10px;
+	margin: 7px 15px;
+}
+
+.pane {
+	border: 1px solid rgb(230,211,191);
+	/*margin: 10px 3px;
+	margin-bottom: 10px;*/
+	position: absolute;
+	background-color: rgb(230,211,191);
+	padding: 5px;
+	height: 315px;
+	overflow: auto;
+}
+
+.pane h1 {
+	padding: 0px;
+	margin: 7px;
+	font-weight: bold;
+	font-size: 1.5em;
+}
+
+.pane ul {
+	list-style-type: circle;
+	margin: 4px;
+	padding: 0px;
+}
+
+.pane ul li {
+	margin-left: 2em;
+	padding: 1px 0px;
+}
+
+.pane > div, .pane > p {
+	padding: 0px;
+	margin: 15px 7px;
+}
+
+#nav {
+	margin: 0px;
+	text-align: center;
+	background-color: #33719B;
+	padding: 5px;
+	font-size: .95em;
+}
+
+a.navItem {
+	border-left: 0px solid #000;
+	margin: 4px 0px;
+	padding: 4px 10px;
+	color: #000;
+	background-color: #33719B;
+	cursor: pointer;
+	display: block;
+	display: inline;
+	text-decoration: none;
+}
+
+a.navItem:hover {
+	background-color: #E2944A;
+}
+
+a.navItem.selected {
+	border: 0px solid #33719B;
+	margin: 4px 0px;
+	padding: 4px 10px;
+	color: #000;
+	background-color: #E2944A;
+	display: block;
+	display: inline;
+	text-decoration: none;
+}
+
+#footer {
+	margin: 0px;
+	font-size: .8em;
+	color: #222;
+	clear: both;
+	border: 1px solid #A97F5C;
+	background-color: #A97F5C;
+	padding: 5px 0px 5px 5px;
+	position: absolute;
+}
+
+#footer a {
+	color: #222;
+	text-decoration: underline;
+}
+
+#footer a:hover {
+	text-decoration: underline;
+}

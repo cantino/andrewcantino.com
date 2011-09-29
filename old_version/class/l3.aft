@@ -1,0 +1,156 @@
+#---SET-HTML bslash=&#92;
+*Title: cPanel and UNIX Permissions 
+*Author: Andrew Cantino
+*Image-center: email.jpg
+
+---------
+
+*TOC
+
+---------
+
+* cPanel
+To facilitate this course, and to test cPanel hosting, everyone in this class has been given a cPanel account.  cPanel is an online control panel that makes it easy to setup and maintain an advanced website.
+
+** Accessing your cPanel
+You can access your account by going to |https://''username''.people.haverford.edu:2083/|.  You may get a message asking whether you wish to accept the security certificate or not -- say yes.  Then you will be asked for your login and password.  Your login will be your username, and your password will be the initial password that we provided you.
+
+** cPanel organization
+When you first connect to cPanel, you will see a main window with information about your account on the left and lots of buttons on the right.  These buttons let you configure and control various aspects of your hosting account.  The buttons are organized into categories, such as ''Mail'' and ''MySQL Databases''.  The [online cPanel users manual (http://www.cpanel.net/docs/cpanel/)] is very helpful, and will explain what all of these buttons do.  We will be covering some of them. 
+* Some cPanel Sections
+** Change Password
+Use this panel to change your main account password.  _Please do this right away!_
+
+** File Manager
+The File Manager panel gives you an online means for manipulating your files and directories.  We've already learned how to do this via the shell, and I recommend you use the shell instead of the online file manager, but it may still be convenient at times.  Additionally, the File Manager lets you easily _upload_ files to your account from your web browser, and this can be quite handy.
+
+** MySQL Databases
+This panel allows you to setup and maintain your MySQL databases.  We will come back to this panel later when we discuss MySQL in a future lesson.  This panel also gives you access to phpMyAdmin, which gives you complete control of your MySQL databases.
+
+** Statistics
+The ''Web/FTP Stats'' panel gives you access to a number of site traffic analysis and statistics packages.  They will tell you what site pages are most popular, where traffic is coming from, what types of browsers your visitors use, etc.
+
+** Some other useful panels
+	* ''Backup'' lets you make and restore backups of your account.  Use the ''Generate/Download a Full Backup'' option and save the backup to your |Home Directory| or a remote FTP server.  If you save them to your home directory, then you should download them to your computer once the backup is complete, to make sure you have a safe backup!  _Remember to backup regularly!_
+	* ''Error log'' shows you the most recent errors logged in your account.  This can be useful for debugging.  (But it's probably better to log your own errors in your CGI scripts, as we will talk about in a future lesson.)
+	* ''Disk usage'' is pretty self explanatory.  It's a break-down of your disk space usage.  For your complete space usage, just look at the left-side of the cPanel main page.
+	* ''Chatroom'', ''PhpMyChat'', ''CGI Center'', ''Scripts Library'', ''Agora Shopping Cart'', and ''Fantastico'' all allow you to easily install existing CGI scripts into your account.  These will take up account space and sometimes use MySQL databases.  In a later lesson, we will discuss how to use these installers, how to make sure that the installed packages are secure, and how to fix some common issues that can occur. 
+
+* .htaccess and cPanel
+A number of panels in cPanel use something called ''.htaccess'', which we will now discuss.  To be specific, ''Index Manager'', ''IP Deny Manager'', ''Password Protect Directories'', ''Error Pages'', and ''Redirects'' all use .htaccess file configuration to work.
+** Apache and htaccess files
+The webserver that we use is called [Apache (http://www.apache.org/)].  Apache is an open source webserver with many advanced features, including something called ''.htaccess'' files.  Htaccess files are files with the name |.htaccess| that you put in directories to tell Apache how it should behave when working with those directories or any of their sub-directories.  Htaccess files overload eachother, so if I configure something in directory ''a'' with an htaccess file, and then set something else in directory ''b'', a subdirectory of ''a'', then the changes in ''b'' override those made in ''a''.  Lets look at an example .htaccess file that turns off the display of a file index:
+^<<
+Options -Indexes
+^>>
+Here is an htaccess file that bans two IP ranges from accessing a directory.  All others can still access:
+^<<
+order allow,deny
+deny from 103.49.2.7
+deny from 012.34.5.
+allow from all
+^>>
+Here is an htaccess file that requires users to login, as specified by a ''.htpasswd'' file:
+^<<
+AuthUserFile /home/pathto/.htpasswd
+AuthType Basic
+AuthName "Secret Place"
+
+<LIMIT GET POST>
+require valid-user
+</LIMIT>
+^>>
+(Source: [HTML Lite(http://www.htmlite.com/HTA006.php)])
+** Htpasswd files
+''.htpasswd'' files are quite simple.  They take the form:
+^<<
+username1:encrypted password
+username2:encrypted password
+...
+^>>
+You can make the encrypted password with ''crypt()'' in PERL, or use the |htpasswd| utility provided on some systems, or, in our case, use cPanel.
+** A note about UNIX dot files
+In UNIX, any file that begings with a period (|.|) will be hidden from view when you use the |ls| command.  To see these files, use |ls -la|.
+** Using cPanel for htaccess generation
+Ok, so now we get back to cPanel.  A number of panels in cPanel use .htaccess files.  When you use these panels, .htaccess files will be automatically generated in the affected directories.  Let's look at the cPanel panels that use .htaccess files, and see how you can use them to do fancy things:
+	* ''Index Manager'' -- The Index Manager lets you configure whether or not an index of files should be displayed when the directory is accessed and no |index.html| or |index.cgi| file is present.
+	* ''IP Deny Manager'' -- The IP Deny Manager lets you ban certain IP addresses or ranges from directories.
+	* ''Password Protect Directories'' -- The Password Protect Directories panel lets you create users, give them passwords, and lock directories so that they can only be accessed by certain users.  This panel will automatically create the needed ''.htpasswd'' files for you[Note: These files are stored in a directory structure that mirrors your directory structure, located at /home/username/.htpasswds/.].
+	* ''Error Pages'' -- The Error Pages panel lets you replace the default error pages for 401, 404, 500, etc., errors with your own custom pages.  For example, I often replace the 500 server error page (''Internal server error'') with a page that presents users with a form and asks them to describe what they were doing when the error occurred.  This feedback is useful for debugging!
+	* ''Redirects'' -- The Redirects panel lets you redirect some locations in your account to other locations.
+
+** Learning more
+My coverage here was terse.  The [comprehensive guide to .htaccess (http://www.javascriptkit.com/howto/htaccess.shtml)] is a good place to learn more about htaccess files.
+
+* UNIX File Permissions
+Okay, now we're going to talk about something a little different.  Last time we explored the UNIX shell and learned how to make files, but we didn't learn very much about looking at directories or setting file permissions.
+** Users and groups
+In UNIX, there are users and groups.  You are a user, and you have a ''user name''.  You also have a ''group'', which in this case has the same name as your user name.  This is pretty common on multiuser systems like the one we're using.  However, a single user can be in multiple groups.  For example, if more than one person needs to maintain a web page, instead of sharing a user account, a group (call it ''webdesigner'') could be created with all of the designers in it.  Then, as we will see in a moment, the website files could be setup so that anyone in the ''webdesigner'' group could edit them.
+** Viewing file permissions
+In order to see the file permissions of the files in a directory, you need to pass the |-la| option to the |ls| command, as we did before to view UNIX dot files.
+^<<
+-jailshell-2.05b$ ls -la
+total 420
+drwxr-x---    8 acantino nobody       4096 May 27 12:13 .
+drwx--x--x   16 acantino acantino     4096 May 27 12:31 ..
+-rw-r--r--    1 acantino acantino       62 May 25 14:33 .htaccess
+-rw-r--r--    1 acantino acantino     1303 May 19 10:28 camel.gif
+drwxr-xr-x    2 acantino acantino     4096 May 27 11:47 cgi-bin
+-rwxr-xr-x    1 acantino acantino      311 May 24 15:24 date.cgi
+	...
+^>>
+Here you see the beginning of the file list for my public\_html directory.  The |ls -la| command displays a number of columns.
+	* The first column is the UNIX file permissions.  This column is 10 characters wide, and each character has a meaning.  We'll come back to this in a moment.
+	* The third column is the user name of the ''user'' who owns the file or directory.  In this case, |acantino| for all of the files.
+	* The fourth column is the name of the ''group'' who owns the file or directory.  In this case, |acantino| for all but the special |.| directory[Note: The '.' directory means 'this directory' in UNIX, so './camel.gif' just refers to 'camel.gif in this directory.'  The '..' directory refers to the parent of this directory.  Thus, as we saw, 'cd ..' goes back one directory level.].
+	* The 6th, 7th, and 8th columns are the last modification date of the file or directory.
+	* The final column is just the name of the file or directory.
+
+** File permissions
+Back to the first column from above.  The first character indicates whether or not the item is a directory.  If the first character is a |d| then the entry is a directory, as with |cgi-bin| above.  The next three characters indicate the file or directory's read (|r|), write (|w|), and execute (|x|) permissions for the ''owner'' of the file or directory.  The next three characters are the read, write, and execute permissions for the ''group'' of the file or directory.  The final three characters are the read, write, and execute permissions for everyone else.  I'll summarize this here:
+^<<
+ +---Directory indicator
+ |
+[-][---][---][---]
+     |    |    |
+  User  Group World
+
+  Each [---] is [read (r), write (w), execute (x)]
+^>>
+So, take the |date.cgi| file from above.
+	* It's not a directory (the first character is |-|, not |d|)
+	* The ''owner'' can read, write, and execute (the next three characters are |rwx|)
+	* Members of the ''group'', in this case |acantino|, can read and execute, but not write (the next three characters are |r-x|)
+	* Everyone else (the ''world'') can also read and execute, but not write (the last three characters are |r-x|)
+Now look at the |.htaccess| file.  It's not a directory, the owner can read and write, the group can read, and the world can read.  Making sense?
+
+** Changing file permissions
+Sometimes you need to change file permissions.  To do this, use the |chmod| command.  Chmod is a bit cryptic, but you'll get it.  The letters |u|, |g|, |o| are ''user'', ''group'', and ''other'' (''world'').  The letter |a| is all, equivalent to |ugo|.  The letters |r|, |w|, and |x| are ''read'', ''write'', and ''execute'', as before.  The equals (|=|) character assigns permissions, minus (|-|) takes away permissions, and plus (|+|) adds permissions.  Here are some |chmod| examples:[Note: http://catcode.com/teachmod/chmod_cmd.html]
+^<<
+chmod u+r file        # Give user read
+chmod u-x directory   # Take away user execute
+chmod a=rx file       # Give all (ugo) read and execute
+chmod u=rwx file      # Give user read, write, execute
+chmod o=r file        # Give other read and nothing else
+chmod ug+rw file      # Give user and group read and write.
+^>>
+When you use |chmod|, it's a good idea to see if you did it correct by taking a look at |ls -la|.  |chmod| can handle many different options and syntaxes.  Take a look at |man chmod| to learn more.
+
+---------
+
+* Suggested Assignments
+** Explore cPanel for yourself!
+Login to cPanel by going to |https://''your-username''.people.haverford.edu:2083/| and take a look around!  Try uploading some files, setting some directory permissions, and playing with all of the various panels that we have discussed.
+
+** Play with .htaccess files.
+Try making some directories in your account and putting .htaccess files in them, either by hand, or using the tools in cPanel.  Password protect one of the directories.  Turn of indexing in another one.  Play around.
+
+** Use chmod
+Make a few test files (you can make a blank test file by typing |touch ''filename''|) and chmod them in different ways.  Try the |=|, |+|, and |-| commands in chmod.
+
+** Do more PERL
+Continue learning PERL.  Try some more example programs from [last time (:l2.html)].
+
+---------
+
+[Back to Course Index (:.)]

@@ -1,0 +1,503 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title>Introduction: The Internet, HTML, and UNIX</title>
+	<meta name="author" content="Andrew Cantino">
+	<meta name="GENERATOR" content = "Almost Free Text v5.094; Copyright 1996-2004 Todd Coram. All rights reserved.">
+<style type="text/css">
+  <!--
+html { background: #eee; color: #000; }
+
+body { background: #eee; color: #000; margin: 0; padding: 0;}
+
+div.body {
+	background: #fff; color: #000;
+	margin: 0 1em 0 1em; padding: 1em;
+	font-family: serif;
+	font-size: 1em; line-height: 1.2em;
+	border-width: 0 1px 0 1px;
+	border-style: solid;
+	border-color: #aaa;
+}
+
+div.block {
+	background: #F8F8FF; color: #000;
+	margin: 1em; padding: 0 1em 0 1em;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #909090;
+}
+
+table {
+	background: #F8F8F8; color: #000;
+	margin: 1em;
+	border-width: 0 0 0 1px;
+	border-style: solid;
+	border-color: #C0C0C0;
+}
+
+td {
+	border-width: 0 1px 1px 0;
+	border-style: solid;
+	border-color: #C0C0C0;
+}
+
+th {
+	background: #F8F8FF;
+	border-width: 1px 1px 2px 0;
+	border-style: solid;
+	border-color: #C0C0C0;
+}
+
+
+/* body text, headings, and rules */
+
+p { margin: 0; text-indent: 0em; margin: 0 0 0.5em 0 }
+
+h1, h2, h3, h4, h5, h6 {
+	color: #206020; background: transparent;
+	font-family: Optima, Arial, Helvetica, sans-serif;
+	font-weight: normal;
+}
+
+h1 { font-size: 1.69em; margin: 1.4em 0 0.4em 0; }
+h2 { font-size: 1.44em; margin: 1.4em 0 0.4em 0; }
+h3 { font-size: 1.21em; margin: 1.4em 0 0.4em 0; }
+h4 { font-size: 1.00em; margin: 1.4em 0 0.4em 0; }
+h5 { font-size: 0.81em; margin: 1.4em 0 0.4em 0; }
+h6 { font-size: 0.64em; margin: 1.4em 0 0.4em 0; }
+
+hr {
+	color: transparent; background: transparent;
+	height: 0px; margin: 0.6em 0;
+	border-width: 1px ;
+	border-style: solid;
+	border-color: #999;
+}
+
+/* bulleted lists and definition lists */
+
+ul { margin: 0 1em 0.6em 2em; padding: 0; }
+li { margin: 0.4em 0 0 0; }
+
+dl { margin: 0.6em 1em 0.6em 2em; }
+dt { color: #206020; }
+
+tt { color: #602020; }
+
+/* links */
+
+a.link {
+	color: #33c; background: transparent;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #000; background: transparent;
+}
+
+body > a {
+	font-family: Optima, Arial, Helvetica, sans-serif;
+	font-size: 0.81em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	color: #206020; background: transparent;
+	font-family: Optima, Arial, Helvetica, sans-serif;
+	font-weight: normal;
+}
+
+  -->
+</style>
+</head>
+<body>
+<div class="body">
+
+<br><center><h1><a name="AFT-top">Introduction: The Internet, HTML, and UNIX</a></h1></center>
+<br><center><h2>Andrew Cantino</h2></center>
+<center><img src="email.jpg" alt="" align=bottom></center><br clear=all>
+<hr>
+<!--  AFT Table of Contents (auto generated) -->
+<ul>
+<li> <a class="link" href="#Course Introduction">Course Introduction</a></li>
+<li> <a class="link" href="#What do we mean by Online?">What do we mean by Online?</a></li>
+<ul>
+<li> <a class="link" href="#HTML">HTML</a></li>
+</ul>
+<li> <a class="link" href="#Online Content Delivery">Online Content Delivery</a></li>
+<li> <a class="link" href="#UNIX!">UNIX!</a></li>
+<ul>
+<li> <a class="link" href="#The Command Line">The Command Line</a></li>
+<li> <a class="link" href="#SSH">SSH</a></li>
+<li> <a class="link" href="#UNIX Commands">UNIX Commands</a></li>
+<li> <a class="link" href="#Tab Completion">Tab Completion</a></li>
+<li> <a class="link" href="#UNIX File Structure">UNIX File Structure</a></li>
+</ul>
+<li> <a class="link" href="#A Simple Webpage">A Simple Webpage</a></li>
+<li> <a class="link" href="#The public_html directory">The public_html directory</a></li>
+<li> <a class="link" href="#Suggested Assignments">Suggested Assignments</a></li>
+<ul>
+<li> <a class="link" href="#Learn more commands">Learn more commands</a></li>
+<li> <a class="link" href="#Use UNIX and HTML to make a website">Use UNIX and HTML to make a website</a>
+
+</li>
+</ul>
+</ul>
+<hr>
+<center>
+<script type="text/javascript"><!--
+google_ad_client = "pub-3067017907226343";
+google_ad_width = 728;
+google_ad_height = 90;
+google_ad_format = "728x90_as";
+google_ad_type = "text";
+google_ad_channel ="6334296398";
+google_color_border = "FFFFFF";
+google_color_bg = "FFFFFF";
+google_color_link = "0000FF";
+google_color_url = "008000";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+  </script>
+  </center>
+<!-- Start SectLevel1 -->
+<h2><a name="Course Introduction">Course Introduction</a></h2>
+<p class="Body">
+Welcome!  This tutorial will serve as class notes for <em>Perl, SQL, and Web Publishing Security</em>, a summer course taught through Networking &amp; Systems at Haverford College, 2005.  For this course, you will be given a cPanel account on an ACC server.  This will give you access to a UNIX shell account (discussed below) and a powerful web hosting solution that we will be exploring throughout this class.
+</p>
+<p class="Body">
+This course is meant to introduce all levels of learners, so I will start with a very basic introduction.
+</p>
+<!--End Section 1-->
+<h2><a name="What do we mean by Online?">What do we mean by Online?</a></h2>
+<p class="Body">
+The Internet is a massive network of interconnected computers and systems.  <em>Packets</em> of information are routed through this network from system to system.  Today, the Internet is primarily a means for delivering content, such as HTML (HyperText Markup Language) documents, but the Internet as we know it has only existed for 10 years.  The Internet's roots go back to ARPANET in the 60s and 70s.  In 1989, HTTP, the HyperText Transport Protocol, was invented at CERN.  In 1992, Mosaic, the first graphical web browser, was introduced.  If you're interested, take a look at <a class="link" href="http://www.isoc.org/internet/history/brief.shtml">A Brief History of the Internet</a>.
+</p>
+<!-- Start SectLevel2 -->
+<h3><a name="HTML">HTML</a></h3>
+<p class="Body">
+HTML is a text formatting language.  To change the style or layout of text, you use tags: &lt;b&gt;<strong>some bold text</strong>&lt;/b&gt;.  Here are some more tags<a name="REFfNOTE1">&nbsp</a><sup><a class="link" href="#fNOTE1">1</a></sup>:
+<ul>
+<li>&lt;i&gt;<em>italics</em>&lt;/i&gt;</li>
+<li>&lt;center&gt;&lt;/center&gt;</li>
+<li>&lt;br&gt;</li>
+<li>&lt;p&gt;</li>
+<li>&lt;a href=http://myhomepage.com/myhomepage.html&gt;<a class="link" href="http://slashdot.org">click here to visit my homepage!</a>&lt;/a&gt;</li>
+<li>&lt;img src=http://url.to.an.image/&gt;</li>
+</ul>
+</p>
+<p class="Body">
+In order to do online programming, you need to know at least some basic HTML.  If you're not yet comfortable with HTML, please take some time to learn the basics.  These sites may be helpful:
+<ul>
+<li> <a class="link" href="http://archive.ncsa.uiuc.edu/General/Internet/WWW/HTMLPrimerPrintable.html">NCSA HTML Primer</a></li>
+<li> <a class="link" href="http://werbach.com/barebones/">The Bare Bones Guide to HTML</a></li>
+<li> <a class="link" href="http://www.htmlgoodies.com/">HTML Goodies</a></li>
+<li> Or, if you're ready to move on to more advanced web design, take a look at XHTML.</li>
+<ul>
+<li> <a class="link" href="http://www.w3schools.com/xhtml/default.asp">XHTML Tutorial</a></li>
+</ul>
+</ul>
+</p>
+<!--End Section 2-->
+<!-- End SectLevel2 -->
+<!--End Section 1-->
+<h2><a name="Online Content Delivery">Online Content Delivery</a></h2>
+<p class="Body">
+What really happens when you request a webpage?
+<ol>
+<li> You enter a URL (Uniform Resource Locator) into your web browser, for example:</li>
+<ul>
+<li><em>http://andrew.absurdlycool.com/class/</em></li>
+</ul>
+<li> Your computer looks up the numerical IP address associated with the URL's <em>host</em> or <em>authority</em><a name="REFfNOTE2">&nbsp</a><sup><a class="link" href="#fNOTE2">2</a></sup>.</li>
+<ul>
+<li><em>165.82.36.1</em></li>
+</ul>
+<li> Your web browser sends out a request to the server at the IP address.  Here we see that the web browser is a <em>client</em> connecting to a <em>server</em>.</li>
+<li> The web server responds with an HTTP header followed by the contents of the requested file/resource located at <em>path</em>, in this case <em>/perl/</em>.</li>
+<li> Your web browser displays the text, image, movie, or HTML document returned by the web server.  In the case of an HTML document, your web browser parses the HTML and displays a formatted document.</li>
+</ol>
+</p>
+<p class="Body">
+You can request any sort of content with a HTTP request and a URL, so we can write a program that runs on the remote server and returns special, customized information instead of a flat, constant page!  This is online programming!
+</p>
+<!--End Section 1-->
+<h2><a name="UNIX!">UNIX!</a></h2>
+<p class="Body">
+Before we can go further into online programming, we need to review one more topic: the UNIX operating system.  UNIX is a multiuser operating system with many variations, such as Linux, and now parts of Mac OS X.  (See <a class="link" href="http://en.wikipedia.org/wiki/Unix">Wikipedia</a> for an overview of the history of UNIX.)  For this class, you will all be getting access to your own UNIX shell accounts.  In the other weekly session of this class we will discuss setting up this account and using cPanel to maintain it.  Here, I will just briefly introduce the shell, which is how we will be interacting with UNIX.
+</p>
+<!-- Start SectLevel2 -->
+<h3><a name="The Command Line">The Command Line</a></h3>
+<p class="Body">
+In the beginning was the command line<a name="REFfNOTE3">&nbsp</a><sup><a class="link" href="#fNOTE3">3</a></sup>.  The command line is a method of interacting with a computer through textual input.  The command line or shell acts as an interpreter between you and the computer.  (Technically, the command line and a 'shell' are slightly different, but I'm going to be using them interchangeably.)  If you've ever used DOS or a UNIX shell, you've used a command line.  Your modern desktop system uses a Graphical User Interface (or GUI), which is pretty and often intuitive, but many would argue, not as efficient a method of human-computer interaction as a command line.  After using a command line for a while, you may see why.
+</p>
+<!--End Section 2-->
+<h3><a name="SSH">SSH</a></h3>
+<p class="Body">
+In order to connect to your UNIX shell, you will be using a program called <em>SSH</em> (Secure SHell).  SSH uses encryption to protect our data and passwords.  On Windows, use <a class="link" href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">putty</a>, a free SSH client.  Make sure to select SSH, not telnet, in the putty window, and connect to <em>&lt;username&gt;.people.haverford.edu</em>.  On Mac OS X, open up the Terminal (in Applications/Utilities), and type:
+<pre>
+ssh <em>username</em>@<em>username</em>.people.haverford.edu
+</pre>
+</p>
+<p class="Body">
+Since we've been talking about clients and servers, it's good to point out what SSH is actually doing.  The SSH client on your computer is connecting over the internet to a SSH server running on a computer at ACC.  The client and server negotiate using cryptography to verify your username and password, and to allow you to gain access to a UNIX shell on the remote machine.  Commands that you type into your SSH client are encrypted, sent to the remote machine, decrypted, and executed in the shell, allowing you to run programs, view and edit files, etc., on the remote machine.
+</p>
+<!--End Section 2-->
+<h3><a name="UNIX Commands">UNIX Commands</a></h3>
+<p class="Body">
+After connecting via SSH, you will be presented with a UNIX prompt, for example:
+<div class="block"><pre>
+ssh acantino@acantino.people.haverford.edu
+acantino@acantino.people.haverford.edu's password:
+-jailshell-2.05b$
+</pre></div>
+At this point you have accessed a UNIX shell.  From here, you can run programs on the remote machine.  Most UNIX programs run on the command line, taking input from either you or other programs, and spitting their output back to the command line.  Here are some examples:
+<dl>
+<dt><strong>pwd</strong></dt><dd> Print working directory</dd>
+</dl>
+<div class="block"><pre>
+-jailshell-2.05b$ pwd
+/home/acantino
+-jailshell-2.05b$
+</pre></div>
+<dl>
+<dt><strong>ls</strong></dt><dd> List files in current directory</dd>
+</dl>
+<div class="block"><pre>
+-jailshell-2.05b$ ls
+aft-5.094  bin  mail  public_ftp  public_html  share  tmp  www
+-jailshell-2.05b$
+</pre></div>
+<dl>
+<dt><strong>cd &lt;directoryname&gt;</strong></dt><dd> change directory</dd>
+</dl>
+<div class="block"><pre>
+-jailshell-2.05b$ cd public_html
+-jailshell-2.05b$ ls
+cgi-bin  email.jpg  index.aft  index.aft-TOC  index.html  perl  scgi-bin  talk
+-jailshell-2.05b$
+</pre></div>
+<dl>
+<dt><strong>cd ..</strong></dt><dd> move back a level in the directory hierarchy</dd>
+<dt><strong>less &lt;filename&gt;</strong></dt><dd> view the contents of a file</dd>
+<dt><strong>exit</strong></dt><dd> end your connection to the shell</dd>
+<dt><strong>clear</strong></dt><dd> clear the screen</dd>
+<dt><strong>rm &lt;filename&gt;</strong></dt><dd> remove a file -- careful, UNIX doesn't ask questions!</dd>
+</dl>
+While you're at the shell, you'll probably want to edit some files.  Here are some file editor programs that you can run from the command line:
+<dl>
+<dt><strong>pico &lt;filename&gt;</strong></dt><dd> a very simple and easy-to-use editor</dd>
+<dt><strong>emacs &lt;filename&gt;</strong></dt><dd> a popular and powerful text editor</dd>
+<dt><strong>vim &lt;filename&gt;</strong></dt><dd> an extremely advanced and powerful text editor with a vertical learning curve</dd>
+</dl>
+</p>
+<p class="Body">
+As you can see, to pass parameters (configuration options) to a UNIX program on the command line, you pass them after the name of the program.  For example, <tt>cd /home/acantino</tt> passes <tt>/home/acantino</tt> to the <tt>cd</tt> command.  Some commands take more than one parameter<a name="REFfNOTE4">&nbsp</a><sup><a class="link" href="#fNOTE4">4</a></sup>.  In general, commands are of the form:
+<div class="block"><pre>
+&lt;command&gt; &lt;options&gt; &lt;arg1&gt; &lt;arg2&gt; ... &lt;argN&gt;
+</pre></div>
+<tt>&lt;options&gt;</tt> is usually either <tt>-</tt> followed by a list of characters or a list of options that look like <tt>--&lt;option&gt; &lt;value&gt;</tt> or <tt>--&lt;option&gt;=&lt;value&gt;</tt>.  Different programs take different options in different formats.  Use the <tt>man</tt> command to find out more.  See <a class="link" href="#Learn more commands">Learn more commands</a>.  Here are a few examples:
+<dl>
+<dt><strong>ls -la</strong></dt><dd> The <tt>-l</tt> option causes <tt>ls</tt> to list the files in long format.  The <tt>-a</tt> option means &quot;include directory entries whose names begin with a dot (.)&quot;  Try it.</dd>
+<dt><strong>lynx --help</strong></dt><dd> The <tt>lynx</tt> program is a text-based web browser.  The <tt>--help</tt> option does what it says -- it displays a help screen.</dd>
+<dt><strong>mv oldfile newfile</strong></dt><dd> The <tt>mv</tt> command moves and renames <tt>oldfile</tt> to <tt>newfile</tt>, replacing <tt>newfile</tt> if it exists.</dd>
+<dt><strong>tar -cf public_html.tar public_html/</strong></dt><dd> The program <tt>tar</tt> is used to combine directories and files into a single file for archival.  The <tt>-c</tt> option causes <tt>tar</tt> to create a new archive, <tt>-f</tt> tells tar to use a file for the archive, and the last two options tell <tt>tar</tt> to call the new <em>tarball</em> <tt>public_html.tar</tt> and to use <tt>public_html</tt> as the source to be <em>tarred</em>.</dd>
+</dl>
+</p>
+<!--End Section 2-->
+
+<center>
+<script type="text/javascript"><!--
+google_ad_client = "pub-3067017907226343";
+google_ad_width = 728;
+google_ad_height = 90;google_ad_format = "728x90_as";google_ad_type = "text"; google_ad_channel ="6334296398";
+google_color_border = "FFFFFF";
+google_color_bg = "FFFFFF";
+google_color_link = "0000FF";
+google_color_url = "008000";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+    </script>
+      </center>
+
+<h3><a name="Tab Completion">Tab Completion</a></h3>
+<p class="Body">
+A useful little side note: when you're in the UNIX shell, you can use &lt;TAB&gt;-completion to save yourself time.  Start to type the name of a command or file, hit tab, and if you've given the shell enough information, it'll fill in the rest.  If there are multiple possibilities, hit &lt;TAB&gt; twice and the shell will list them for you.
+</p>
+<p class="Body">
+Another trick: to reuse a command that you recently typed, hit the <em>up</em> arrow on the keyboard.  This lets you access your command history.
+</p>
+<!--End Section 2-->
+<h3><a name="UNIX File Structure">UNIX File Structure</a></h3>
+<p class="Body">
+Files in UNIX are organized into a directory structure much like those on your personal computer.  A UNIX file <em>path</em> is the directory traversal needed to get to a particular location.  For example, your <em>home directory</em>, where you start when you login to your shell, is located at <tt>/home/&lt;your username&gt;/</tt>.  The <tt>/</tt>'s separate the directories.  <tt>/</tt> is the <em>root</em> of the file system.  If we <tt>cd /</tt>, we change directory to the file system root.  If we then <tt>ls</tt>, we see:
+<div class="block"><pre>
+-jailshell-2.05b$ ls
+bin  checkvirtfs  dev  etc  home  lib  proc  tmp  usr  var
+</pre></div>
+These files and directories are part of the UNIX system.  The only ones we really care about are <tt>/home/</tt> where all of the system's users keep their home directories, and <tt>/bin/</tt> where useful programs are stored.  Use <tt>cd</tt> to move around the directory structure, <tt>ls</tt> to list the files in your current directory, and <tt>pwd</tt> to show you where you are.
+<div class="block"><pre>
+-jailshell-2.05b$ cd /
+-jailshell-2.05b$ ls
+bin  checkvirtfs  dev  etc  home  lib  proc  tmp  usr  var
+-jailshell-2.05b$ cd home
+-jailshell-2.05b$ pwd
+/home
+-jailshell-2.05b$ cd acantino
+-jailshell-2.05b$ pwd
+/home/acantino
+-jailshell-2.05b$ ls
+bin  mail  public_ftp  public_html  public_html.tar  tmp  www
+</pre></div>
+You can also jump directly to any directory by using it's full path.
+<div class="block"><pre>
+cd /home/acantino/public_html/
+</pre></div>
+</p>
+<!--End Section 2-->
+<!-- End SectLevel2 -->
+<!--End Section 1-->
+<h2><a name="A Simple Webpage">A Simple Webpage</a></h2>
+<p class="Body">
+Lets try editing a file to make a simple web page!  First, connect using SSH.  If you're using Linux or OS X, you should see something like the following, substituting your username for <em>acantino</em>.  If you're using Windows, connect with Putty.
+</p>
+<div class="block"><pre>
+ssh acantino@acantino.people.haverford.edu
+acantino@acantino.people.haverford.edu's password: 
+-jailshell-2.05b$ cd public_html                #Only files in the public_html
+                                                # directory are web-accessible.
+-jailshell-2.05b$ ls                            #There isn't anything in this
+                                                # directory yet!
+-jailshell-2.05b$ pico index.html               #The index.html file is shown by
+                                                # default when you view this
+                                                # directory in a web browser.
+</pre></div>
+<p class="Body">
+The lines starting with <tt>#</tt> are my comments.  Now you will be in pico, a simple file editor.  Type:
+<div class="block"><pre>
+&lt;html&gt;&lt;head&gt;&lt;title&gt;My webpage!&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;p align=center&gt;This is my webpage!&lt;/p&gt; 
+&lt;/body&gt;&lt;/html&gt;
+</pre></div>
+Then type ^x (hold down the <em>control</em> key and hit x), hit the <em>y</em>-key to save your changes, and hit return to accept the filename of <em>index.html</em>.  You should now be back at the shell.  Now, typing <em>ls</em> should show the file we've made.
+<div class="block"><pre>
+-jailshell-2.05b$ ls
+index.html
+-jailshell-2.05b$ 
+</pre></div>
+Congratulations!  You've used the UNIX shell.  Try accessing your webpage by going to <tt>http://username.people.haverford.edu/</tt>.  When you're done, exit the shell with the <tt>exit</tt> command.
+</p>
+<!--End Section 1-->
+<h2><a name="The public\_html directory">The public_html directory</a></h2>
+<p class="Body">
+When you entered <tt>cd public_html</tt>, you <em>changed directory</em> into the <tt>public_html</tt> directory.  This directory is special because it is the <em>base</em> of your website.  Any file that you put here will have the URL:
+<div class="block"><pre>
+http://username.people.haverford.edu/file
+</pre></div>
+If you want to make something available on the web, it must be in <tt>public_html</tt> or a sub-directory of <tt>public_html</tt>.
+</p>
+<hr>
+
+<center>
+<script type="text/javascript"><!--
+google_ad_client = "pub-3067017907226343";
+google_ad_width = 728;
+google_ad_height = 90;google_ad_format = "728x90_as";google_ad_type = "text"; google_ad_channel ="6334296398";
+google_color_border = "FFFFFF";
+google_color_bg = "FFFFFF";
+google_color_link = "0000FF";
+google_color_url = "008000";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+    </script>
+      </center>
+
+<!--End Section 1-->
+<h2><a name="Suggested Assignments">Suggested Assignments</a></h2>
+<p class="Body">
+In order to learn anything new, especially something involving computers, you need to try it for yourself.  I recommend you try some of the following assignments.
+</p>
+<!-- Start SectLevel2 -->
+<h3><a name="Learn more commands">Learn more commands</a></h3>
+<p class="Body">
+Login to your UNIX shell and try learning about some more UNIX commands.  The <tt>man</tt> program will display a manual page for most UNIX commands.  For example, lets look up the <tt>mv</tt> command:
+<div class="block"><pre>
+-jailshell-2.05b$ man mv
+MV(1)                                 FSF                                MV(1)
+
+NAME
+       mv - move (rename) files
+
+SYNOPSIS
+       mv [OPTION]... SOURCE DEST
+       mv [OPTION]... SOURCE... DIRECTORY
+       mv [OPTION]... --target-directory=DIRECTORY SOURCE...
+
+DESCRIPTION
+       Rename SOURCE to DEST, or move SOURCE(s) to DIRECTORY.
+...
+...
+</pre></div>
+</p>
+<p class="Body">
+Try reading about the following commands:
+<ul>
+<li> mkdir</li>
+<li> rmdir</li>
+<li> exit</li>
+<li> man</li>
+<li> who</li>
+<li> whoami</li>
+<li> cat</li>
+<li> sort</li>
+<li> ps</li>
+<li> jobs</li>
+<li> kill</li>
+</ul>
+I also found a good <a class="link" href="http://www.sharefile.com/content/common-unix-commands.aspx">UNIX command reference card here</a>.
+</p>
+<!--End Section 2-->
+<h3><a name="Use UNIX and HTML to make a website">Use UNIX and HTML to make a website</a></h3>
+<p class="Body">
+Now that you've made a single <tt>index.html</tt> file using HTML and UNIX command line tools, you can make as large a site as you want.  Go back to your shell, <tt>cd public_html</tt>, and make some more pages using one of the UNIX file editors.
+</p>
+<hr>
+<p class="Body">
+<a class="link" href=".">Back to Course Index</a>
+</p>
+<!--End Section 2-->
+<!-- End SectLevel2 -->
+<!--End Section 1-->
+<!-- End SectLevel1 -->
+<hr>
+<p class="Body">
+<a name="fNOTE1">&nbsp</a>
+[<a class="link" href="#REFfNOTE1">1</a>] - I am aware that the current HTML specifications do not recommend some of these tags.
+<br>
+<a name="fNOTE2">&nbsp</a>
+[<a class="link" href="#REFfNOTE2">2</a>] - No, I didn't know this either.  Thanks <a class="link" href="http://en.wikipedia.org/wiki/URL#Generic&lt;strong&gt;URI&lt;/strong&gt;syntax">Wikipedia</a>!
+<br>
+<a name="fNOTE3">&nbsp</a>
+[<a class="link" href="#REFfNOTE3">3</a>] - Apologies/props to Neal Stephenson.  Checkout an <a class="link" href="http://home.earthlink.net/~android606/commandline/index.html">updated version of his classic work</a>.
+<br>
+<a name="fNOTE4">&nbsp</a>
+[<a class="link" href="#REFfNOTE4">4</a>] - Parameters are also called arguments.
+<br>
+<br>
+<p align="right"> <small>This document was generated using <a class="link" href="http://www.maplefish.com/todd/aft.html">AFT v5.094</a></small> </p>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-148948-3";
+urchinTracker();
+</script>
+</body>
+</html>
+

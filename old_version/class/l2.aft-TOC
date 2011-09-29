@@ -1,0 +1,28 @@
+C--- AFT Table of Contents (auto generated)
+	* {-Introduction@Introduction-}
+	* {-Programming vs. Scripting@Programming vs. Scripting-}
+	* {-Introduction to Programming@Introduction to Programming-}
+		* {-Like Mathematics@Like Mathematics-}
+		* {-Algorithms@Algorithms-}
+	* {-PERL@PERL-}
+		* {-A first PERL program@A first PERL program-}
+		* {-Another example@Another example-}
+			* {-Variables@Variables-}
+			* {-The . operator@The . operator-}
+		* {-Taking user input@Taking user input-}
+	* {-Numbers in PERL@Numbers in PERL-}
+	* {-Strings@Strings-}
+	* {-Conditionals and Loops@Conditionals and Loops-}
+		* {-Branching with if@Branching with if-}
+		* {-while loops@while loops-}
+		* {-for loops@for loops-}
+	* {-Comparison Operators@Comparison Operators-}
+	* {-Functions@Functions-}
+	* {-Arrays!@Arrays!-}
+		* {-Array examples@Array examples-}
+	* {-Associative arrays (or hashes or dictionaries)@Associative arrays (or hashes or dictionaries)-}
+	* {-References@References-}
+	* {-Suggested Assignments@Suggested Assignments-}
+		* {-Try these examples out@Try these examples out-}
+		* {-Write your own program@Write your own program-}
+	* {-Next time!@Next time!-}

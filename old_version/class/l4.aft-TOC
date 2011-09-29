@@ -1,0 +1,16 @@
+C--- AFT Table of Contents (auto generated)
+	* {-Introduction@Introduction-}
+	* {-Files@Files-}
+		* {-An Example@An Example-}
+		* {-File Modes@File Modes-}
+	* {-CGI@CGI-}
+		* {-Taint Checking@Taint Checking-}
+		* {-Objects@Objects-}
+		* {-CGI Headers@CGI Headers-}
+		* {-The body of the script@The body of the script-}
+	* {-UNIX Permissions for CGI Scripts@UNIX Permissions for CGI Scripts-}
+	* {-Links.cgi script@Links.cgi script-}
+		* {-HTML Forms@HTML Forms-}
+	* {-The PERL script@The PERL script-}
+	* {-Suggested Assignments@Suggested Assignments-}
+		* {-Write a CGI script of your own!@Write a CGI script of your own!-}

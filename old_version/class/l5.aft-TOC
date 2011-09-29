@@ -1,0 +1,31 @@
+C--- AFT Table of Contents (auto generated)
+	* {-Introduction@Introduction-}
+	* {-Learning regular expressions with Grep@Learning regular expressions with Grep-}
+	* {-More about regular expressions@More about regular expressions-}
+		* {-Alternation@Alternation-}
+		* {-Quantification@Quantification-}
+		* {-Grouping@Grouping-}
+		* {-Character classes@Character classes-}
+			* {-Character class ranges@Character class ranges-}
+		* {-Try it for yourself!@Try it for yourself!-}
+	* {-PERL Regular Expressions@PERL Regular Expressions-}
+		* {-Simple matching@Simple matching-}
+		* {-Perl regular expression special characters@Perl regular expression special characters-}
+		* {-Search and replace@Search and replace-}
+		* {-Greedy vs. ungreedy matching@Greedy vs. ungreedy matching-}
+		* {-Learning more@Learning more-}
+	* {-PERL Security@PERL Security-}
+		* {-An example security hole@An example security hole-}
+		* {-A second example@A second example-}
+		* {-Commands to be careful of@Commands to be careful of-}
+	* {-Read more@Read more-}
+	* {-PERL Taint Checking@PERL Taint Checking-}
+		* {-Turning on taint checking@Turning on taint checking-}
+		* {-Tainted data@Tainted data-}
+		* {-Untainting data@Untainting data-}
+		* {-Other issues@Other issues-}
+	* {-Security issues with GET and POST@Security issues with GET and POST-}
+	* {-Suggested Assignments@Suggested Assignments-}
+		* {-Play with RegEx@Play with RegEx-}
+		* {-Write a secure CGI script@Write a secure CGI script-}
+		* {-Read more!@Read more!-}

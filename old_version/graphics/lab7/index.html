@@ -1,0 +1,98 @@
+<html><head><title>Computer Graphics: Lab 7</title>
+<LINK REL=StyleSheet HREF="../graphics.css" TYPE="text/css">
+</head>
+<body bgcolor=white text=black>
+<center><font size=+2><b>Lab 7: The Z-Buffer Algorithm</b><br>
+<font color=blue>Will Moss & Andrew Cantino</font></font></center>
+<p>
+<div style="margin: 5px;">
+This is <a href=http://palantir.swarthmore.edu/maxwell/classes/e26/F04/labs/lab07/>lab 7</a> of <a href=
+http://palantir.swarthmore.edu/maxwell/classes/e26/F04>Computer Graphics</a>.
+</div>
+<p>
+<b>Sections:</b>
+<ul>
+<li><a href="#zbuffer">The Z-Buffer Algorithm</a>
+<li><a href="#images">Images</a>
+<li><a href="#questions">Questions and Answers</a>
+<li><a href="#extensions">Extensions</a>
+<li><a href="#resources">Additional Resources</a>
+</ul>
+<p>
+<div class="newsitem">
+<a name="zbuffer"></a>
+<div class="newsitem_title">The Z-Buffer Algorithm</div><p>
+The Z-Buffer algorithm is very simple in concept.  Along with the image that we are drawing to, we keep a z-buffer, which is simply a matrix of doubles that stores the closest z value that has been drawn to the screen at any given (x, y) position.  Hence, the z-buffer has the same dimensions as the image itself.  As we draw to the image, at every pixel we compare our z value to that in the z-buffer, and only draw if our z value is nearer to the viewer than the value in the z-buffer.  If we do draw, we update the z-buffer with the new z value.
+<p>
+Our specific implementation of the z-buffer algorithm is a modification to our polygon scanline fill algorithm.  Now <i>polygonRef3D</i>s know how to render themselves to an image, assuming the image has an initialized z-buffer.  Our new scanline fill interpolates z across each scanline and column (actually, 1/z to preserve linearity in the perspective projection.)  For each point on each scanline, we check our z value against that in the z-buffer, and only draw and update the z-buffer if our's is closer.
+</div>
+
+<p>
+
+<div class="newsitem">
+<a name="images"></a>
+<div class="newsitem_title">Images</div><p>
+Here are our required images:<br>
+<center><table border=0 width=100%><tr>
+<td valign=top><center><img src=req1.gif border=0>
+<br>
+<i>Required Image One</i></center>
+</td>
+<td valign=top><center><img src=req1-shaded.gif border=0><br>
+<i>Required Image One with Depth Shading</i></center>
+</td></tr></table></center>
+
+</div>
+
+<p>
+
+<a name="questions"></a>
+<div class="newsitem">
+<div class="newsitem_title">Questions and Answers</div>
+<ol>
+<li><i>How can you/did you connect your Z-buffer algorithm with the rest of your 3D modeling system?</i><br>
+Because we made out modeling system output a list of polygon references and a list of points in the last lab, integrating our z-buffer with our hierarchical modeling system was quite easy.  We store our current z-buffer in our <i>image</i> class, and then render all of the polygon list using that z-buffer.  To speed up the z-buffer algorithm, we sort the polygon list from closest to farthest z, using the first point in the polygon for the comparison.
+<p>
+<li><i>We know z varies inversely with x and y for perspective projection.  How does z vary relative to x and y for parallel projection?</i><br>
+Z varies linearly with x and y in parallel projection.  In other words, given two z values, we can interpolate z between them linearly, unlike in perspective projection.
+</ol>
+</div>
+
+<p>
+
+<div class="newsitem">
+<a name="extensions"></a>
+<div class="newsitem_title">Extensions</div><p>
+<b>Integration of Z-Buffer and Modeling System</b><br>
+We integrated our Z-Buffer and modeling system, as described above.
+<p>
+<b>Cool Animation Sequences and <i>pyramid3D</i></b><br>
+We made a cool animation of two square pyramids rotating and orbiting eachother.  Notice the aliasing issues on the first animation.  This results from the fact that we did not have our polygons share points.  Noting this, we designed a subclass of <i>modelPrimative</i> called <i>pyramid3D</i> that takes a top and an arbitrary base and generates a pyramid with polygons that share points as needed.  This was only possible because we now render using a separate point list and polygon list.
+<br>
+<center><table border=0 width=100%><tr>
+<td valign=top><center><img src=ani-alias.gif border=0>
+<br>
+<i>Animation with Aliasing Issues</i></center>
+</td></tr><tr valign=-top>
+<td valign=top><center><img src=ani-shared.gif border=0><br>
+<i>Animation with Shared Points (no aliasing issues)</i></center>
+</td></tr></table></center>
+<p>
+</div>
+
+<p>
+
+<div class="newsitem">
+<a name="resources"></a>
+<div class="newsitem_title">Additional Resources</div><p>
+Here are some useful links relating to Z-buffers:<br>
+<ul>
+<li><a href=http://www.siggraph.org/education/materials/HyperGraph/scanline/visibility/zbuffer.htm>Visible Surface Determination: Z-Buffer Algorithm</a>
+<li><a href=http://www.gris.uni-tuebingen.de/areas/large/xrendering/>This Randomized Z-Buffer Algorithm</a> was also interesting.  They could render scenes with extreamly high polygon counts using random samples and interpolation.  Pretty cool!
+</ul>
+</div>
+
+<p align=left><font size=-1>[<a href=../index.html>Back to Lab Index</a>]</font>
+</p>
+</body></html>
+

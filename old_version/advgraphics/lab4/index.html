@@ -1,0 +1,114 @@
+<html><head><title>Advanced Computer Graphics: Final Project, Photon Mapping</title>
+<LINK REL=StyleSheet HREF="../graphics.css" TYPE="text/css">
+</head>
+<body bgcolor=white text=black>
+<center><font size=+2><b>Final: Photon Mapping</b><br>
+<font color=blue>Andrew Cantino</font></font></center>
+<p>
+<div style="margin: 5px;">
+In this final lab for <A href=http://palantir.swarthmore.edu/maxwell/classes/e126/S05/>Advanced Computer Graphics</a>, I add transmission and photon mapping to my ray tracer.
+</div>
+<p>
+<b>Sections:</b>
+<ul>
+<li><a href="#xmission">Transmission and Procedural Textures</a>
+<li><a href="#pmapping">Photon Mapping</a>
+<li><a href="#issues">Photon Mapping Implementation Issues</a>
+<li><a href="#images">Images and Results!</a>
+<li><a href="#references">References</a>
+<li><a href="#downloads">Downloads!</a>
+</ul>
+<p>
+<div class="newsitem">
+<a name="xmission"></a>
+<div class="newsitem_title">Transmission and Procedural Textures</div><p>
+<b>Transmission</b><br>
+I implemented transmission (refraction) rays in my ray tracer.  Transmission rays are similar to reflection rays.  They occur at the boundaries of materials, are transmitted recursively until a recursion depth is reached, and have a transmission direction determined by <a href="http://www.ndt-ed.org/EducationResources/CommunityCollege/Ultrasonics/Physics/refractionsnells.htm">Snell's Law</a>, using the indices of refraction of the interface mediums.  I assume that the space between objects in my world has a index of refraction of 1.0.
+<p>
+<b>Procedural Textures</b><br>
+Additionally, I added procedural textures to the renderer.  Supported objects have a texture ID variable that keys to a built-in procedural texture.  The following example image shows a partially transmissive sphere moving in front of a procedurally textured sphere.
+<center><img src=transmit1.gif alt=""></center>
+</div>
+<p>
+<div class="newsitem">
+<a name="pmapping"></a>
+<div class="newsitem_title">Photon Mapping</div><p>
+Photon mapping is the brain-child of <a href="http://graphics.ucsd.edu/~henrik/">Henrik Jensen</a>.  It is a 2-pass algorithm that involves emitting 'photons' from scene light sources and tracking them through the scene, taking into account object interactions such as reflection and refraction.  When a photon hits a diffuse surface, it's hit may be recorded for later use in a second-pass rendering phase.  A full photon mapping solution takes into account diffuse-diffuse interactions by probabilistically reflecting photons according to a surface's BRDF.  I have implemented partial photon mapping and have used it to generate caustics.  Caustics are the patterns of light created on diffuse surfaces by light reflection and transmission by specular and transmissive objects.
+<p>
+I will now explain how my implementation of photon mapping for caustics works.  In the next section I will discuss some issues that I encountered and some limitations to my approach.
+<p>
+First, I added a photon mapping step that is applied when a scene is called to be ray traced.  For each light source in the world (currently only point sources), a certain number of photons are generated and sent into the scene.  Currently, I have limited control over the initial direction of these photons.  Each photon starts at it's light source and is tracked into the scene with a method called <i>doPhotonMap(ray, model, recursionDepth)</i>.  This method works as follows:
+<pre>
+doPhotonMap(ray r, model m, int level)
+	Intersect r with m, continue if an intersection was found
+	If an object containing a photon map was intersected,
+		and if this photon has bounced at least once (avoid direct illumination):
+			Add this photon to the object's photon map
+	If the intersected object is reflective and recursion depth has not been met:
+		doPhotonMap(direction of reflection, m, level - 1)
+	If the intersected object is transmissive and recursion depth has not been met:
+		doPhotonMap(direction of transmission, m, level - 1)
+</pre>
+As a photon map, I use a list of the incident rays (their intersect location and vector of incidence).
+<p>
+Second, the scene is rendered using the standard ray tracer from <a href=../lab3/>lab 3</a>, with one addition: whenever a surface containing a photon map is encountered in the ray tracing, in addition to being lit by direct illumination, transmission rays, and reflection rays, its photon map is taken into account.  I tried a number of different methods of taking the photon map into account:
+<ul>
+<li>Method 1: Sort the photon map by distance from the point encountered during ray tracing.  For each of the closest n photon hits to this point, calculate the lambertian and phong shading at this point from that photon hit, and sum these all together.  Divide by a factor proportional to the surface area of the smallest sphere containing all of these n photon hits, and add to the colorVector of this point.  (<a href="http://www.cs.umd.edu/~mount/Indep/SCheah/causticpaper.html">reference</a>)
+<li>Method 2: Sort the photon map by distance from the point encountered during ray tracing.  Find the n closest photon hits to this points and record the distance to the nth one (the furthest one we care about).  Calculate a surface (tangential) photon density as n / (pi * furthest_photon^2).  Add color to this ray trace point using its photon density, divided by the number of photons sent from each light source, and scaled by an arbitrary constant.  Obviously, this method only shows the photon density, not technically the illumination due to the photon hits, because it doesn't use phong or lambertian shading.
+<li>A few other methods were tried with poor results.
+</ul>
+</div>
+<p>
+<div class="newsitem">
+<a name="issues"></a>
+<div class="newsitem_title">Photon Mapping Implementation Issues</div><p>
+A number of issues were encountered with my implementation of photon mapping for caustics.  I will discuss those here.
+<ul>
+<li><b>Directing photons</b> -- Initially I sent photons in random directions from each light source.  This meant that very few photons actually hit transmissive or reflective objects, leading to poor photon density on diffuse surfaces for caustics.  To help with this, I both increased the number of generated photons and modified the photon emission direction to roughly point at objects of interest.  However, I have to do this by hand for each rendered scene, and I can not get the direction very accurately with the code that I have in place.  A future implementation of this photon mapper should attempt to send photons more directly at objects of interest, perhaps by projecting those objects onto the light source and sampling only from directions within the projection -- directions that could encounter an interesting (i.e., reflective or transmissive) object.
+<li><b>Photon map data structure</b> -- I used the C++ STL list data type for my photon map.  This meant that at every intersect point during ray tracing of objects with photon maps, the list had to be sorted based on the photon's distance to the ray tracing intersect.  This step takes a long time on large lists and is very computationally wastefull.  A better data structure for this purpose is a <a href="http://www.nist.gov/dads/HTML/kdtree.html">kd-tree</a>, which can allow rapid spacial lookups so that sorting the entire photon map isn't necessary.  Perhaps I should have tried to use the <a href="http://www.cgal.org/">CGAL</a> computational geometry library?
+<li><b>Photon density</b> -- Due to the above issue with getting enough photons to interact with interesting objects, and because I did not use a very efficient data structure for storing photon hits, it was hard to get enough photons into the scene to render good caustics in a reasonable amount of time.  Because of this, I did not anti-alias most of my caustic images.  A better implementation of the photon mapping algorithm would use a kd-tree for photon hit storage to allow many more photons to be used, and thus could get better looking caustics.
+</ul>
+Despite all this, I had some nice results.  The next section shows some caustics that I generated!
+</div>
+<p>
+<div class="newsitem">
+<a name="images"></a>
+<div class="newsitem_title">Images and Results!</div><p>
+This image shows a light above a transmissive sphere casting a caustic on the surface below.  It is anti-aliased and the sphere also casts a shadow.
+<center><img src=pmap.gif></center>
+<br>
+This animation shows the light moving from the left to right above the sphere.
+<center><img src=pmap_ani.gif></center>
+<br>
+This animation shows a reflective mirror slowly tilting towards the camera.  A point light source is near the camera.  The splotches are due to insufficient photon density (although I emitted around 1,000,000 photons in the direction of the surface per frame.)  It's still pretty though!
+<center><img src=tilt2.gif></center>
+<br>
+This animation attempts to show a light moving between a surface and a reflective sphere, but it didn't work very well.  I believe that I didn't emit enough photons.  I'm also unsure what the moving spot on the surface is -- perhaps a shadow ray glitch.
+<center><img src=pmap_ani3.gif></center>
+</div>
+<p>
+<div class="newsitem">
+<a name="references"></a>
+<div class="newsitem_title">References</div><p>
+The following sources were helpful:
+<ul>
+<li><a href=/~andrew/graphics>Andrew and Will's modeling and rendering system from 1st semester</a>
+<li><a href="http://www.amazon.com/exec/obidos/tg/detail/-/1584500379/qid=1113615882/sr=1-1/ref=sr_1_1/104-9750630-3608709?v=glance&s=books">Mathematics for 3D Game Programming & Computer Graphics</a>, 2nd Edition, by Eric Lengyel.
+<li><a href="http://www.amazon.com/exec/obidos/tg/detail/-/047130414X/qid=1113615857/sr=8-1/ref=sr_8_xs_ap_i1_xgl14/104-9750630-3608709?v=glance&s=books&n=507846">Object-oriented Ray Tracing in C++</a>, by Nicholas Wilt -- very useful, basis of my ray class and sphere intersection code, also helpful with reflectivity.
+<li><a href="http://www.cs.umd.edu/~mount/Indep/SCheah/causticpaper.html">An Implementation Of A Recursive Ray Tracer That Renders Caustic Lighting Effects</a>
+<li><a href="http://www.amath.washington.edu/~calhoun/demos/CS_graphics/caustics/caustics.html">Using Photon Mapping to Generate Caustics</a>
+</ul>
+</div>
+<p>
+<div class="newsitem">
+<a name="downloads"></a>
+<div class="newsitem_title">Downloads!</div><p>
+<ul>
+<li><a href=lab4.tar.gz>Source</a>
+</ul>
+</div>
+<p>
+<p align=left><font size=-1>[<a href=../index.html>Back to Lab Index</a>]</font>
+</p>
+</body></html>
+

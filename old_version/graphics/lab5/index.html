@@ -1,0 +1,215 @@
+<html><head><title>Computer Graphics: Lab 5</title>
+<LINK REL=StyleSheet HREF="../graphics.css" TYPE="text/css">
+</head>
+<body bgcolor=white text=black>
+<center><font size=+2><b>Lab 5: Hierarchical Modeling System</b><br>
+<font color=blue>Will Moss & Andrew Cantino</font></font></center>
+<p>
+<div style="margin: 5px;">
+This is <a href=http://palantir.swarthmore.edu/maxwell/classes/e26/F04/labs/lab05/>lab 5</a> of <a href=
+http://palantir.swarthmore.edu/maxwell/classes/e26/F04>Computer Graphics</a>.
+</div>
+<p>
+<b>Sections:</b>
+<ul>
+<li><a href="#api">Hierarchical Modeling System API</a>
+<li><a href="#images">Some images!</a>
+<li><a href="#questions">Questions</a>
+<li><a href="#extensions">Externsions</a>
+</ul>
+<p>
+<div class="newsitem">
+<a name="api"></a>
+<div class="newsitem_title">Hierarchical Modeling System API</div><p>
+Our hierarchical modeling system is broken down into a set of classes in an inheritance relationship.  This relationship, as depicted below, allows us to easily generate <i>model</i>s.  An instance of the <i>model</i> class is basically a list of <i>modelItem</i>s, from which <i>model</i> itself is derived.  This means that <i>model</i>s may contain any of the classes listed below in the API, including other <i>model</i>s.  Besides <i>model</i>s, the other three basic virtual classes are <i>modelPrimative</i>s, <i>modelTransform</i>s, and <i>modelImage</i>s.  <i>modelPrimative</i>s are the drawing elements, such as lines, points, and polygons.  <i>modelTransform</i>s are the matrix operations, such as scales and translates.  <i>modelImage</i>s are pen and image operations, such as setting the pen color or applying a gradient.  Please see our <a href="#questions">question and answer section</a> for more information on how the drawing of models is handled.
+<p>
+<font size=+1>Model Class Hierarchy with API</font><br>
+<pre>
+  class <i>modelItem</i>
+     <code>int getName()</code>  <font size=-1>(All modelItems must implement getName and return an ID which uniquely identifies whether
+                        they are a <i>model</i>, <i>modelPrimative</i>, <i>modelTransform</i>, or <i>modelImage</i>.)</font>
+
+     class <i>model</i>
+          <code>void addItem(modelItem *i)</code>  <font size=-1>(Add any modelItem to this model.)</font>
+          <code>void draw(matrix &amp;GTM, image &im)</code>  <font size=-1>(Draw this model to image im, premultiplying by GTM.)</font>
+
+     class <i>modelPrimative</i>
+          <code>void draw(matrix &m, image &i)</code>  <font size=-1>(All modelPrimatives must implement draw.)</font>
+
+          class <i>point3D</i>
+              <code>point3D(double x, double y, double z)</code>
+              <code>point3D(double x, double y, double z, double h)</code>
+          class <i>line3D</i>
+              <code>line3D(point3D start, point3D end)</code>
+          class <i>polygon3D</i>
+              <code>polygon3D(int numberOfPoints)</code>
+              <code>void setFilled(bool filled)</code>  <font size=-1>(Should this polygon draw as filled or not?)</font>
+              <code>void addPoint(point3D p)</code>  <font size=-1>(Add a point3D to the polygon.)</font>
+          class <i>polyline3D</i>
+              <code>polyline3D(int numberOfPoints)</code>
+              <code>void addPoint(point3D p)</code>  <font size=-1>(Add a point3D to the polyline.)</font>
+
+     class <i>modelTransform</i>
+          <code>void apply(matrix &m)</code>  <font size=-1>(All modelTransforms must implement apply.)</font>
+
+          class <i>modelTranslate3D</i>
+               <code>modelTranslate3D(double tx, double ty, double tz)</code>
+          class <i>modelScale3D</i>
+               <code>modelScale3D(double s)</code>
+               <code>modelScale3D(double sx, double sy, double sz)</code>
+               <code>modelScale3D(point3D center, double s)</code>
+               <code>modelScale3D(point3D center, double sx, double sy, double sz)</code>
+          class <i>modelRotate3Dx</i>
+               <code>modelRotate3Dx(double theta)</code>
+               <code>modelRotate3Dx(point3D center, double theta)</code>
+          class <i>modelRotate3Dy</i>
+               <code>modelRotate3Dy(double theta)</code>
+               <code>modelRotate3Dy(point3D center, double theta)</code>
+          class <i>modelRotate3Dz</i>
+               <code>modelRotate3Dz(double theta)</code>
+               <code>modelRotate3Dz(point3D center, double theta)</code>
+          class <i>modelSheer3Dx</i>
+               <code>modelSheer3Dx(double shx, double shy)</code>
+               <code></code>
+          class <i>modelSheer3Dy</i>
+               <code>modelSheer3Dy(double shx, double shz)</code>
+               <code></code>
+          class <i>modelSheer3Dz</i>
+               <code>modelSheer3Dz(double shx, double shy)</code>
+          class <i>modelMatrixReset</i>
+               <code>modelMatrixReset()</code>  <font size=-1>(Set the LTM to identity.)</font>
+
+     class <i>modelImage</i>
+          <code>void apply(matrix &m)</code>  <font size=-1>(All modelImages must implement apply.)</font>
+
+          class <i>modelSetPenColor</i>
+              <code>modelSetPenColor(Pixel c)</code>
+          class <i>modelSetGradColor</i>
+              <code>modelSetGradColor(Pixel c1, Pixel c2)</code>
+          class <i>modelSetPenAlpha</i>
+              <code>modelSetPenAlpha(unsigned char a)</code>
+          class <i>modelSetGradDirection</i>
+              <code>modelSetGradDirection(point d1, point d2)</code>
+          class <i>modelSetGradMode</i>
+              <code>modelSetGradMode(int m)</code>
+          class <i>modelClearGradient</i>
+              <code>modelClearGradient()</code>
+          class <i>modelSetPenPattern</i>
+              <code>modelSetPenPattern(image &i)</code>
+          class <i>modelSetPatternOrigin</i>
+              <code>modelSetPatternOrigin(point p)</code>
+          class <i>modelDisablePattern</i>
+              <code>modelDisablePattern()</code>
+          class <i>modelEnablePattern</i>
+              <code>modelEnablePattern()</code>
+          class <i>modelClearPattern</i>
+              <code>modelClearPattern()</code>
+
+         Additionally, unimplemented prototypes of the following classes exist in <i>modelImage</i>: <i>modelDrawImage</i>
+</pre>
+<br>
+
+</div>
+<p>
+<a name="images"></a>
+<div class="newsitem">
+<div class="newsitem_title">Images</div>
+Here are the models that we constructed.  For Andrew's models, he recorded points along the outlines of two existing images (cited under the models below) and used those to generate his models.  Will re-created his x-wing, except this time he just used polygons and the newly developed modeling system.<p>
+<b>The models:</b><p>
+<center><table border=0 width=100%><tr>
+<td valign=top><center><img src=plane.gif border=0>
+<br>
+<i>Andrew's plane.</i><br><font size=-1>(Outline traced from <a href=http://www.owls.lib.wi.us/services/graphic_arts/diecuts/airplane.gif>this image</a>.)</font></center>
+</td>
+<td valign=top><center><img src=balloon.gif border=0>
+<br>
+<i>Andrew's balloon with basket.</i><br><font size=-1>(Outline traced from <a href=http://www.launchyourlife.com/hot%20air%20balloon%202.gif>this image</a>.)</font></center>
+</td></tr>
+<tr>
+<td colspan='2' valign=top><center>
+<img src=xwing.gif border=0><br>
+<i>Will's X-Wing.</i>
+</center>
+</td>
+</tr>
+</table></center><p>
+
+<b>The required images:</b><p>
+<center><table border=0 width=100%><tr>
+<td valign=top><center><a href=planes_compressed.gif><img src=planes_small.gif border=0></a>
+<br>
+<i>Unidentified Flying Outlines! (Andrew)</i><br><font size=-1>(Please click for full-quality version.)</font></center>
+</td>
+<td valign=top><center><a href=balloons_large.gif><img src=balloons_small.gif border=0></a>
+<br>
+<i>Balloons Go By. (Andrew)</i><br><font size=-1>(Please click for full-quality version.)</font></center>
+</td></tr>
+<tr>
+<td valign=top><center>
+<a href=xwing-fleet-ani.gif><img src=xwing-fleet.gif border=0></a><br>
+<i>Patrol. (Will)</i><br>
+<font size=-1>(Click for animated version.)</font>
+</center>
+</td>
+<td valign=top><center>
+<a href=xwing-fleet-ani2.gif><img src=xwing-fleet2.gif border=0></a><br>
+<i>Barrel Roll. (Will)</i><br>
+<font size=-1>(Click for animated version.)</font>
+</center>
+</td>
+</tr>
+</table></center>
+
+</div>
+<p>
+<div class="newsitem">
+<a name="questions"></a>
+<div class="newsitem_title">Questions (and Answers!)</div><p>
+<ol>
+<li><i>Describe your model structure data type.</i><br>
+Please see the description preceding our discussion of the <a href="#api">model API</a>.
+<li><i>Describe the operation of your DrawStructure routine.</i><br>
+Each model contains a linked list of <i>modelItem</i>s.  Additionally, our <i>model</i> is passed a GTM from it's parent <i>model</i> or the world and defines a LTM, initially set to the identity matrix.  Our <i>model</i> draw method loops through the list of <i>modelItem</i>s and switches on the four different model primitives based on their <i>getName()</i> value.  If the <i>modelItem</i> is a <i>model</i>, we recursivly call the <i>model</i>'s draw method, passing in GTM * LTM and the current image.  If the <i>modelItem</i> is a <i>modelPrimative</i>, we call it's draw method which draws it onto the current image after transforming it's points by the current GTM * LTM.  If the <i>modelItem</i> is a <i>modelTransform</i>, then we call it's apply method on the current LTM.  If the <i>modelItem</i> is a <i>modelImage</i>, then we call it's apply method, passing it the current image.
+<br>
+<li><i>Describe how you made use of hierarchical modeling when you made your starship. Somehow show a representation of the final structure graph.</i><br>
+We used hierarchical modeling to save time and space by only having to define models once.  For example, we only needed to define the spaceship or plane once, then make higher-level models containing references to the original plane/ship model.  Here is how our models were organized:<p>
+
+
+<pre>
+Andrew's balloons and planes were organized as follows:
+      plane_squad_1         plane_squad_2           balloons
+        /    \   \           /   /   \             / / / \ \ \
+       /      \  plane      /  plane  plane       / / /   \ \ \
+     plane   plane        plane                  / / plane \ \ basket
+                                                / basket    \ plane
+                                               plane        basket
+
+ Colors and transforms were applied in the parent models.
+</pre>
+<br>
+Will's X-Wing is organized as follows:<br>
+<a href='xwing-map.gif'><img src='xwing-map-small.gif'></a><br>
+<font size=-1>(Click for larger image.)</font>
+</ol>
+</div>
+<p>
+<div class="newsitem">
+<a name="extensions"></a>
+<div class="newsitem_title">Extensions</div><p>
+<b>Complex Scenes</b><br>
+We generated a complex scene with around 50 balloons rising into the sky.  This was accomplished by creating a balloon model and a basket model, and then creating 50 models containing the balloon and basket models with random color, opacity, and scale variations.  Then, 50 starting locations and velocity vectors were generated and the animation was created by moving the 50 balloon models according to their current position and velocity.<p>
+<b>Animated Sequences</b><br>
+We created four animated sequences using our modeling system.  Please click to watch the high-quality versions above!<p>
+<b>Run Time Parameters</b><br>
+We implemented at system that will allow models to have run-time parameters that they can use.  The system will be designed as follows.  Each model, along with all the elements described above, will also have two new elements.  First it will have a function pointer that will be called before every time the model is drawn.  This function will take three arguments, the current model, a list of <i>modelItems</i> that it can modify, and a map of strings onto doubles.  The list of <i>modelItems</i> will be passed by reference, and after the function has completed executing, the list will be rendered before the regular list.  This allows the function to change the model in any manner it needs to.  The map of strings onto doubles is essentially a list of parameters. The function can look at the map to determine how it will change the model (i.e. red->105 blue->200 green->0 could specify the color the model would use to draw itself).  The map is also passed by reference, so the child can modify it if it wishes, sending information back up to the parent.  The second new element will be a list of maps of strings onto doubles.  This list represents the memory stored for each of the children models of this model.  This way, a parent model that contains 5 children models can store separate memory for each model.  When the parent model is rendered, the memory at the correct location in the list is passed down to the child.  To demonstrate this system, we created a another fleet of x-wings.  This fleet, however, is controlled completelly by the logic functions.  There are three ships in the fleet, the leader and two follower ships.  The leader determines its own path, and the followers try to keep up with the leader.  The ships are moved based on their own memory.  Each ship keeps track of it's own position as well along with its velocity and the position of its leader.  There are two major logic functions that control the system.  The logic function for the fleet sets up the initial memory for all the x-wings in the fleet, and then updates the follower xwings with the position of their leader.  The logic function for the xwing does the bulk of the work.  It updates the velocities of the x-wings (for the leader, is it randomly changed slightly, for the followers, it is based on their position relative to their leader, and points towards their desired location), and the positions (by adding the velocity to the current position).  It is then in charge of rotating and draw the x-wing at the correct location.<br><br>
+Here is the final product:<br>
+<a href='logic-ani.gif'><img src='logic.gif'></a><br>
+<font size=-1>(Click for animated version.)</font>
+</div>
+<p>
+<p align=left><font size=-1>[<a href=../index.html>Back to Lab Index</a>]</font>
+</p>
+</body></html>
+
+
+

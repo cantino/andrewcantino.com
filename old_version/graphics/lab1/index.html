@@ -1,0 +1,202 @@
+<html><head><title>Computer Graphics: Lab 1</title>
+<LINK REL=StyleSheet HREF="../graphics.css" TYPE="text/css">
+</head>
+<body bgcolor=white text=black>
+<center><font size=+2><b>Lab 1: Image Manipulations & Fractals</b><br>
+<font color=blue>Andrew Cantino & Will Moss</font></font></center>
+<p>
+<div style="margin: 5px;">
+In this, our first lab for <A href=http://palantir.swarthmore.edu/maxwell/classes/e26/F04/>Computer Graphics</a>, we develop an image class and use it as a framework for performing both blue-screening and fractal generation.
+</div>
+<p>
+<b>Sections:</b>
+<ul>
+<li><a href="#image">The Image Class</a>
+<li><a href="#bluescreen">Bluescreening and Image Manipulation</a>
+<li><a href="#fractals">Mandelbrot and Julia Sets</a>
+<li><a href="#answers">Answers (to Questions)</a>
+<li><a href="#extensions">Extensions</a>
+</ul>
+<p>
+<div class="newsitem">
+<a name="image"></a>
+<div class="newsitem_title">The Image Class</div><p>
+We decided to code this lab (and presumably subsequent labs) in C++ because we wanted access to the object-oriented features of C++.  We started by writing an <i>image</i> class for the storage and manipulation of RGB images.  The class contains the following data:
+<ul>
+<li>Stores an image as an array of Pixels.  (Pixels are a small class containing R, G, and B unsigned chars, as well as minimal constructors.)
+<li>Stores vital statistics about images, such as their rows, columns, colors, and default drawing color.
+<li>Stores an alpha channel the same size as the image, which stores an alpha value from 0 to 255 for every pixel.
+</ul>
+Taking advantage of C++'s object-oriented structure, the <i>image</i> class additionally provides the following methods:
+<ul>
+<li>Constructors to make new empty images, new blank images of particular sizes and colors, images given the path to a PPM file, and images given an existing image (copy constructor).  Additionally, the class provides a destructor to perform memory management.
+<li><i>readImage</i> and <i>writeImage</i> to load and save images as PPM files.
+<li><i>drawPoint</i> to draw a pixel to the image at a given (x, y).  We overloaded <i>drawPoint</i> to provide versions that take colors or assume default colors, and take alpha blending values or assume default alpha values.
+<li>The <i>rotate</i> function takes an image and rotates it clockwise around the center of the image.  To do this, we take the new image and find what the location of each pixel in the new image is in the old image (by rotating counterclockwise about the center of the image).  If this point falls inside the original image, the value of the pixel in the new image is given the value of the pixel in the old image at that location.  If it falls outside the image, the pixel is just left as white.  Additionally, we implemented a bilinear filter, which is discussed further in the <a href="#extensions">extensions section</a>.
+<li>The <i>scale</i> function takes an image and scales it either up or down.  Originally we used the same method for both directions.  Like rotate, we stepped through the new image, however, this time the pixels were not the same size in the new and original images.  To overcome this problem, we just sampled the old image at the location of the center of the new pixel.  This, however, produced jagged images and we again implemented a bilinear filer, which is discussed further in our <a href="#extensions">extensions section</a>.
+<li>To provide for image overlapping and blending, <i>drawImage</i> will draw one image onto another, using the alpha channel of the overlaying image to determine alpha blending.  (We use the equation: <i>pixel = alpha*new_pixel + (1 - alpha)*old_pixel</i>)
+<li><i>shrinkAlpha</i> performs a 4-connected shrink on the alpha mask, assuming a boolean alpha mask with 1 as 255 and 0 as 0.  (The use of this shrink will be described later.)
+<li>Additionally, <i>getPoint</i>, <i>getAlpha</i>, and <i>setAlpha</i> are assessor methods to access pixel and alpha values in the <i>image</i> class.
+</ul>
+</div>
+<p>
+<a name="bluescreen"></a>
+<div class="newsitem">
+<div class="newsitem_title">Bluescreening and Image Manipulation</div>
+In lab, we had two pictures taken of each of us in front of a bluescreen.  Here are two examples:<p>
+<table border=0 width=100%><tr>
+<td valign=top><p align=center><img src=andrew.jpg border=0>
+<br>
+<i>Andrew looking ruminative.</i></p>
+</td>
+<td valign=top><p align=center><img src=will.jpg border=0><br>
+<i>Will looking infarcted.</i></p>
+</td></tr></table>
+<p>
+We set out to extract the images of ourselves from the bluescreen images, as follows:
+<ul>
+<li>First, we calculate some statistics about the image to be bluescreened.  We take a strip of background (in our case, always blue) along the upper edge of the image and use it as a representative sample of 'blue' in the image.  From this sample we calculate a mean and standard deviation of the pixel values (we calculate the mean and SD in all three color bands.)  This mean and standard deviation represent a Gaussian sphere in RGB space, and anything sufficiently within that sphere can be considered 'blue.'  Specifically, we use the statistical difference <i> d = (c - mean_c)(c - mean_c)/(standard_deviation_c)^2</i> where c is a color band of a pixel.  To determine if a pixel is blue, we calculate its statistical difference for all color bands (RGB) and then take a Euclidean distance of the difference values: <i>dist = sqrt(dr*dr + dg*dg + db*db)</i> where dr, dg, and db are the statistical differences in R, G, and B.  If the Euclidean distance is under a threshold, then the pixel is blue.
+<li>For all pixels determined to be blue with the above method, we set their alpha value to 0, thus making them completely transparent when the image is overlaid onto a background.  Non-blue pixels have an alpha value of 255, or completely opaque.
+<li>Optionally, we can apply a 4-connected shrink to the alpha mask at this point (as described in the <i>image</i> class above.)  The shrink removes specks in the alpha channel, thus helping remove spots of bluescreen that should have been removed.  However, it will also sometimes tend to grow holes in the non-blue parts of the image.  This is because if there are any pixels in the image that were incorrectly interpreted as blue, this will expand them and damage neighboring pixels.  However, the shrink did turn out to be useful on some of the bluescreen images and was a useful tool.
+<li>Next, as an extension, we implemented feathering.  See more about that in our <a href="#extensions">extensions section</a>.
+</ul>
+<p>
+Getting the bluescreening to work correctly was difficult, but the Gaussian sphere in RGB space worked quite well.  Sometimes we would have to fiddle with thresholding values or apply a shrink before the bluescreening looked good, but it generally worked well.  In the process of working on the bluescreening, we also tried running a median filter over the alpha channel to remove noise, but we didn't see much improvement and shrink worked as well.
+<p>
+Here are our example (portfolio) images, along with samples of the C++ calls used to make them:
+<p>
+
+<div class="linkbox" width=100%>
+<center><a href=portfolio2-a.jpg><img src=portfolio2-a-small.jpg border=0></a><br>
+<i>Rushmored (Andrew's Portfolio 2)</i>
+</center>
+Code for above image:<br>
+<font size=-1>
+<pre>
+  image a = bluescreen("../images/Rushmore.ppm", 25, 2, 2);
+  image b = bluescreen("../images/P9020458-small.ppm", 15, 0, 2);
+  image c = bluescreen("../images/P9020459-small.ppm", 15, 0, 2);
+  image test = image("../images/Rushmore.ppm");
+  test.drawImage(715,95,b.rotate(.2).scale(.3));
+  test.drawImage(50,9,c.scale(.3));
+  test.drawImage(0,0,a);
+  test.drawImage(0,0,b);
+  test.drawImage(840, 580, b.rotate(-.7).scale(.4));
+  test.writeImage("../images/test.ppm");
+</pre>
+(The skyline masking worked because I could bluescreen out the sky in the image of the mountains.)
+</font>
+</div>
+<p>
+
+<div class="linkbox" width=100%>
+<center><a href=portfolio2-w.jpg><img src=portfolio2-w-small.jpg border=0></a><br>
+<i>Watching the Sox or Where's Will? (Will's Portfolio 2)</i>
+</center>
+Code for above image:<br>
+<font size=-1>
+<pre>
+  image me = bluescreen("../images/P9020460-small.ppm", 5, 0, 2);
+  image a = image(me);
+  for (int i = 0; i < a.cols; i++) {
+    for (int j = a.rows * 1 / 2; j < a.rows; j++) {
+      a.setAlpha(i, j, 0);
+    }
+  }
+  image test = image("../images/IMG_3341-small.ppm");
+  test.drawImage(290,123,a.rotate(-.08).scale(.125));
+  image b = image(a);
+  for (int i = 0; i < b.cols; i++) {
+    for (int j = b.rows * 9 / 32; j < b.rows; j++) {
+      b.setAlpha(i, j, 0);
+    }
+  }
+  test.drawImage(780,110,b.rotate(-.08).scale(.1201));
+  test.drawImage(900, 570, me.rotate(-.7).scale(.3));
+  test.writeImage("../images/test.ppm");
+</pre></font>
+</div>
+
+<p>
+
+<div class="linkbox" width=100%>
+
+<table border=0 width=100%><tr>
+<td valign=top><p align=center><a href=portfolio1-a.jpg><img src=portfolio1-a-small.jpg border=0></a>
+<br>
+<i>I went outside? (Andrew's Portfolio 1)</i></p>
+</td>
+<td valign=top><p align=center><a href=portfolio1-w.jpg><img src=portfolio1-w-small.jpg border=0></a><br>
+<i>Hazy morning (Will's Portfolio 1)</i></p>
+</td></tr></table>
+</div>
+
+</div>
+<p>
+<a name="fractals"></a>
+<div class="newsitem">
+<div class="newsitem_title">Mandelbrot and Julia Sets</div>
+<p>
+In this lab we used a simple attractor function to generate Mandelbrot and Julia sets.  The function is defined by the iteration, <i>z[n + 1] = z[n]^2 - c</i>, where both <i>z</i> and <i>c</i> can be complex numbers.  A Mandelbrot set was generated when the initial value of <i>z[0] = 0</i>, and <i>c</i> was varied over the complex plain.  A julia set was generated by setting <i>c</i> to a specific value, and then varying the initial value of <i>z</i> over the complex plane.  Our algorithm for visualizing these sets, and generating images of them, took as a parameter the size of the rectangle in the complex plane, and for the julia sets, it took the value for <i>c</i> as well.  The value of <i>z[n + 1]</i> was then calculated using the above iteration, and checked to see whether <i>z</i> had gone above the given threshold.  Both sets used a threshold of 100 (the threshold does not effect the outcome very strongly because the sets diverge so quickly).  The number of times the iteration was run was plotted as an intensity in the red channel.  For the Mandelbrot set, we found that the best resolution was achieved when we iterated 32 times (then multiplying the output by 8, to fill the entire available color space).  For the Julia set, the best resolution was achieved when we iterated for 256 times, and plotted the resulting iteration value directly to the red channel.
+<p>
+Example images (click for larger version):<p>
+<table border=0 width=100%><tr>
+<td valign=top><p align=center><a href=julia.gif><img src=julia-small.gif border=0></a>
+<br>
+<i>Julia Set from (-1.55, 1) to (1.55, 1)</i></p>
+</td>
+<td valign=top><p align=center><a href=mandelbrot.gif><img src=mandelbrot-small.gif border=0></a><br>
+<i>Mandelbrot Set from (-.6, -1.2) to (1.8, 1.2)</i></p>
+</td></tr></table>
+<p>&nbsp;<p>
+Portfolio images (click for larger version):<p>
+<table border=0 width=100%><tr>
+<td valign=top><p align=center><a href=portfolio3-w.gif><img src=portfolio3-w-small.gif border=0></a>
+<br>
+<i>Julia Set from (.8, -.2) to (1.2, .2) (Will)</i></p>
+</td>
+<td valign=top><p align=center><a href=portfolio4-w.gif><img src=portfolio4-w-small.gif border=0></a><br>
+<i>Mandelbrot Set from (-.1, -1.1) to (.3, -.7) (Will)</i></p>
+</td></tr>
+<td valign=top><p align=center><a href=portfolio3-a.gif><img src=portfolio3-a-small.gif border=0></a>
+<br>
+<i>Mandelbrot Set from (1.2, -.5) to (2.2, .5) (Andrew)</i></p>
+</td>
+<td valign=top><p align=center><a href=portfolio4-a.gif><img src=portfolio4-a-small.gif border=0></a><br>
+<i>Julia Set from (-.1, -.5) to (1, .1) (Andrew)</i></p>
+</td></tr>
+</table>
+</div>
+<p>
+<a name="answers"></a>
+<div class="newsitem">
+<div class="newsitem_title">Answers (to Questions)</div>
+<ol>
+<li>The images have height <i>1920</i> and width <i>2560</i>.  We determined this by accessing the <i>rows</i> and <i>cols</i> parameters from <i>readPPM</i> (or from our <i>image</i> class that wraps around <i>readPPM</i>).
+<li>The origin is located at the upper left-hand corner of the image.  We determined this by writing a small square of white pixels near (0,0).
+<li>We didn't have X access to engin, and we didn't have xv on our own systems, so we don't know.  Presumably it's either the upper left-hand or lower left-hand corner of the image.
+<li>We didn't replace the blue pixels.  Instead, we modified the alpha channel of the image.  This is explained in the section <a href="#bluescreen">Bluescreening and Image Manipulation</a>.  Our replacement worked well.  Occasionally there was blue-spill in our images, but we could usually control it by varying the Euclidean distance threshold and playing with feathering.  Sometimes a small bit of blue-spill does appear.  We could control this further by using more advanced blue-screening techniques that try to adjust for backlighting off of the blue background.  We also considered modeling 'blue' as multiple Gaussian spheres instead of one in color space.  We could do this by some kind of k-means clustering in RGB space.
+<li>For the portfolio images where we inserted ourselves into backgrounds, we used our <i>image</i> class and it's methods plus the bluescreening code.  Please see the portfolio images at the end of <a href="#bluescreen">Bluescreening and Image Manipulation</a>.
+<li>The edges around the central empty void in the Mandelbrot set were clearly the most interesting and we each picked a part to explore for our portfolio images.
+<li>We played with various coloring schemes and ended up liking simple blues and reds.  We also tried various vomit colored renditions of the fractals by mixing colors.
+</ol>
+</div>
+<p>
+<a name="extensions"></a>
+<div class="newsitem">
+<div class="newsitem_title">Extensions</div>
+<p>
+<b>Bilinear Interpolation</b><br>
+For both the rotate and scale down functions, we used a bilinear interpolation to achieve better quality images.  For the case of scaling down, we found the location in the old image of the center of the pixel from the new image.  Then, for each pixel that the new pixel "touched" we found the distance to the center of that pixel, and used it to do a weighted average of the color values.  This made boarders and other areas of high contrast look much less jagged when they were scaled down.  For the rotate, we used a similar technique and found where the center of the new pixel falls in the old image.  Then we took the same weighted average as before, this time using the eight pixels that surrounded the pixel where the center fell.
+<p>
+<center><img src=scale.jpg><br>
+Comparison of bilinear interpolation (on the left) and non-bilinear interpolation (on the right) scaling.
+</center>
+<p>&nbsp;<p>
+<b>Feathering</b><br>
+As an extension, we did feathering, or blurring of the edges of the bluescreened image with the background.  Having an alpha channel made this quite simple.  We applied a mean filter to the alpha mask, so that every alpha value became the average of it's surrounding alpha values.  This tends to blur the edges of the alpha channel, which means that when we overlay the image, it's edges get feathered, or blurred with the background.  We experimented with some different values of blurring on the alpha channel, and found that averaging 2 alpha values in every direction worked well.  All of the included images in <a href="#bluescreen">Bluescreening and Image Manipulation</a> use our feathering technique.
+</div>
+<p align=left><font size=-1>[<a href=../index.html>Back to Lab Index</a>]</font>
+</p>
+</body></html>
+

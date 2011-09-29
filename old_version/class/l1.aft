@@ -1,0 +1,213 @@
+*Title: Introduction: The Internet, HTML, and UNIX
+*Author: Andrew Cantino
+*Image-center: email.jpg
+
+---------
+
+*TOC
+
+---------
+
+*Course Introduction
+Welcome!  This tutorial will serve as class notes for ''PERL, SQL, and Web Publishing Security'', a summer course taught through Networking & Systems at Haverford College, 2005.  For this course, you will be given a cPanel account on an ACC server.  This will give you access to a UNIX shell account (discussed below) and a powerful web hosting solution that we will be exploring throughout this class.
+
+
+This course is meant to introduce all levels of learners, so I will start with a very basic introduction.
+*What do we mean by Online?
+The Internet is a massive network of interconnected computers and systems.  ''Packets'' of information are routed through this network from system to system.  Today, the Internet is primarily a means for delivering content, such as HTML (HyperText Markup Language) documents, but the Internet as we know it has only existed for 10 years.  The Internet's roots go back to ARPANET in the 60s and 70s.  In 1989, HTTP, the HyperText Transport Protocol, was invented at CERN.  In 1992, Mosaic, the first graphical web browser, was introduced.  If you're interested, take a look at [A Brief History of the Internet (http://www.isoc.org/internet/history/brief.shtml)].
+**HTML
+HTML is a text formatting language.  To change the style or layout of text, you use tags: <b>_some bold text_</b>.  Here are some more tags[Note: I am aware that the current HTML specifications do not recommend some of these tags.]:
+	*<i>''italics''</i>
+	*<center></center>
+	*<br>
+	*<p>
+	*<a href=http://myhomepage.com/myhomepage.html>[click here to visit my homepage! (http://slashdot.org)]</a>
+	*<img src=http://url.to.an.image/>
+
+In order to do online programming, you need to know at least some basic HTML.  If you're not yet comfortable with HTML, please take some time to learn the basics.  These sites may be helpful:
+	* [NCSA HTML Primer (http://archive.ncsa.uiuc.edu/General/Internet/WWW/HTMLPrimerPrintable.html)]
+	* [The Bare Bones Guide to HTML (http://werbach.com/barebones/)]
+	* [HTML Goodies (http://www.htmlgoodies.com/)]
+	* Or, if you're ready to move on to more advanced web design, take a look at XHTML.
+		* [XHTML Tutorial (http://www.w3schools.com/xhtml/default.asp)]
+
+*Online Content Delivery
+What really happens when you request a webpage?
+	#. You enter a URL (Uniform Resource Locator) into your web browser, for example:
+		*''http://andrew.absurdlycool.com/class/''
+	#. Your computer looks up the numerical IP address associated with the URL's ''host'' or ''authority''[Note: No, I didn't know this either.  Thanks [Wikipedia (http://en.wikipedia.org/wiki/URL#Generic_URI_syntax)]!].
+		*''165.82.36.1''
+	#. Your web browser sends out a request to the server at the IP address.  Here we see that the web browser is a ''client'' connecting to a ''server''.
+	#. The web server responds with an HTTP header followed by the contents of the requested file/resource located at ''path'', in this case ''/perl/''.
+	#. Your web browser displays the text, image, movie, or HTML document returned by the web server.  In the case of an HTML document, your web browser parses the HTML and displays a formatted document.
+
+
+You can request any sort of content with a HTTP request and a URL, so we can write a program that runs on the remote server and returns special, customized information instead of a flat, constant page!  This is online programming!
+
+*UNIX!
+Before we can go further into online programming, we need to review one more topic: the UNIX operating system.  UNIX is a multiuser operating system with many variations, such as Linux, and now parts of Mac OS X.  (See [Wikipedia (http://en.wikipedia.org/wiki/Unix)] for an overview of the history of UNIX.)  For this class, you will all be getting access to your own UNIX shell accounts.  In the other weekly session of this class we will discuss setting up this account and using cPanel to maintain it.  Here, I will just briefly introduce the shell, which is how we will be interacting with UNIX.
+**The Command Line
+In the beginning was the command line[Note: Apologies/props to Neal Stephenson.  Checkout an [updated version of his classic work (http://home.earthlink.net/~android606/commandline/index.html)].].  The command line is a method of interacting with a computer through textual input.  The command line or shell acts as an interpreter between you and the computer.  (Technically, the command line and a 'shell' are slightly different, but I'm going to be using them interchangeably.)  If you've ever used DOS or a UNIX shell, you've used a command line.  Your modern desktop system uses a Graphical User Interface (or GUI), which is pretty and often intuitive, but many would argue, not as efficient a method of human-computer interaction as a command line.  After using a command line for a while, you may see why.
+**SSH
+In order to connect to your UNIX shell, you will be using a program called ''SSH'' (Secure SHell).  SSH uses encryption to protect our data and passwords.  On Windows, use [putty (http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html)], a free SSH client.  Make sure to select SSH, not telnet, in the putty window, and connect to ''<username>.people.haverford.edu''.  On Mac OS X, open up the Terminal (in Applications/Utilities), and type:
+^<<Filter
+ssh ''username''@''username''.people.haverford.edu
+^>>
+
+
+Since we've been talking about clients and servers, it's good to point out what SSH is actually doing.  The SSH client on your computer is connecting over the internet to a SSH server running on a computer at ACC.  The client and server negotiate using cryptography to verify your username and password, and to allow you to gain access to a UNIX shell on the remote machine.  Commands that you type into your SSH client are encrypted, sent to the remote machine, decrypted, and executed in the shell, allowing you to run programs, view and edit files, etc., on the remote machine.
+**UNIX Commands
+After connecting via SSH, you will be presented with a UNIX prompt, for example:
+^<<
+ssh acantino@acantino.people.haverford.edu
+acantino@acantino.people.haverford.edu's password:
+-jailshell-2.05b$
+^>>
+At this point you have accessed a UNIX shell.  From here, you can run programs on the remote machine.  Most UNIX programs run on the command line, taking input from either you or other programs, and spitting their output back to the command line.  Here are some examples:
+	[pwd] Print working directory
+^<<
+-jailshell-2.05b$ pwd
+/home/acantino
+-jailshell-2.05b$
+^>>
+	[ls] List files in current directory
+^<<
+-jailshell-2.05b$ ls
+aft-5.094  bin  mail  public_ftp  public_html  share  tmp  www
+-jailshell-2.05b$
+^>>
+	[cd <directoryname>] change directory
+^<<
+-jailshell-2.05b$ cd public_html
+-jailshell-2.05b$ ls
+cgi-bin  email.jpg  index.aft  index.aft-TOC  index.html  perl  scgi-bin  talk
+-jailshell-2.05b$
+^>>
+	[cd ..] move back a level in the directory hierarchy
+	[less <filename>] view the contents of a file
+	[exit] end your connection to the shell
+	[clear] clear the screen
+	[rm <filename>] remove a file -- careful, UNIX doesn't ask questions!
+While you're at the shell, you'll probably want to edit some files.  Here are some file editor programs that you can run from the command line:
+	[pico <filename>] a very simple and easy-to-use editor
+	[emacs <filename>] a popular and powerful text editor
+	[vim <filename>] an extremely advanced and powerful text editor with a vertical learning curve
+
+
+As you can see, to pass parameters (configuration options) to a UNIX program on the command line, you pass them after the name of the program.  For example, |cd /home/acantino| passes |/home/acantino| to the |cd| command.  Some commands take more than one parameter[Note: Parameters are also called arguments.].  In general, commands are of the form:
+	<command> <options> <arg1> <arg2> ... <argN>
+|<options>| is usually either |-| followed by a list of characters or a list of options that look like |--<option> <value>| or |--<option>=<value>|.  Different programs take different options in different formats.  Use the |man| command to find out more.  See [Learn more commands].  Here are a few examples:
+	[ls -la] The |-l| option causes |ls| to list the files in long format.  The |-a| option means "include directory entries whose names begin with a dot (.)"  Try it.
+	[lynx --help] The |lynx| program is a text-based web browser.  The |--help| option does what it says -- it displays a help screen.
+	[mv oldfile newfile] The |mv| command moves and renames |oldfile| to |newfile|, replacing |newfile| if it exists.
+	[tar -cf public\_html.tar public\_html/] The program |tar| is used to combine directories and files into a single file for archival.  The |-c| option causes |tar| to create a new archive, |-f| tells tar to use a file for the archive, and the last two options tell |tar| to call the new ''tarball'' |public\_html.tar| and to use |public\_html| as the source to be ''tarred''.
+
+** Tab Completion
+A useful little side note: when you're in the UNIX shell, you can use <TAB>-completion to save yourself time.  Start to type the name of a command or file, hit tab, and if you've given the shell enough information, it'll fill in the rest.  If there are multiple possibilities, hit <TAB> twice and the shell will list them for you.
+
+Another trick: to reuse a command that you recently typed, hit the ''up'' arrow on the keyboard.  This lets you access your command history.
+
+** UNIX File Structure
+Files in UNIX are organized into a directory structure much like those on your personal computer.  A UNIX file ''path'' is the directory traversal needed to get to a particular location.  For example, your ''home directory'', where you start when you login to your shell, is located at |/home/<your username>/|.  The |/|'s separate the directories.  |/| is the ''root'' of the file system.  If we |cd /|, we change directory to the file system root.  If we then |ls|, we see:
+^<<
+-jailshell-2.05b$ ls
+bin  checkvirtfs  dev  etc  home  lib  proc  tmp  usr  var
+^>>
+These files and directories are part of the UNIX system.  The only ones we really care about are |/home/| where all of the system's users keep their home directories, and |/bin/| where useful programs are stored.  Use |cd| to move around the directory structure, |ls| to list the files in your current directory, and |pwd| to show you where you are.
+^<<
+-jailshell-2.05b$ cd /
+-jailshell-2.05b$ ls
+bin  checkvirtfs  dev  etc  home  lib  proc  tmp  usr  var
+-jailshell-2.05b$ cd home
+-jailshell-2.05b$ pwd
+/home
+-jailshell-2.05b$ cd acantino
+-jailshell-2.05b$ pwd
+/home/acantino
+-jailshell-2.05b$ ls
+bin  mail  public_ftp  public_html  public_html.tar  tmp  www
+^>>
+You can also jump directly to any directory by using it's full path.
+^<<
+cd /home/acantino/public_html/
+^>>
+
+*A Simple Webpage
+Lets try editing a file to make a simple web page!  First, connect using SSH.  If you're using Linux or OS X, you should see something like the following, substituting your username for ''acantino''.  If you're using Windows, connect with Putty.
+
+^<<
+ssh acantino@acantino.people.haverford.edu
+acantino@acantino.people.haverford.edu's password: 
+-jailshell-2.05b$ cd public_html                #Only files in the public_html
+                                                # directory are web-accessible.
+-jailshell-2.05b$ ls                            #There isn't anything in this
+                                                # directory yet!
+-jailshell-2.05b$ pico index.html               #The index.html file is shown by
+                                                # default when you view this
+                                                # directory in a web browser.
+^>>
+
+The lines starting with |#| are my comments.  Now you will be in pico, a simple file editor.  Type:
+^<<
+<html><head><title>My webpage!</title></head>
+<body>
+<p align=center>This is my webpage!</p> 
+</body></html>
+^>>
+Then type ^x (hold down the ''control'' key and hit x), hit the ''y''-key to save your changes, and hit return to accept the filename of ''index.html''.  You should now be back at the shell.  Now, typing ''ls'' should show the file we've made.
+^<<
+-jailshell-2.05b$ ls
+index.html
+-jailshell-2.05b$ 
+^>>
+Congratulations!  You've used the UNIX shell.  Try accessing your webpage by going to |http://username.people.haverford.edu/|.  When you're done, exit the shell with the |exit| command.
+* The public\_html directory
+When you entered |cd public\_html|, you ''changed directory'' into the |public\_html| directory.  This directory is special because it is the ''base'' of your website.  Any file that you put here will have the URL:
+^<<
+http://username.people.haverford.edu/file
+^>>
+If you want to make something available on the web, it must be in |public\_html| or a sub-directory of |public\_html|.
+
+---------
+
+* Suggested Assignments
+In order to learn anything new, especially something involving computers, you need to try it for yourself.  I recommend you try some of the following assignments.
+**Learn more commands
+Login to your UNIX shell and try learning about some more UNIX commands.  The |man| program will display a manual page for most UNIX commands.  For example, lets look up the |mv| command:
+^<<
+-jailshell-2.05b$ man mv
+MV(1)                                 FSF                                MV(1)
+
+NAME
+       mv - move (rename) files
+
+SYNOPSIS
+       mv [OPTION]... SOURCE DEST
+       mv [OPTION]... SOURCE... DIRECTORY
+       mv [OPTION]... --target-directory=DIRECTORY SOURCE...
+
+DESCRIPTION
+       Rename SOURCE to DEST, or move SOURCE(s) to DIRECTORY.
+...
+...
+^>>
+
+Try reading about the following commands:
+	* mkdir
+	* rmdir
+	* exit
+	* man
+	* who
+	* whoami
+	* cat
+	* sort
+	* ps
+	* jobs
+	* kill
+I also found a good [UNIX command reference card here (http://www.indiana.edu/~uitspubs/b017/)].
+**Use UNIX and HTML to make a website
+Now that you've made a single |index.html| file using HTML and UNIX command line tools, you can make as large a site as you want.  Go back to your shell, |cd public_html|, and make some more pages using one of the UNIX file editors.
+
+---------
+
+[Back to Course Index (:.)]

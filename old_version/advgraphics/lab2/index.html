@@ -1,0 +1,155 @@
+<html><head><title>Advanced Computer Graphics: Lab 2</title>
+<LINK REL=StyleSheet HREF="../graphics.css" TYPE="text/css">
+</head>
+<body bgcolor=white text=black>
+<center><font size=+2><b>Lab 2: Adding NPR Snow to Existing Images</b><br>
+<font color=blue>Andrew Cantino</font></font></center>
+<p>
+<div style="margin: 5px;">
+In this lab for <A href=http://palantir.swarthmore.edu/maxwell/classes/e126/S05/>Advanced Computer Graphics</a>, I continue exploring Cocoa and use Computer Vision techniques to add snow effects to existing images and line drawings.
+</div>
+<p>
+<b>Sections:</b>
+<ul>
+<li><a href="#cocoa">Cocoa Continued</a>
+<li><a href="#first">A First Attempt</a>
+<li><a href="#second">A New Approach</a>
+<li><a href="#downloads">Downloads!</a>
+</ul>
+<p>
+<div class="newsitem">
+<a name="cocoa"></a>
+<div class="newsitem_title">Cocoa Continued</div><p>
+<b>A GUI</b><br>
+I started this lab by continuing my exploration of the <a href="http://developer.apple.com/cocoa/">Cocoa</a> programming language.  I created an interface using an instance of <a href="http://developer.apple.com/documentation/Cocoa/Reference/ApplicationKit/ObjC_classic/Classes/NSImageView.html">NSImageView</a>, combined with some hacked up Cocoa code to load, save, and display images (of any of the built-in known OS X image formats).  Here is a capture of my lab's basic interface:<br>
+<center>
+<table border=0 width=100%><tr>
+<td valign=top><p align=center><a href=interface.jpg><img src=interface.jpg border=0></a>
+<br>
+<i>Screenshot of the Lab2 interface.</i></p>
+</td></tr></table>
+</center><p>
+<b>Effects Class</b><br>
+I created an <i>effect</i> class that takes an <a href="http://developer.apple.com/documentation/Cocoa/Reference/ApplicationKit/ObjC_classic/Classes/NSImage.html">NSImage</a>, converts it to an array of Pixels (or unsigned chars if it's a grayscale image), and applies an arbitrary filter to the data before returning a new <a href="http://developer.apple.com/documentation/Cocoa/Reference/ApplicationKit/ObjC_classic/Classes/NSImage.html">NSImage</a>.  Additionally, the <i>effects</i> class contains a message (Cocoa uses a construction called <a href="http://www.macdevcenter.com/pub/a/mac/2001/05/04/cocoa.html">messages</a>, but they are basically class methods) to perform arbitrary convolutions given a grayscale image of any size and a convolution filter of any size.  I use this basic <i>effects</i> class as a parent class for my actual effects, as it provides the basic structures needed for many different types of image-based effects.
+</div>
+<p>
+<a name="first"></a>
+<div class="newsitem">
+<div class="newsitem_title">A First Attempt</div>
+My goal for this lab was to add 'snow' to existing images or line drawings in a stylized way.  My first idea was to use particles as 'snow' that stick to each other and edges of the image, so I needed a way to find edges.<p>
+<b>Finding Edges</b><br>
+To find edges, I used the magnitude of the <a href="http://www.cee.hw.ac.uk/hipr/html/sobel.html">Sobel gradient operator</a>, defined as <code>M = sqrt(Sx^2 + Sy^2)</code> where <code>Sx</code> is the Sobel gradient in the x direction, and <code>Sy</code> is the Sobel gradient in the y direction.  Both the Sobel X and Sobel Y are applied as convolutions to the image and represent the image's 'gradient' in their respective directions.  Edges in an image will have large local net gradients, and so will have large Sobel magnitudes.  To generate an edge image, simply apply a threshold to the Sobel magnitude image.  Here are a few examples:<br>
+<center>
+<table border=0 width=100%><tr>
+<td valign=top><p align=center><img src=cln1.gif border=0><br><i>Original Image <font size=-1>(<a href="http://www.cee.hw.ac.uk/hipr/html/sobel.html">source</a>)</font></i></p>
+</td>
+<td valign=top><p align=center><img src=edges.gif border=0><br><i>Sobel Edge Image</i></p>
+</td>
+</tr>
+<td valign=top colspan=2><p align=center><img src=realTree.jpg border=0><br><i>Original Image</i></p>
+</td></tr><tr>
+<td valign=top colspan=2><p align=center><img src=realTreeEdges.gif border=0><br><i>Sobel Edge Image</i></p>
+</td>
+</tr>
+</table>
+</center>
+<p>
+<b>Adding Particle Snow</b><br>
+Next, I tried adding particle-based snow.  I created random 'snow' particles at the top of the image and let them fall down the image, one pixel per iteration, without acceleration.  At each iteration, if the next pixel below the snow particle was either an edge pixel or a previously 'settled' snow pixel, then the current snow particle would be added to the image as a 'settled' snow pixel, and the particle would be removed.  As you can see from the following example images, this technique looks okay on some images, but generally gives poor results.  In general, images look weird because edges higher in the image shield lower edges from snow.  Images that show very little three-dimensionality (like the better example below) look a bit better, but still look strange.<br>
+<center>
+<table border=0 width=100%><tr>
+<td valign=top><p align=center><img src=realTreeSnow.jpg border=0><br><i>Example of Added Particle Snow</i></p>
+</td>
+<td valign=top><p align=center><img src=realTree2Snow.jpg border=0><br><i>Better Looking Example</i></p>
+</td>
+</tr>
+<td valign=top><p align=center><img src=realTree3Snow.jpg border=0><br><i>Third Example</i></p>
+</td>
+<td valign=top><p align=center><img src=oddBug.jpg border=0><br><i>An Odd Bug</i></p>
+</td>
+</tr>
+</table>
+</center>
+<p>
+I also tried applying this technique to hand-drawn line images, with mixed results:<br>
+<center>
+<table border=0 width=100%><tr>
+<td valign=top><p align=center><img src=trees.jpg border=0><br><i>My Beautiful Original</i></p>
+</td>
+<td valign=top><p align=center><img src=treesWithBlueSnow.jpg border=0><br><i>Now with Blue Snow</i></p>
+</td>
+</tr>
+<td valign=top colspan=2><p align=center><img src=treesWithEdges.jpg border=0><br><i>With Edges Highlighted in Red</i></p>
+</td></tr>
+</table>
+</center>
+</div>
+<p>
+<a name="second"></a>
+<div class="newsitem">
+<div class="newsitem_title">A New Approach</div><p>
+While watching the snow fall in the GUI was fun, I didn't really like these results, so I tried a new approach.  I realized that what I really wanted to do was deposit 'snow,' in varying quantities, on the tops of all edges in the image.  These edges are indicated (in my arrangement) by large positive values of Sobel Y, so I experimentally developed the following algorythm:
+<pre><b>until</b> the user likes the image:
+          pick a random pixel (x, y)
+          <b>if</b> Sy(x, y + 1) is greater than a threshold
+              <b>or if</b> the three pixels [(x, y + 1), (x - 1, y + 1), (x + 1, y + 1)] are all <i>snow</i>
+              <b>or if</b> (x, y + 1) is <i>snow</i> <b>and</b> a 1/5 random chance is met, <b>then</b>
+                    mark this pixel, (x, y), as <i>snow</i>
+                    <b>if</b> a 1/20 random chance is met, <b>then</b>
+                              mark (x + 1, y) as <i>snow</i>
+                    <b>if</b> a 1/20 random chance is met, <b>then</b>
+                              mark (x - 1, y) as <i>snow</i>
+</pre>
+Basically, this deposits snow in four heuristical ways.  <i>One</i>, snow is deposited above high-gradient edge pixels.  <i>Two</i>, snow is deposited above sets of three collinear-in-x pixels, which causes snow to 'pile up' in pyramid-shaped forms.  <i>Three</i>, snow is deposited above other snow pixels 1/5 of the time, to make sure that piles aren't too pyramidal.  <i>Four</i>, snow is deposited to the right and left of snow being added 1/20th of the time, again to avoid too regular piles.<p>
+I think this method works much better.  Here are some results:<br>
+<center>
+<table border=0 width=100%><tr>
+<td valign=top><p align=center><img src=snowMethod2-3.jpg border=0><br><i>Without Pyramidal Piling</i></p>
+</td>
+<td valign=top><p align=center><img src=snowMethod3-4.jpg border=0><br><i>With Pyramidal Piling</p>
+</td></tr><tr>
+<td valign=top colspan=2><p align=center><img src=snowMethod3-5.jpg border=0><br><i>Another Example</i></p>
+</td>
+</tr></table>
+</center>
+<p>
+Here are some examples with different (decreasing) cutoff thresholds:<br>
+<center>
+<table border=0 width=100%><tr>
+<td valign=top><p align=center><img src=scene_threshold3.jpg border=0></p></td>
+</tr><tr>
+<td valign=top><p align=center><img src=scene_threshold2.jpg border=0></p></td>
+</tr><tr>
+<td valign=top><p align=center><img src=scene_threshold1.jpg border=0></p></td>
+</tr><tr>
+<td valign=top><p align=center><img src=scene_threshold_low.jpg border=0></p></td>
+</tr></table>
+</center>
+<p>
+And here is a sequence of images going from less to more iterations of the algorithm:<br>
+<center>
+<table border=0 width=100%><tr>
+<td valign=top><p align=center><img src=iter1.jpg border=0></p></td>
+<td valign=top><p align=center><img src=iter2.jpg border=0></p></td>
+</tr><tr>
+<td valign=top><p align=center><img src=iter3.jpg border=0></p></td>
+<td valign=top><p align=center><img src=iter4.jpg border=0></p></td>
+</tr><tr>
+<td valign=top><p align=center><img src=iter5.jpg border=0></p></td>
+<td valign=top><p align=center><img src=iter6.jpg border=0></p></td>
+</tr></table>
+</center>
+</div>
+<p>
+<div class="newsitem">
+<a name="downloads"></a>
+<div class="newsitem_title">Downloads!</div><p>
+<ul>
+<li><a href="lab2.dmg">lab2.dmg</a> (Compiled version for Mac OS X, 78K)
+</ul>
+</div>
+<p>
+<p align=left><font size=-1>[<a href=../index.html>Back to Lab Index</a>]</font>
+</p>
+</body></html>
+

@@ -1,0 +1,505 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title>Files and CGI in Perl </title>
+	<meta name="author" content="Andrew Cantino">
+	<meta name="GENERATOR" content = "Almost Free Text v5.094; Copyright 1996-2004 Todd Coram. All rights reserved.">
+<style type="text/css">
+  <!--
+html { background: #eee; color: #000; }
+
+body { background: #eee; color: #000; margin: 0; padding: 0;}
+
+div.body {
+	background: #fff; color: #000;
+	margin: 0 1em 0 1em; padding: 1em;
+	font-family: serif;
+	font-size: 1em; line-height: 1.2em;
+	border-width: 0 1px 0 1px;
+	border-style: solid;
+	border-color: #aaa;
+}
+
+div.block {
+	background: #F8F8FF; color: #000;
+	margin: 1em; padding: 0 1em 0 1em;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #909090;
+}
+
+table {
+	background: #F8F8F8; color: #000;
+	margin: 1em;
+	border-width: 0 0 0 1px;
+	border-style: solid;
+	border-color: #C0C0C0;
+}
+
+td {
+	border-width: 0 1px 1px 0;
+	border-style: solid;
+	border-color: #C0C0C0;
+}
+
+th {
+	background: #F8F8FF;
+	border-width: 1px 1px 2px 0;
+	border-style: solid;
+	border-color: #C0C0C0;
+}
+
+
+/* body text, headings, and rules */
+
+p { margin: 0; text-indent: 0em; margin: 0 0 0.5em 0 }
+
+h1, h2, h3, h4, h5, h6 {
+	color: #206020; background: transparent;
+	font-family: Optima, Arial, Helvetica, sans-serif;
+	font-weight: normal;
+}
+
+h1 { font-size: 1.69em; margin: 1.4em 0 0.4em 0; }
+h2 { font-size: 1.44em; margin: 1.4em 0 0.4em 0; }
+h3 { font-size: 1.21em; margin: 1.4em 0 0.4em 0; }
+h4 { font-size: 1.00em; margin: 1.4em 0 0.4em 0; }
+h5 { font-size: 0.81em; margin: 1.4em 0 0.4em 0; }
+h6 { font-size: 0.64em; margin: 1.4em 0 0.4em 0; }
+
+hr {
+	color: transparent; background: transparent;
+	height: 0px; margin: 0.6em 0;
+	border-width: 1px ;
+	border-style: solid;
+	border-color: #999;
+}
+
+/* bulleted lists and definition lists */
+
+ul { margin: 0 1em 0.6em 2em; padding: 0; }
+li { margin: 0.4em 0 0 0; }
+
+dl { margin: 0.6em 1em 0.6em 2em; }
+dt { color: #206020; }
+
+tt { color: #602020; }
+
+/* links */
+
+a.link {
+	color: #33c; background: transparent;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #000; background: transparent;
+}
+
+body > a {
+	font-family: Optima, Arial, Helvetica, sans-serif;
+	font-size: 0.81em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	color: #206020; background: transparent;
+	font-family: Optima, Arial, Helvetica, sans-serif;
+	font-weight: normal;
+}
+
+  -->
+</style>
+</head>
+<body>
+<div class="body">
+
+<br><center><h1><a name="AFT-top">Files and CGI in Perl </a></h1></center>
+<br><center><h2>Andrew Cantino</h2></center>
+<center><img src="email.jpg" alt="" align=bottom></center><br clear=all>
+<center><img src="camel.gif" alt="" align=bottom></center><br clear=all>
+<hr>
+<!--  AFT Table of Contents (auto generated) -->
+<ul>
+<li> <a class="link" href="#Introduction">Introduction</a></li>
+<li> <a class="link" href="#Files">Files</a></li>
+<ul>
+<li> <a class="link" href="#An Example">An Example</a></li>
+<li> <a class="link" href="#File Modes">File Modes</a></li>
+</ul>
+<li> <a class="link" href="#CGI">CGI</a></li>
+<ul>
+<li> <a class="link" href="#Taint Checking">Taint Checking</a></li>
+<li> <a class="link" href="#Objects">Objects</a></li>
+<li> <a class="link" href="#CGI Headers">CGI Headers</a></li>
+<li> <a class="link" href="#The body of the script">The body of the script</a></li>
+</ul>
+<li> <a class="link" href="#UNIX Permissions for CGI Scripts">UNIX Permissions for CGI Scripts</a></li>
+<li> <a class="link" href="#Links.cgi script">Links.cgi script</a></li>
+<ul>
+<li> <a class="link" href="#HTML Forms">HTML Forms</a></li>
+</ul>
+<li> <a class="link" href="#The Perl script">The Perl script</a></li>
+<li> <a class="link" href="#Suggested Assignments">Suggested Assignments</a></li>
+<ul>
+<li> <a class="link" href="#Write a CGI script of your own!">Write a CGI script of your own!</a>
+
+</li>
+</ul>
+</ul>
+<hr>
+<!-- Start SectLevel1 -->
+
+<center>
+<script type="text/javascript"><!--
+google_ad_client = "pub-3067017907226343";
+google_ad_width = 728;
+google_ad_height = 90;google_ad_format = "728x90_as";google_ad_type = "text"; google_ad_channel ="6334296398";
+google_color_border = "FFFFFF";
+google_color_bg = "FFFFFF";
+google_color_link = "0000FF";
+google_color_url = "008000";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+    </script>
+      </center>
+
+<h2><a name="Introduction">Introduction</a></h2>
+<p class="Body">
+Last time we were introduced to Perl and some basic Perl programming.  Now lets learn about files and online CGI scripts.
+</p>
+<!--End Section 1-->
+<h2><a name="Files">Files</a></h2>
+<!-- Start SectLevel2 -->
+<h3><a name="An Example">An Example</a></h3>
+<div class="block"><pre>
+$filename = &quot;/home/acantino/testfile&quot;;
+open(FILE, &quot;$filename&quot;) || die(&quot;Unable to open $filename: $!\n&quot;);
+$firstLine = &lt;FILE&gt;;
+$secondLine = &lt;FILE&gt;;
+@theRest = &lt;FILE&gt;;
+close(FILE);
+chomp($firstLine);
+chomp($secondLine);
+print &quot;The first line of the file is: $firstLine\n&quot;;
+print &quot;And the second line is: $secondLine\n&quot;;
+print &quot;Here is the rest of the file:\n&quot;;
+foreach $line (@theRest) {
+     chomp($line);
+     print &quot;$line\n&quot;;
+}
+</pre></div>
+<p class="Body">
+I put the following in <em>testfile</em>:
+<div class="block"><pre>
+some first text
+some second text
+some more
+and more
+and the end of the file!
+</pre></div>
+Script <strong>Output:</strong>
+<div class="block"><pre>
+The first line of the file is: some first text
+And the second line is: some second text
+Here is the rest of the file:
+some more
+and more
+and the end of the file!
+</pre></div>
+</p>
+<ul>
+<li> <tt>open(FILE, &quot;$filename&quot;) || die(&quot;Unable to open $filename: $!\n&quot;);</tt> opens a file.  The <tt>FILE</tt> tag is called a file handle and can be any string, all caps by convention.  We will use other names for file handles later, especially if we need more than one.  The file that is opened is <tt>$filename</tt>, which in this case has been set to <tt>/home/acantino/testfile</tt>.</li>
+<li> The <tt>|| die...</tt> clause is used to catch an error.  If <tt>open()</tt> returns an error, then the <tt>die()</tt> command will be executed<a name="REFfNOTE1">&nbsp</a><sup><a class="link" href="#fNOTE1">1</a></sup>.  The <tt>die()</tt> command prints out the string that you pass to it, and then quits the program.  The <tt>$!</tt> variable is a special Perl variable that contains the last error message.  Printing <tt>$!</tt> is useful for debuging your program.</li>
+<li> To read a line from a file, do <tt>$variable = &lt;FILEHANDLE&gt;;</tt>.  To read (the remaining contents) of a file into an array, do <tt>@array = &lt;FILEHANDLE&gt;;</tt>.  Notice that this is identical to how we accessed the <tt>STDIN</tt> input file handle before.</li>
+<li> When you're done with a file, remember to <tt>close(FILEHANDLE);</tt>.</li>
+</ul>
+<!--End Section 2-->
+<h3><a name="File Modes">File Modes</a></h3>
+<p class="Body">
+You can open a file in a few different modes.  Here's a demonstration:
+<div class="block"><pre>
+$filename = &quot;countfile&quot;;
+open(INPUT, &quot;$filename&quot;) || die(&quot;Unable to open $filename for reading: $!\n&quot;);
+$data = &lt;INPUT&gt;;
+close(INPUT);
+open(OUTPUT, &quot;&gt;$filename&quot;) || die(&quot;Unable to open $filename for output: $!\n&quot;);
+print OUTPUT ($data + 1);
+close(OUTPUT);
+</pre></div>
+</p>
+<ul>
+<li> This example is a counter.  Everytime you run it, the number in <tt>countfile</tt> goes up by one.  This could be easily turned into a visiter counter for your webpage.</li>
+<li> As the example shows, to open a file for output, you open is as <tt>&quot;&gt;filename&quot;</tt><a name="REFfNOTE2">&nbsp</a><sup><a class="link" href="#fNOTE2">2</a></sup>.  The <tt>&gt;</tt> is the output mode.</li>
+<li> To open a file for input you just open it as <tt>&quot;filename&quot;</tt>, for output (<strong>overwrites the file without asking!</strong>) you open as <tt>&quot;&gt;filename&quot;</tt>, and for appending (or adding a line to the end of the existing file) use <tt>&quot;&gt;&gt;filename&quot;</tt>.</li>
+<li> To print to a file, use <tt>print FILEHANDLE &quot;string&quot;;</tt><a name="REFfNOTE3">&nbsp</a><sup><a class="link" href="#fNOTE3">3</a></sup></li>
+</ul>
+<!--End Section 2-->
+<!-- End SectLevel2 -->
+<!--End Section 1-->
+<h2><a name="CGI">CGI</a></h2>
+<ul>
+<li> CGI (or <a class="link" href="http://hoohoo.ncsa.uiuc.edu/cgi/intro.html">Common Gateway Interface</a>) scripts are used to make dynamic content for webpages, such as <a class="link" href="http://go.haverford.edu">Go</a> or <a class="link" href="http://google.com">Google</a>.</li>
+<li> A CGI script is run just like you would any webpage, by going to it's URL; for example, we will be working with a script called date.cgi that can be found <a class="link" href="date.cgi">here</a>.  When you go to this URL, the webserver will detect that you are asking for a CGI script.  Instead of returning the text of the script, it will actually run the script and return to you whatever the script outputs.</li>
+<li> Here is the date CGI:</li>
+</ul>
+<div class="block"><pre>
+#!/usr/bin/perl -T
+$ENV{'PATH'} = '/bin:/usr/bin:/usr/local/bin';
+use CGI;
+$c = new CGI;
+print $c-&gt;header();
+print &quot;&lt;html&gt;&lt;head&gt;&lt;title&gt;My first script!&lt;/title&gt;&lt;/head&gt;\n&quot;;
+print &quot;Hello, this is my first CGI script!&lt;br&gt;\n&quot;;
+$date = `/bin/date`;
+chomp($date);
+print &quot;The date is: $date\n&quot;;
+print &quot;&lt;/body&gt;&lt;/html&gt;&quot;;
+</pre></div>
+<p class="Body">
+This script can be found online <a class="link" href="date.cgi">here</a>.  There's a bunch of new stuff here, so lets go through it slowly.
+</p>
+<!-- Start SectLevel2 -->
+<h3><a name="Taint Checking">Taint Checking</a></h3>
+<p class="Body">
+We've slightly modified the shebang line, including a new <tt>-T</tt> option.  Options included at the end of the shebang line are passed to perl when the script is run.  The <tt>-T</tt> option is <em>taint checking</em>, and is a very important security precaution for CGI scripts.  I will discuss Perl/CGI security and taint checking on Thursday.
+</p>
+<p class="Body">
+The <tt>$ENV{'PATH'}...</tt> line is also part of our taint checking, and will be explained on Thursday.  Basically, it updates the <tt>PATH</tt> environmental variable to make sure that it is secure.
+</p>
+<!--End Section 2-->
+<h3><a name="Objects">Objects</a></h3>
+<p class="Body">
+The <tt>use</tt> command tells Perl to use an external library of code.  We've used the external <tt>CGI</tt><a name="REFfNOTE4">&nbsp</a><sup><a class="link" href="#fNOTE4">4</a></sup> library, which provides some useful code for writing CGI scripts.  <tt>CGI</tt> is a <em>package</em>, which Perl treats like an <em>object</em>.  Perl, like most modern programming languages, is <em>object-oriented</em>, meaning that you can create data structures called <em>objects</em> that encapsulate other data structures and functions.  I'm not really going to teach object-oriented programming in this class, but we will be using a small amount of it here.  All you need to know is that <tt>$c = new CGI;</tt> creates a new instance of a <tt>CGI</tt> object and puts it in $c.  Once we have an instance of an object, we can access data and functions contained within it via the <tt>-&gt;</tt> operator.
+</p>
+<!--End Section 2-->
+
+<center>
+<script type="text/javascript"><!--
+google_ad_client = "pub-3067017907226343";
+google_ad_width = 728;
+google_ad_height = 90;google_ad_format = "728x90_as";google_ad_type = "text"; google_ad_channel ="6334296398";
+google_color_border = "FFFFFF";
+google_color_bg = "FFFFFF";
+google_color_link = "0000FF";
+google_color_url = "008000";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+    </script>
+      </center>
+
+<h3><a name="CGI Headers">CGI Headers</a></h3>
+<p class="Body">
+When the web server runs a CGI script, the script's output is returned to your web browser.  Therefore, anything we print in our CGI script will end up as part of the page that you see when you go to the script in your web browser.  However, for your browser to understand what it is receiving, we need to send it a <em>Content-type</em> HTTP header before we send any data.  If we don't do this, the web browser won't know whether it's receiving HTML, text, an image, or something else.  We could print the HTTP header like this:
+<div class="block"><pre>
+print &quot;Content-type: text/html\n\n&quot;;
+</pre></div>
+But the <tt>CGI</tt> library provides an easier method.  <tt>$c-&gt;header()</tt> is a function in the <tt>CGI</tt> package that returns an HTTP header as a string.  Therefore, calling <tt>print $c-&gt;header()</tt> prints out that header.  See <a class="link" href="http://stein.cshl.org/WWW/CGI/#header">this site</a> for more <tt>header()</tt> options.
+</p>
+<!--End Section 2-->
+<h3><a name="The body of the script">The body of the script</a></h3>
+<ul>
+<li> After printing the HTTP header, our example prints out some basic HTML.  Remember, the output of the CGI script goes directly to the web browser, so if you want to output a formatted HTML page, you need to print out HTML.</li>
+<li> <tt>$date = `/bin/date`;</tt> uses the <em>backtick</em> operator: <tt>``</tt>.  The backtick operator runs the UNIX shell command between the first and last backticks and returns the command's output.  In this case, we run the <tt>/bin/date</tt> program, and include it's output in the <tt>$date</tt> variable.  You have to be careful when using backticks because they run their contents on the UNIX shell.  On Thursday, we will talk about ways that the backtick can be abused by an attacker to hack your script, and how to avoid this by using taint checking.</li>
+<li> The rest of the CGI script just prints out the date and finishes the HTML.  Pretty simple!</li>
+</ul>
+<!--End Section 2-->
+<!-- End SectLevel2 -->
+<!--End Section 1-->
+<h2><a name="UNIX Permissions for CGI Scripts">UNIX Permissions for CGI Scripts</a></h2>
+<p class="Body">
+If your CGI script runs fine on the UNIX shell (when run with <tt>perl script.cgi</tt>), but gives a server error when accessed over the web, then a number of things could be going wrong:
+<ul>
+<li> First, make sure that you've printed out the HTTP header.</li>
+<li> Second, make sure that you have a correct shebang line:</li>
+</ul>
+<div class="block"><pre>
+#!/usr/bin/perl
+</pre></div>
+<ul>
+<li> Third, make sure that the CGI script has correct file permissions.  As discussed in a previous lesson, the UNIX system has different users and groups.  In many cases, for the web server to be able to run your CGI script, the script needs to be world readable and executable.  You can do this with the <tt>chmod</tt> command:</li>
+</ul>
+<div class="block"><pre>
+chmod 755 scriptname.cgi
+</pre></div>
+</p>
+<!--End Section 1-->
+<h2><a name="Links.cgi script">Links.cgi script</a></h2>
+<p class="Body">
+Now we're going to develop a CGI application.
+</p>
+<!-- Start SectLevel2 -->
+<h3><a name="HTML Forms">HTML Forms</a></h3>
+<p class="Body">
+A really useful CGI script probably needs to be able to take information from the user.  We've all seen online forms that let one fill in information to search, send e-mail, sign a guestbook, or otherwise interact with a website.  We're going to be developing a CGI script to collect links on a webpage.  Lets first build the HTML form:
+<div class="block"><pre>
+&lt;html&gt;&lt;head&gt;&lt;title&gt;Our form!&lt;/title&gt;&lt;/head&gt;
+&lt;body bgcolor=white text=black&gt;
+&lt;center&gt;&lt;b&gt;Our form!&lt;/b&gt;&lt;/center&gt;
+&lt;form method=post action=http://andrew.absurdlycool.com/class/links/links.cgi&gt;
+&lt;input name=mode type=hidden value=1&gt;
+Url Name: &lt;input name=name type=text&gt;&lt;br&gt;
+URL: &lt;input name=url type=text value=&quot;http://&quot;&gt;&lt;br&gt;
+&lt;input type=submit name=submit value=&quot;Submit!&quot;&gt;&lt;/form&gt;
+&lt;p&gt;
+&lt;a href=links.cgi?mode=2&gt;See the list!&lt;/a&gt;
+&lt;/body&gt;&lt;/html&gt;
+</pre></div>
+<a class="link" href="links/">See the form in action</a>.
+<ul>
+<li> The <tt>&lt;form method=post action=http://.../links.cgi&gt;</tt> HTML tag is used to start a form.  The <em>action</em> option specifies the URL of the CGI script.  The <em>method</em> specifies the HTTP method, which can be either <tt>POST</tt> or <tt>GET</tt>.  This form uses the <tt>POST</tt> method.  Notice that there is also a link to the <tt>links.cgi</tt> script at the bottom of our HTML page.  In this link, we use <tt>links.cgi?mode=2</tt>.  This is <tt>GET</tt>.  <tt>GET</tt> is used to send data directly to a script as part of it's URL.  In this case, we've told <tt>links.cgi</tt> that <tt>mode=2</tt> in the URL using <tt>GET</tt>.</li>
+<li> <tt>&lt;input name=url type=text value=&quot;http://&quot;&gt;</tt> is used to create a form input field.  The <tt>name</tt> option specifies the name of the input field, the <tt>type</tt> option specifies the type of the input field (could be <em>text</em>, <em>hidden</em>, <em>password</em>, etc.), and the <tt>value</tt> option specifies a default value for the input field.  We use a hidden input field to set the value of <tt>mode</tt> in the HTML form to <tt>1</tt>.  You will soon see what we use the mode for in the CGI script.</li>
+<li> HTML forms can have many other kinds of elements, such as list boxes, check boxes, pulldown menus, etc.<a name="REFfNOTE5">&nbsp</a><sup><a class="link" href="#fNOTE5">5</a></sup></li>
+</ul>
+</p>
+<!--End Section 2-->
+<!-- End SectLevel2 -->
+<!--End Section 1-->
+
+<center>
+<script type="text/javascript"><!--
+google_ad_client = "pub-3067017907226343";
+google_ad_width = 728;
+google_ad_height = 90;google_ad_format = "728x90_as";google_ad_type = "text"; google_ad_channel ="6334296398";
+google_color_border = "FFFFFF";
+google_color_bg = "FFFFFF";
+google_color_link = "0000FF";
+google_color_url = "008000";
+google_color_text = "000000";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+    </script>
+      </center>
+
+<h2><a name="The Perl script">The Perl script</a></h2>
+<div class="block"><pre>
+#!/usr/bin/perl -T
+$datafile = &quot;/home/acantino/public_html/links/data&quot;;
+$errorLog = &quot;/home/acantino/public_html/links/error&quot;;
+open (STDERR, &quot;&gt;&gt;$errorLog&quot;);
+use CGI;
+$c = new CGI();
+print $c-&gt;header();
+$mode = $c-&gt;param('mode');
+if ($mode == 1) {
+        # Take input
+        $name = $c-&gt;param('name');
+        $url = $c-&gt;param('url');
+        unless ($url =~ m/^http\:\/\/.+?\..+/i) {
+                print &quot;Sorry, that is not a URL!\n&quot;;
+                exit;
+        }
+        if ($name eq &quot;&quot;) {
+                print &quot;Please enter a webpage name!\n&quot;;
+                exit;
+        }
+        open(OUT, &quot;&gt;&gt;$datafile&quot;) || die(&quot;Unable to open $datafile: $!\n&quot;);
+        print OUT $name . '|' . $url . &quot;\n&quot;;
+        close(OUT);
+        print &quot;&lt;html&gt;&lt;head&gt;&lt;title&gt;Thanks&lt;/title&gt;&lt;/head&gt;\n&quot;;
+        print &quot;&lt;body&gt;&lt;center&gt;Thanks!&lt;/center&gt;&lt;/body&gt;&lt;/html&gt;&quot;;
+        exit;
+} elsif ($mode == 2) {
+        print &quot;&lt;html&gt;&lt;head&gt;&lt;title&gt;Our Links!&lt;/title&gt;&lt;/head&gt;\n&quot;;
+        print &quot;&lt;body&gt;&lt;center&gt;Here are some links!&lt;/center&gt;&lt;p&gt;&quot;;
+        open(IN, &quot;$datafile&quot;) || die(&quot;Unable to open $datafile: $!\n&quot;);
+        while($j = &lt;IN&gt;) {
+                chomp($j);
+                ($name, $url) = split(/\|/, $j);
+                print &quot;&lt;a href=\&quot;$url\&quot;&gt;$name&lt;/a&gt;&lt;br&gt;\n&quot;;
+        }
+        close(IN);
+        print &quot;&lt;/body&gt;&lt;/html&gt;&quot;;
+        exit;
+} else {
+        print &quot;Unknown mode!\n&quot;;
+}
+</pre></div>
+<p class="Body">
+Whew!  To see this script in action, go to <a class="link" href="links/">http://andrew.absurdlycool.com/class/links/</a>!  There's a lot going on here, so we'll walk through it step by step.  First of all, can you see what the script does?  It's a place where you can leave links for other people<a name="REFfNOTE6">&nbsp</a><sup><a class="link" href="#fNOTE6">6</a></sup>.  People can submit new links and see what's already there.  Give it a try!
+</p>
+<ul>
+<li> <tt>open (STDERR, &quot;&gt;&gt;$errorLog&quot;);</tt> is a useful trick that redirects <tt>STDERR</tt>, the Standard Error file handle, to an output file of our choosing.  This is useful because we can log any CGI errors to a file instead of to the system error logs, which we may not have access to.  Errors will only be logged if they occur after this line in your program, so it should appear early in your code.  See an explanation <a class="link" href="http://www.pti.co.il/talks/Fundamentals/redirecting_standard_file_handles_from_inside.html">here</a>.</li>
+<li> <tt>$c-&gt;param('name')</tt> accesses the value of the <em>name</em> input field from our HTML form.  Here CGI comes together!  Our form is using <tt>POST</tt>, so when someone fills out the form and hits submit in their browser, the form data is sent to the web server, which passes the data on to our script<a name="REFfNOTE7">&nbsp</a><sup><a class="link" href="#fNOTE7">7</a></sup>.  The Perl CGI library parses the incoming data and makes it available to us via the <tt>param(<em>keyword</em>)</tt> function.</li>
+<li> What does <em>mode</em> do?  I wrote this script to have two modes: mode 1 allows the addition of a new link to the database and mode 2 displays all the links in the datebase.  In the Perl code, I use mode as a switch to decide which types of actions to perform.  If we wanted to do more things, we could always just add more modes!</li>
+<li> The command <tt>unless</tt> is exactly the same as <tt>if (not ...)</tt>.  Recall that <tt>not</tt>, or <tt>!</tt>, is an operator that negates a Boolean expression.  In other words, <tt>unless</tt> is the opposite of <tt>if</tt>.</li>
+<li> The <tt>$url =~ m/^http\:\/\/.+?\..+/i</tt> code is called a <em>regular expression</em> or RegEx.  Regular expressions are extreamly powerful pattern matching tools that we will be covering next week<a name="REFfNOTE8">&nbsp</a><sup><a class="link" href="#fNOTE8">8</a></sup>.  For now, just know that this regular expression returns <em>true</em> if <tt>$url</tt> looks like a URL, and <em>false</em> otherwise.</li>
+<li> The <tt>split(/&#92;|/, $j)</tt> command is a useful one.  It will split a string into an array.  In this case, we are splitting by the pipe (|) character.  It needs a backslash in front of it because the pipe has a special meaning in Perl, but here we only want it to be a character.  Another useful command is <tt>join</tt>.  <tt>join</tt> is the opposite of <tt>split</tt>.  Here is some example code that outputs <em>andrew|bob|tom|ben</em>:</li>
+</ul>
+<div class="block"><pre>
+@array = ('andrew', 'bob', 'tom', 'ben');
+$string = join('|', @array);
+print $string;
+</pre></div>
+<ul>
+<li> <tt>exit</tt> causes the Perl program to quit.</li>
+<li> <tt>while($j = &lt;IN&gt;) {</tt> is some tricky short-hand.  We're using assignment (<tt>=</tt>) instead of comparison (<tt>==</tt> or <tt>eq</tt>) here.  Recall that <tt><em>scalar</em> = &lt;<em>filehandle</em>&gt;</tt> puts the next line of <em>filehandle</em> into <em>scalar</em>.  When a Perl operation succeeds, it returns <em>true</em>.  Therefore, when this is put inside of a <tt>while</tt> loop, the <tt>while</tt> loop will continue as long as data can be read from the file.  The result: the next line of <tt>IN</tt> is assigned to <tt>$j</tt> every time the <tt>while</tt> is executed, and the <tt>while</tt> loop will continue to execute as long as these assignments succeed, because they're always returning <em>true</em>.  This will read the whole file into <tt>$j</tt>, one line at a time.</li>
+</ul>
+<hr>
+<h2>Resources</h2>
+Here are some useful links for further reading:
+<ul>
+<li> <a class="link" href="http://www.lies.com/begperl/">Beginner's Guide to CGI Scripting with Perl</a></li>
+</ul>
+<!--End Section 1-->
+<h2><a name="Suggested Assignments">Suggested Assignments</a></h2>
+<!-- Start SectLevel2 -->
+<h3><a name="Write a CGI script of your own!">Write a CGI script of your own!</a></h3>
+<p class="Body">
+You now know enough to write many kinds of CGI scripts.  Try a simple one first!  Here are a few suggestions:
+<ul>
+<li> A guestbook</li>
+<li> A simple chat page</li>
+<li> A program that tells you when the last visiter (before you) was</li>
+<li> A webpage with a counter</li>
+</ul>
+</p>
+<hr>
+<p class="Body">
+<a class="link" href=".">Back to Course Index</a>
+</p>
+<!--End Section 2-->
+<!-- End SectLevel2 -->
+<!--End Section 1-->
+<!-- End SectLevel1 -->
+<hr>
+<p class="Body">
+<a name="fNOTE1">&nbsp</a>
+[<a class="link" href="#REFfNOTE1">1</a>] - Wow, violent language.
+<br>
+<a name="fNOTE2">&nbsp</a>
+[<a class="link" href="#REFfNOTE2">2</a>] - As will be discussed in the Perl security lesson, it is sometimes advisable to separate the mode and file path: open(FILE, '&gt;', $path)
+<br>
+<a name="fNOTE3">&nbsp</a>
+[<a class="link" href="#REFfNOTE3">3</a>] - Print always takes a filehandle, but the default handle is STDIO, which is the screen.
+<br>
+<a name="fNOTE4">&nbsp</a>
+[<a class="link" href="#REFfNOTE4">4</a>] - <a class="link" href="http://search.cpan.org/~lds/CGI.pm-3.10/CGI.pm">http://search.cpan.org/~lds/CGI.pm-3.10/CGI.pm</a>
+<br>
+<a name="fNOTE5">&nbsp</a>
+[<a class="link" href="#REFfNOTE5">5</a>] - <a class="link" href="http://www.w3.org/TR/REC-html40/interact/forms.html">http://www.w3.org/TR/REC-html40/interact/forms.html</a>
+<br>
+<a name="fNOTE6">&nbsp</a>
+[<a class="link" href="#REFfNOTE6">6</a>] - This is sometimes called a link free-for-all.
+<br>
+<a name="fNOTE7">&nbsp</a>
+[<a class="link" href="#REFfNOTE7">7</a>] - The web server passes the data to us in an environmental variable.
+<br>
+<a name="fNOTE8">&nbsp</a>
+[<a class="link" href="#REFfNOTE8">8</a>] - If you're impatient, look at 'man perlre'.
+<br>
+<br>
+<p align="right"> <small>This document was generated using <a class="link" href="http://www.maplefish.com/todd/aft.html">AFT v5.094</a></small> </p>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-148948-3";
+urchinTracker();
+</script>
+</body>
+</html>
+

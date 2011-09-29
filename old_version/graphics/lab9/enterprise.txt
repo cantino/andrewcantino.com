@@ -1,0 +1,103 @@
+#include "view.h"
+#include <sstream>
+#include <math.h>
+
+using namespace std;
+
+point3D* dish(double u, double v)
+{
+  double x, y, z;
+  double a = 4;
+  double b = 4;
+  double c = 1;
+
+  u = (1 - u) * 2 * 3.1415926;
+  v = v * 3.1415926;
+
+  x = a * cos(u) * sin(v);
+  y = b * sin(u) * sin(v);
+  z = c * cos(v);
+
+  return (new point3D(x, y, z));
+}
+
+point3D* planet(double u, double v)
+{
+  double x, y, z;
+  double a = 4;
+  double b = 4;
+  double c = 4;
+
+  u = (1 - u) * 2 * 3.1415926;
+  v *= 3.1415926;
+
+  x = a * cos(u) * sin(v);
+  y = b * sin(u) * sin(v);
+  z = c * cos(v);
+
+  return (new point3D(x, y, z));
+}
+
+int main() {
+  for (int i = 0; i < 30; i++) {
+    model scene;
+    model ship;
+    paramObject3D *pO3D = new paramObject3D(dish, 1.0 / 20, 1.0 / 20);
+    pO3D->setMaterial(colorVector(.7, .7, .7), colorVector(.8, .8, .8), 48);
+    pO3D->setFlat(true);
+    ship.addItem(pO3D); // Dish
+    ship.addItem(new modelTranslate3D(0, 0, 1.1));
+    ship.addItem(new pointLight(colorVector(1, 1, 0))); // Dish light
+    ship.addItem(new modelMatrixReset());
+    ship.addItem(new modelTranslate3D(6, 0, 0));
+    box3D *body = new box3D(5,2.6,1.5);
+    body->setMaterial(colorVector(.6, .6, .6), colorVector(.8, .8, .8), 48); body->setFlat(true);
+    ship.addItem(body);
+    ship.addItem(new modelMatrixReset());
+    ship.addItem(new modelTranslate3D(6, 0, 0));
+    box3D *nacelleLink = new box3D(1,6,1.2);
+    nacelleLink->setMaterial(colorVector(.5, .5, .5), colorVector(.8, .8, .8), 48);
+    nacelleLink->setFlat(true);
+    ship.addItem(nacelleLink);
+    ship.addItem(new modelMatrixReset());
+    ship.addItem(new modelTranslate3D(7, 3, 0));
+    box3D *nacelle = new box3D(5,1,1);
+    nacelle->setMaterial(colorVector(.5, .5, .5), colorVector(.8, .8, .8), 48);
+    nacelle->setFlat(true);
+    box3D *nacelle2 = new box3D(5,1,1);
+    nacelle2->setMaterial(colorVector(.5, .5, .5), colorVector(.8, .8, .8), 48);
+    nacelle2->setFlat(true);
+    ship.addItem(nacelle);
+    ship.addItem(new modelMatrixReset());
+    ship.addItem(new modelTranslate3D(7, -3, 0));
+    ship.addItem(nacelle2);
+
+    paramObject3D *moon = new paramObject3D(planet, 1.0 / 20, 1.0 / 20);
+    moon->setMaterial(colorVector(.5, .2, .2), colorVector(.7, .7, .7), 48);
+    moon->setFlat(true);
+    scene.addItem(moon); // The planet
+    scene.addItem(new modelMatrixReset());
+    scene.addItem(new modelScale3D(.5));
+    scene.addItem(new modelTranslate3D(0, 10, 0));
+    scene.addItem(new modelRotate3Dz((i/30.0)*2*3.1415));
+    scene.addItem(&ship);
+    scene.addItem(new sunLight(colorVector(1, 1, 1), vector3D(0,0,1)));
+
+    image im = image(500, 500, Pixel(0, 0, 0));
+    view3D v;
+    v.setCamera(point3D(0, 10, 8), point3D(0, -1, -1), point3D(0, 0, 1));
+    v.setProjectionDistance(4);
+    v.setCameraSize(10, 10);
+    v.setClipPlanes(0, 3);
+    v.setAmbientLight(colorVector(75/255.0, 75/255.0, 75/255.0));
+    v.project(scene, im);
+    
+    ostringstream osData;
+    osData.width(2);
+    osData.fill('0');
+    osData.setf(ios::right, ios::adjustfield);
+    osData << i;
+    im.writeImage("../images/lab9-ani4/" + osData.str() + ".ppm");
+  }
+}
+

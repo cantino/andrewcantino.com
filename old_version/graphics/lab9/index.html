@@ -1,0 +1,107 @@
+<html><head><title>Computer Graphics: Lab 9</title>
+<LINK REL=StyleSheet HREF="../graphics.css" TYPE="text/css">
+</head>
+<body bgcolor=white text=black>
+<center><font size=+2><b>Lab 9: Integration</b><br>
+<font color=blue>Will Moss & Andrew Cantino</font></font></center>
+<p>
+<div style="margin: 5px;">
+This is <a href=http://palantir.swarthmore.edu/maxwell/classes/e26/F04/labs/lab09/>lab 9</a> of <a href=
+http://palantir.swarthmore.edu/maxwell/classes/e26/F04>Computer Graphics</a>.  
+In this lab we fully integrate our lighting model into our hierarchical modeling system, then we make some pretty pictures.
+</div>
+<p>
+<b>Sections:</b>
+<ul>
+<li><a href="#api">API</a>
+<li><a href="#images">Images</a>
+<li><a href="#extensions">Extensions</a>
+</ul>
+<p>
+<div class="newsitem">
+<a name="api"></a>
+<div class="newsitem_title">API</div><p>
+We have created an updated API for our graphics environment.  It can be found <a href="../api/hierarchy.html">here</a>.
+</div>
+
+<p>
+
+<div class="newsitem">
+<a name="images"></a>
+<div class="newsitem_title">Images</div><p>
+Interpolating CVV coordinates across our polygons in our z-buffer algorithm turned out to be tricky and we ran into a number of small bugs.  The main bug was that we were not dividing by the correct Z values when we found delta CVV X and Y per scan-line, which generated the following glitching in our images (notice the horizontal lines):<br>
+<center><table border=0><tr><td><center><a href=glitch.gif><img src=glitch-small.gif border=0></a></center></td></tr></table></center><p>
+Once we had all of the bugs worked out, we made the following images:<p>
+
+<center><table border=0 width=100%><tr>
+<td valign=top><center><a href=spacetron.gif><img src=spacetron-small.gif border=0></a>
+<br>
+<i>Space Tron! (a.k.a I think the bee will win) by Will<br>Click for larger version.</i><br>All models from <a href="http://www.3dcafe.com/asp/freestuff.asp">3DCafe.com</a><br><a href="spacetron.cc">View source code.</a></center>
+</td>
+<td valign=top><center><a href=enterprise.gif><img src=enterprise-small.gif border=0></a><br>
+<i>Enterprise orbiting a parameterized tomato! by Andrew<br>
+Click for larger version.<br>
+<a href=enterprise.txt>View source code.</a>
+</i></center>
+</td></tr></table></center>
+
+</div>
+
+<p>
+
+<div class="newsitem">
+<a name="extensions"></a>
+<div class="newsitem_title">Extensions</div><p>
+<b>Shadow Rays</b><br>
+As an extension, we have completed our implementation of shadow rays, started in the <a href=../lab8/>previous lab</a>.  We ironed out a few bugs and made the following pretty example images:<p>
+<center><table border=0 width=100%><tr>
+<td valign=top><center><a href=shadow.gif><img src=shadow-small.gif border=0></a>
+<br>
+<i>Blue light over the bottom right corner of the pyramid,<br>white light above the pyramid.<br>Click for larger version.</i></center>
+</td>
+<td valign=top><center><a href=shadow2.gif><img src=shadow2-small.gif border=0></a><br>
+<i>Blue light orbiting close to the pyramid,<br>white light above the pyramid.<br>Click for larger version.</i></center>
+</td></tr></table></center>
+<p>
+<b>Rendering Parameterized Surfaces</b><br>
+We implemented rendering of parameterized surfaces.  There is a new <i>modelPrimative</i> called <i>paramObject3D</i> that takes a pointer to a function that takes a u and v value and returns a <i>point3D</i>.  Additionally, <i>paramObject3D</i> takes step sizes dU and dV to define the resolution of the parameterized surface to generate.  Here are some example images:<p>
+
+<center><table border=0 width=100%><tr>
+<td valign=top colspan=2><center><a href=torus.gif><img src=torus-small.gif border=0></a>
+<br>
+<i>A torus!</i></center></td>
+</tr><tr>
+<td valign=top><center><a href=morph.gif><img src=morph-small.gif border=0></a>
+<br>
+<i>A superellipsoid!<br>Click for larger version.</i></center></td><td valign=top><center><a href=morph-rotate.gif><img src=morph-rotate-small.gif border=0></a>
+<br>
+<i>A rotating superellipsoid!<br>Click for larger version.</i></center></td>
+</tr></table></center>
+
+<p>
+<b>Polygonal Meshes & Model Loading</b><br>
+We wanted to be able to load ASE models into our modeling system, so we created a polygonal mesh class that can be used for adding arbitrary lists of points and polygonRefs to our model hierarchies.  This makes it easier to create complex models, and gives us a structure to import ASE point and polygon lists into.  We created a library called modelio and added ASE import code.  Here are some fun examples!<p>
+
+<center><table border=0 width=100%><tr>
+<td valign=top><center><a href=fish.gif><img src=fish-small.gif border=0></a>
+<br>
+<i>Mmm, Fish!<br>Model from <a href=http://www.csit.fsu.edu/~burkardt/data/ase/ase.html>this site</a>.<br>Click for larger version.</i></center>
+</td>
+<td valign=top><center><a href=eagle2.gif><img src=eagle2-small.gif border=0></a><br>
+<i>Eagle -- 33,000 triangles.<br>(Source: <a href=http://3dcafe.com/asp/animals.asp>3dcafe.com</a>)<br>Click for larger version.</i></center>
+</td></tr>
+<tr>
+<td valign=top colspan=2><center><a href=sphere.gif><img src=sphere-small.gif border=0></a>
+<br>
+<i>Sphere with shadow.<br>Model from <a href=http://www.csit.fsu.edu/~burkardt/data/ase/ase.html>this site</a>.<br>Click for larger version.</i></center>
+</td></tr></table></center>
+
+<p>
+<b>Other Small Additions</b><br>
+We made a number of other small additions, such as the ability to add sunlight and spot lights.  We also finally added backface culling and found that it fixed all sorts of problems -- doh!
+</div>
+
+<p align=left><font size=-1>[<a href=../index.html>Back to Lab Index</a>]</font>
+</p>
+</body></html>
+

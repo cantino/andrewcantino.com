@@ -1,0 +1,306 @@
+<html><head><title>Computer Graphics: Lab 2</title>
+<LINK REL=StyleSheet HREF="../graphics.css" TYPE="text/css">
+</head>
+<body bgcolor=white text=black>
+<center><font size=+2><b>Lab 2: 2-D Graphics Primitives</b><br>
+<font color=blue>Andrew Cantino & Will Moss</font></font></center>
+<p>
+
+<table border=0 width=100%><tr>
+<td valign=top><p align=center><img src=lines.gif border=0>
+<br>
+<i>Random lines drawn<br>with Bresenham's Line-Drawing<br>Algorithm.</i>
+</td>
+<td valign=top><p align=center><img src=circles.gif border=0><br>
+<i>Random circles.</i>
+</td>
+<td valign=top><p align=center><img src=ellipeses.gif border=0><br>
+<i>Random ellipses.</i>
+</td>
+</tr></table>
+
+<p>
+<div style="margin: 5px;">
+This is the <a href=http://palantir.swarthmore.edu/maxwell/classes/e26/F04/labs/lab02/>second lab</a> for <a href=http://palantir.swarthmore.edu/maxwell/classes/e26/F04/>Computer Graphics</a>.  In this lab we finalize our graphics environment that we started in <a href=../lab1>lab 1</a>.  To our graphics environment we add lines, polygons, polylines, and filled and unfilled circles, ellipses, and rectangles.
+</div>
+<p>
+<b>Sections:</b>
+<ul>
+    <li><a href="#environment">Graphics Environment</a>
+    <li><a href="#section2">The Graphics Primitives</a>
+    <li><a href="#pics">Our Portfolio Images</a>
+    <li><a href="#questions">Questions</a>
+    <li><a href="#extensions">Extensions</a>
+</ul>
+<p>
+<div class="newsitem">
+<a name="environment"></a>
+<div class="newsitem_title">Graphics Environment</div><p>
+We are programming in C++, so our graphics environment consists of a class hierarchy.  We have the <i>image</i> class that holds all the information and state variables for a particular image, and we have our graphics primitives (<i>point</i>, <i>line</i>, <i>rect</i>, <i>circle</i>, <i>ellipse</i>, <i>polyline</i>, and <i>polygon</i>) that all inherit from <i>graphic</i>.  Each graphics primitive knows how to draw itself onto an image, and some know how to draw filled versions of themselves as well.
+<p>
+To answer the lab questions:
+<ul>
+<li><i>What state variables do you have and what is their meaning?</i> and <i>How do you represent these variables and what are their types?</i><br>
+All state variables are stored in the <i>image</i> class.  Currently, we have color, of type <i>Pixel</i>, which is the current drawing pen color, and the ints rows, cols, and colors, which store information about the current image.  Additionally, we store information about blending in the <i>image</i> alpha mask, stored in the array of unsigned chars called alpha.
+<li><i>How do users modify/access the state variables?</i> and <i>How do the graphics routines access the state variables?</i><br>
+Both users and graphics routines access the state variables through accessor methods in the <i>image</i> class.  These accessor methods are listed below in the details of the <i>image</i> class.
+</ul>
+<p>
+Here is an outline of our graphics environment classes:<p>
+
+<font size=+1><b>class <i>image</i></b>:</font><br>
+<b>State variables</b><br>
+<table border=0 cellpadding=5>
+<tr><td>Pixel *data</td><td>A pointer to an array of <i>Pixel</i>s.  This holds the actual image data in an <i>image</i> class.</td></tr>
+<tr><td>unsigned char *alpha</td><td>A pointer to an array of unsigned chars that holds the alpha mask of the <i>image</i> class.</td></tr>
+<tr><td>int rows, cols, colors</td><td>These state variables hold the rows, cols, and colors of the current image in the <i>image</i> class.</td></tr>
+<tr><td>Pixel color</td><td>This <i>Pixel</i> holds the current pen color of the image.</td></tr>
+</table>
+<b>Constructors:</b><br>
+An instance of the <i>image</i> class can be created in any of the following ways:<br>
+<table border=0 cellpadding=5>
+<tr><td>image()</td><td>Create an empty image.  Initial memory allocation is <i>not</i> performed.</td></tr>
+<tr><td>image(string file)</td><td>Create a new image from the file path provided.  File must be in the PPM format.  The state variables rows, cols, and colors will be updated.</td></tr>
+<tr><td>image(const image & copy)</td><td>Copy constructor -- make a new image from an old one.</td></tr>
+<tr><td>image(int cols, int rows)</td><td>Make a new image of the given dimensions.   Initial memory allocation will be performed.</td></tr>
+<tr><td>image(int cols, int rows, Pixel c)</td><td>Make a new image of the given dimensions with c as the background color.   Initial memory allocation will be performed.</td></tr>
+</table>
+<b>Methods:</b><br>
+The following accessors, mutators, and other methods constitute the interface of the <i>image</i> class:<br>
+<table border=0 cellpadding=5>
+<tr><td>int getRows()</td><td>Accessor returns the number of rows in the current image.</td></tr>
+<tr><td>int getCols()</td><td>Accessor returns the number of columns in the current image.</td></tr>
+<tr><td>Pixel getPenColor()</td><td>Accessor returns the current pen color in the current image.</td></tr>
+<tr><td>void setPenColor(Pixel p)</td><td>Mutator sets the pen color of the image.</td></tr>
+<tr><td>Pixel getPixel(int x, int y)</td><td>Accessor returns the color value (as a <i>Pixel</i>) of (x, y) in the image.</td></tr>
+<tr><td>unsigned char getAlpha(int x, int y)</td><td>Accessor returns the alpha value (as an <i>unsigned char</i>) of (x, y) in the image.</td></tr>
+<tr><td>void setAlpha(int x, int y, unsigned char a)</td><td>Mutator sets the alpha value of (x,y) in the image.  255 is fully opaque, 0 is fully transparent.</td></tr>
+<tr><td>void drawPixel(int x, int y)</td><td>Draw a pixel with the current pen color to the image at (x, y).</td></tr>
+<tr><td>void drawPixel(int x, int y, Pixel color, unsigned char alpha)</td><td>Draw a pixel of the specified color and alpha value to the image at (x, y).</td></tr>
+<tr><td>void drawPixel(int x, int y, Pixel color)</td><td>Draw a pixel of the specified color to the image at (x, y).</td></tr>
+<tr><td>void writeImage(string file)</td><td>Writes the current image data to disk as a PPM with the specified file name.</td></tr>
+<tr><td>bool inImage(int x, int y)</td><td>Returns true if the given location (x, y) falls within the image bounds, false if not.</td></tr>
+<tr><td>image rotate(double rad)</td><td>Returns a new <i>image</i> object consisting of the current image rotated by rad radians.  Positive values of rad rotate clockwise, negative values rotate counterclockwise.</td></tr>
+<tr><td>image scale(double factor)</td><td>Returns a new <i>image</i> object consisting of the current image scaled by a factor of 'factor.'</td></tr>
+<tr><td>void shrinkAlpha()</td><td>Performs a 4-connected shrink on the alpha mask, treating 255 as boolean true and 0 as boolean false.  (Not particularly useful or effective, as it turned out.)</td></tr>
+<tr><td>void drawImage(int x, int y, image i)</td><td>Draw <i>image</i> i using i's alpha mask at location (x, y) on the current image.</td></tr>
+<tr><td>void drawGraphic(graphic &g)</td><td>Call the draw method of the given <i>graphic</i> object.  The object will then draw itself onto this image.</td></tr>
+<tr><td>void drawFilledGraphic(graphic &g)</td><td>Call the drawFilled method of the given <i>graphic</i> object.  The object will then draw itself filled onto this image.</td></tr>
+<tr><td>void fill(point l, Pixel c)</td><td>Perform a flood fill with initial seed at <i>point</i> l, looking for boundaries of color c (c is of class <i>Pixel</i>).</td></tr>
+<tr><td>void gradFill(point l, Pixel grad)</td><td>Perform a gradient flood fill with initial seed at <i>point</i> l, looking for boundaries of any color not equal to the color of the pixel located at <i>point</i> l, and filling with the gradient defined by <i>Pixel</i> grad.  Grad should be thought of as a RGB vector in color space that will be normalized to length one.  This method is described more in the <a href="#extensions">extensions section</a> of this lab.</td></tr>
+</table>
+<p>&nbsp;<p>
+As discussed above, the following graphic primitives all inherit from the class <i>graphic</i>. This gives them the ability to be passed to image an using the <i>image::drawGraphic</i> and <i>image::drawFilledGraphic</i> functions. Therefore, along with the functions listed below, each of these classes implements <i>void draw (image & i)</i> and <i>void drawFilled (image & i)</i>, which causes them to draw themselves on the image.
+<p>
+<font size=+1><b>class <i>point</i></b>:</font><br>
+<b>State variables:</b><br>
+<table border=0 cellpadding=5>
+<tr><td>long x, y</td><td>Holds the x and y location of the point</td></tr>
+</table>
+<b>Constructors:</b><br>
+<table border=0 cellpadding=5>
+<tr><td>point()</td><td>Constructs an empty point</td></tr>
+<tr><td>point(long x, long y)</td><td>Constructs a point from two integers, specifying the x and y position</td></tr>
+<tr><td>point(const point &p)</td><td>Constructs a point from another point (copy contructor)</td></tr>
+</table>
+<p>
+<font size=+1><b>class <i>line</i></b>:</font><br>
+<b>State variables:</b><br>
+<table border=0 cellpadding=5>
+<tr><td>point start, end</td><td>Keeps the location of the start and end of the line</td></tr>
+</table>
+<b>Constructors:</b><br>
+<table border=0 cellpadding=5>
+<tr><td>line()</td><td>Constructs an empty line</td></tr>
+<tr><td>line(point start, point end)</td><td>Constructs a line from two points, specifying the start and end of the line</td></tr>
+<tr><td>line(int x1, int y1, int x2, int y2)</td><td>Constructs a line from four integers, specifying the start (in (x, y) format) followed by the end</td></tr>
+<tr><td>line(const line &l)</td><td>Constructs a line from another line (copy contructor)</td></tr>
+</table>
+<p>
+<font size=+1><b>class <i>rect</i></b>:</font><br>
+<b>State variables:</b><br>
+<table border=0 cellpadding=5>
+<tr><td>point lowerL, upperR</td><td>Keeps the location of the lower left corner and the upper right corner, stored as points</td></tr>
+</table>
+<b>Constructors:</b><br> 
+<table border=0 cellpadding=5>
+<tr><td>rect()</td><td>Constructs an empty rectangle</td></tr>
+<tr><td>rect(point ll, point ur)</td><td>Constructs a rectangle from two points, specifying the lower left corner and the upper right corner</td></tr>
+<tr><td>rect(point ll, int width, int height)</td><td>Constructs a rectangle from a point and two integers, specifying the lower left corner of the rectangle and its width and height</td></tr>
+</table>
+
+<font size=+1><b>class <i>circle</i></b>:</font><br>
+<b>State variables:</b><br>
+<table border=0 cellpadding=5>
+<tr><td>point center</td><td>Stores the location of the center of the circle</td></tr>
+<tr><td>double r</td><td>Stores the radius of the circle</td></tr>
+</table>
+<b>Constructors:</b><br> 
+<table border=0 cellpadding=5>
+<tr><td>circle()</td><td>Constructs an empty circle</td></tr>
+<tr><td>circle(point c, double r)</td><td>Constructs a circle from a point and a radius</td></tr>
+</table>
+
+<font size=+1><b>class <i>ellipse</i></b>:</font><br>
+<b>State variables:</b><br>
+<table border=0 cellpadding=5>
+<tr><td>point center</td><td>Stores the location of the center of the ellipse</td></tr>
+<tr><td>int rx, ry</td><td>Stores radius of the ellipse in the x-direction and the y-direction</td></tr>
+</table>
+<b>Constructors:</b><br>
+<table border=0 cellpadding=5>
+<tr><td>ellipse()</td><td>Constructs an empty ellipse</td></tr>
+<tr><td>ellipse(point c, int rx, int ry)</td><td>Constructs a ellipse from a point specifying the center and two integers specifying the radius in the x-direction and in the y-direction</td></tr>
+</table>
+<p>
+<font size=+1><b>class <i>polyline</i></b>:</font><br>
+<b>State variables:</b><br>
+<table border=0 cellpadding=5>
+<tr><td>point *points</td><td>Stores a pointer to an array of points, specifying the various points in the polyline</td></tr>
+<tr><td>int pointCount, n</td><td>n stores the total number of points in the polyline.  pointCount stores the number of points that are currently in the polyline.</td></tr>
+</table>
+<b>Constructors:</b><br>
+<table border=0 cellpadding=5>
+<tr><td>polyline()</td><td>Constructs an empty polyline</td></tr>
+<tr><td>polyline(int n);</td><td>Constructs a polyline with a maximum number of points equal to n</td></tr>
+</table>
+<b>Methods:</b><br>
+<table border=0 cellpadding=5>
+<tr><td>void addPoint(point p)</td><td>Adds the point p to the polyline.  If n points have already been added, it returns and error.</td></tr>
+</table>
+<p>
+<font size=+1><b>class <i>polygon</i></b>:</font><br>
+<b>State variables:</b><br>
+<table border=0 cellpadding=5>
+<tr><td>point *points</td><td>Stores a pointer to an array of points, specifying the various points in the polygon</td></tr>
+<tr><td>int pointCount, n</td><td>n stores the total number of points in the polygon.  pointCount stores the number of points that are currently in the polygon.</td></tr>
+</table>
+<b>Constructors:</b><br>
+<table border=0 cellpadding=5> 
+<tr><td>polyline()</td><td>Constructs an empty polygon</td></tr>
+<tr><td>polyline(int n)</td><td>Constructs a polygon with a maximum number of points equal to n</td></tr>
+</table><br>
+<b>Methods:</b><br>
+<table border=0 cellpadding=5>
+<tr><td>void addPoint(point p)</td><td>Adds the point p to the polygon.  If n points have already been added, it returns and error.</td></tr>
+</table>
+
+</div>
+<p>
+<a name="section2"></a>
+<div class="newsitem">
+<div class="newsitem_title">The Graphics Primitives</div>
+<p>
+As described above, all of our graphics primitives (<i>point</i>, <i>line</i>, <i>rect</i>, <i>circle</i>, <i>ellipse</i>, <i>polyline</i>, <i>polygon</i>) inherit <i>graphic</i>, a virtual class.  Because of this inheritance structure, all of our graphics primitives know how to draw themselves to an <i>image</i> object, and they can be stored and treated in similar ways.  For example, the methods <i>image::drawGraphic</i> and <i>image::drawFilledGraphic</i> can take any graphic primitive as input (although not all graphic primitives know how to fill themselves.)  In this section we will discuss some of the graphics primitives.
+<p>
+<b>Bresenham's Line-Drawing Algorithm</b><br>
+We implemented Bresenham's Line-Drawing Algorithm with mathematical corrections to move the axis of each pixel from the center of the pixel to the pixel's lower left-hand corner.  Additionally, we adopted the convention that lines will be drawn to the left of their actual mathematical line.  Hence, rectangles will look correct (and surround the correct area) when drawn counterclockwise, but will look wrong when drawn clockwise.  Here is an example image:<br>
+<center><table border=0><tr><td valign=top><center><a href=lab2-required1.gif><img src=lab2-required1.gif border=0></a><br><i>Required image 1: 8 example lines</i></center></td></tr></table></center>
+<p>
+Here are some benchmarking results for our implementation of Bresenham's Algorithm.  These numbers are the average of five tests run on a 1000 Mhz Athlon processor.
+<ul>
+<li>Lines per second: 174,559.
+<li>Standard deviation: 10,746.
+</ul>
+<p>
+Additional useful resources on Bresenham's Line-Drawing Algorithm:<br>
+<ul>
+    <li><a href=http://www.cs.helsinki.fi/group/goa/mallinnus/lines/bresenh.html>The Bresenham Line-Drawing Algorithm</a>
+    <li><a href=http://www.google.com/search?q=bresenham+line>Bresenham Line (google)</a>
+</ul>
+<p>
+<b>Circles and Ellipses</b><br>
+We used Bresenham's circle and ellipse drawing algorithms, modified from Chapter 3, p. 102 of Hearn and Baker.  As with the line-drawing algorithm, we modified the circle and ellipse drawing code to so that the generated circles and ellipses bound the correct amount of area on the screen, given their mathematical definitions.  As with line drawing, this is accomplished by moving each pixel's axis to the lower left-hand corner of the pixel.  We benchmarked our code and got 33,619 circles per second and 35,449 ellipses per second.  Additionally, we implemented filling for circles and ellipses.  Here is an example image:<p>
+<center>
+<table border=0 width=100%><tr>
+<td valign=top><center><img src=lab2-required2.gif border=0>
+<br>
+<i>Required image 2: some curvy things</i></center>
+</td></tr></table></center>
+<p>
+<b>Polygons, Polylines, and Rectangles</b><br>
+Our polygons and polylines are arrays of point objects.  As with all of our graphics primitives, they know how to draw themselves to an <i>image</i> object.  The only difference between a polygon and a polyline is that a polygon automatically connects the last point to the first point, making a closed form.  As with lines, by convention our polygons and polylines should be made counterclockwise.  Here are some examples:<br>
+<center>
+<table border=0 width=100%>
+<tr>
+<td valign=top><center><img src=polyline.gif border=0>
+<br><i>A polyline</i></center></td><td valign=top><center><img src=polygon.gif border=0>
+<br><i>A polygon</i></center></td>
+</tr></table><br>
+<table border=0 width=100%><tr>
+<td valign=top><center><img src=lab2-required3.gif border=0>
+<br><i>Required image 3: an awesome 3D car! (By Will)</i></center>
+</td></tr></table>
+<br>
+<table border=0 width=100%><tr>
+<td valign=top><center><a href=lab2-required3-train.gif><img src=lab2-required3-train-small.gif border=0></a>
+<br><i>Required image 3: totally cool gradient train! (By Andrew)<br>
+<font size=-1>(Added later while doing <a href=../lab3/>lab 3</a>.  Uses directional and circular gradients, introduced in lab 3.)</font>
+</i></center>
+</td></tr></table></center>
+</div>
+<p>
+<div class="newsitem">
+<a name="pics"></a>
+<div class="newsitem_title">Will & Andrew's Portfolio Images</div><p>
+Here are our portfolio images:<br>
+<center>
+<table border=0 width=100%><tr>
+<td valign=top><center><a href=portfolio5-a.gif><img src=portfolio5-a-small.gif border=0></a>
+<br><i>Portfolio 5: Modern Art (Andrew)</i></center></td>
+<td valign=top><center><a href=portfolio6-a.gif><img src=portfolio6-a-small.gif border=0></a>
+<br><i>Portfolio 6: Microsoft Paint<br>would have been faster (Andrew)</i></center></td>
+</tr></table>
+<br>
+<table border=0 width=100%><tr>
+<td valign=top><center><a href=portfolio5-w.gif><img src=portfolio5-w-small.gif border=0></a>
+<br><i>Portfolio 5: Not quite Picasso (Will)</i></center></td>
+<td valign=top><center><a href=portfolio6-w.gif><img src=portfolio6-w-small.gif border=0></a>
+<br><i>Portfolio 6: Straight? (Will)<br>(Idea pilfered from <a href=http://www.mindfake.com/illusion_2.html>mindfake.com</a>)</i></center></td>
+</tr></table>
+
+</center>
+</div>
+<p>
+<div class="newsitem">
+<a name="questions"></a>
+<div class="newsitem_title">Questions</div><p>
+<ol>
+<li><i>Who did you work with on this assignment, and what tasks did each of you do?</i><br>Will Moss and Andrew Cantino worked together on this lab, as with <a href=../lab1/>lab 1</a>.  We did much of the coding together, and we have discussed each other's code and techniques extensively.  We both worked on circle drawing.  Will implemented Bresenham's line-drawing algorithm and ported the benchmarking code, as well as made the benchmark images and some of the example images.  Andrew worked on the ellipse code, and the filling code for circles, ellipses, and rectangles, as well as the flood/gradient filling algorithms.  We worked together on the graphics environment, the web page, etc.  Will did polygon and polyline, and worked on the image of the car.  Basically, we split the lab equably and worked together in the computer lab extensively.
+<li><i>Describe the API for your graphics environment.</i><br>Please see the section of this lab dedicated to the <a href="#environment">graphics environment</a>.
+<li><i>Is your first required image consistent with how you would match  screen coordinates to the true mathematical lines? Why, why  not?</i><br>(Please refer to <a href=lab2-required1.gif>this image</a>.)  Yes, we think it is consistent, as the lines appear to have the expected slopes in relation to their mathematical definitions and each other.  However, as always, there is the issue of aliasing and our lines are obviously quantized approximations of the actual mathematical lines.
+<li><i>If you extended this assignment in any way, describe what you did  and how you did it. Include pictures to support your  description.</i><br>Please see the section of this lab entitled <a href="#extensions">extensions</a>.
+</ol>
+</div>
+<p>
+<div class="newsitem">
+<a name="extensions"></a>
+<div class="newsitem_title">Extensions</div><p>
+<b>Flood Fill</b><br>
+As an extension, we implemented a 4-connected flood fill algorithm.  The algorithm takes a seed point and a boundary color and draws lines horizontally to fill all available space bounded by the boundary color.  We use a STL list to implement the seed point stack.  The following animation demonstrates the algorithm:<br>
+<center><table border=0><tr><td valign=top><img src=floodanime.gif border=0><br><i>Animation of the flood fill algorithm.  Red pixels are seed points.<br>Animation author: <a href=http://palantir.swarthmore.edu/maxwell/>Bruce Maxwell</a></i></td></tr></table></center><br>
+Here are some example flood filled shapes:<br>
+<center><table border=0 cellspacing=10><tr><td valign=top><center><img src=filledPolygon.gif border=0><br><i>Flood filled polygon.</i></center></td>
+<td valign=top><center><img src=floodFilledCircle.gif><br><i>Flood filled circle.</i></center></td>
+</tr></table></center>
+<p>
+Additionally, we wrote a second implementation of the flood fill algorithm that can fill with a gradient instead of just a single color.  This algorithm takes a seed point and a gradient vector.  The gradient vector is merely a RGB point in color space that is then normalized to length one.  The algorithm uses the color at the location of the seed point as the background color to be replaced and replaces all pixels of that color reachable (4-connected) from the seed point.  To generate the gradient value for any given pixel, we scale our normalized gradient vector by the pixel's horizontal location, scaled to the width of the image.  Further work could easily make the gradient run in any direction and scale to the polygon width instead of the image width.  Here are some examples of gradient fill:
+<br><center><table border=0 cellspacing=10><tr><td valign=top><center><img src=gradFilledPolygon.gif border=0><br><i>Gradient filled polygon.</i></center></td>
+<td valign=top><center><img src=gradFilledPolygon2.gif><br><i>Another gradient!</i></center></td>
+<td valign=top><center><img src=gradFilledPolygon3.gif><br><i>Another polygon!</i></center></td>
+</tr></table></center>
+<br>
+See also an <a href=http://www.codeproject.com/gdi/QuickFill.asp>excellent page</a> on various filling algorithms.
+<p>
+<b>Others</b><br>
+We don't know if these are really extensions, but we also did the following that may not have been technically required for this lab:
+<ul>
+<li>Polygons, polylines, and rectangles
+<li>Filling of circles, ellipses, and rectangles (not using the above flood fill algorithm)
+</ul>
+</div>
+<p>
+<p align=left><font size=-1>[<a href=../index.html>Back to Lab Index</a>]</font>
+</p>
+</body></html>
+

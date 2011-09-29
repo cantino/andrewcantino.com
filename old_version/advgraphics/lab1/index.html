@@ -1,0 +1,110 @@
+<html><head><title>Advanced Computer Graphics: Lab 1</title>
+<LINK REL=StyleSheet HREF="../graphics.css" TYPE="text/css">
+</head>
+<body bgcolor=white text=black>
+<center><font size=+2><b>Lab 1: An OpenGL Scene</b><br>
+<font color=blue>Andrew Cantino</font></font></center>
+<p>
+<div style="margin: 5px;">
+In this first lab for <A href=http://palantir.swarthmore.edu/maxwell/classes/e126/S05/>Advanced Computer Graphics</a>, I start to learn Cocoa and OpenGL, and produce an interesting graphical scene.
+</div>
+<p>
+<b>Sections:</b>
+<ul>
+<li><a href="#cocoa">Cocoa</a>
+<li><a href="#opengl">The Book and OpenGL</a>
+<li><a href="#chair">The Chair</a>
+<li><a href="#scene">The Entire Scene</a>
+<li><a href="#downloads">Downloads!</a>
+</ul>
+<p>
+<div class="newsitem">
+<a name="cocoa"></a>
+<div class="newsitem_title">Cocoa</div><p>
+For this lab, I decided to use Cocoa as my development language.  Cocoa is an API for Macintosh written in Objective-C.  Cocoa is powerful because so many features come ready-made, such as UI elements and extensive libraries.  This was basically the first time that I had programmed in Cocoa, so it was a learning process.  Here are some links about Cocoa:
+<ul>
+<li><a href=http://developer.apple.com/referencelibrary/GettingStarted/GS_Cocoa/index.html>Getting Started With Cocoa</a>
+<li><a href=http://www.macdevcenter.com/pub/ct/37>Programming with Cocoa</a>
+<li><a href=http://developer.apple.com/documentation/Cocoa/Conceptual/ObjCTutorial/index.html#//apple_ref/doc/uid/TP40000863>Introduction to Developing Cocoa Objective-C Applications</a>
+</ul>
+<p>
+Cocoa is very good at integrating with OpenGL.  I found an <a href=http://nehe.gamedev.net/data/lessons/macosxcocoa/lesson06.zip>excellent code example</a> at <a href=http://nehe.gamedev.net/>NeHe</a>, written by Bryan Blackburn.  I used Bryan's OpenGL and Cocoa code as a starting point and modified it as needed.  Here is a screen shot of my modifications to Bryan's original program.  I added the utility window, the screen and frame capturing, multiple texture loading, and the ability to pause the display.<br>
+<center>
+<table border=0 width=100%><tr>
+<td valign=top><p align=center><a href=screenShot1.jpg><img src=screenShot1-small.jpg border=0></a>
+<br>
+<i>Screenshot of the Lab1 interface.<br>(Click for larger version.)</i></p>
+</td></tr></table>
+</center>
+</div>
+<p>
+<a name="opengl"></a>
+<div class="newsitem">
+<div class="newsitem_title">The Book and OpenGL</div>
+The purpose of this lab was to create an interesting scene in OpenGL.  I started with <a href=http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=06>this tutorial</a> (and <a href=http://nehe.gamedev.net/data/lessons/macosxcocoa/lesson06.zip>Bryan's code</a>).  After modifying the code to allow screen capturing and frame saving, I generated my first animation with OpenGL.  The original tutorial code showed a <a href=http://nehe.gamedev.net/data/lessons/lesson06.jpg>textured box</a>, so I decided to build from that point on, using the original box model, but reshaping it slightly and changing textures.  I took 4 digital photos (with my brand new digital camera!) of a C/C++ book and used them to texture the object in OpenGL, generating a pretty realistic animation.  The strange highlighting is a result of the flash from my camera embedded in the texture.<br>
+<center>
+<table border=0 width=100%><tr>
+<td valign=top><p align=center><a href=bookFull.gif><img src=bookSmall.gif border=0></a>
+<br>
+<i>It really is a huge book!<br>(Click for larger version.)</i></p>
+</td></tr></table>
+</center>
+</div>
+<p>
+<div class="newsitem">
+<a name="chair"></a>
+<div class="newsitem_title">The Chair</div><p>
+Next, I decided to continue this project by photographing and modeling another object -- a chair.  I wrote a function to generate a rectangular box in OpenGL, applying textures to each of it's sides, and then I called it multiple times to model the chair.  As textures, I used edited photographs of the real chair, pictured here:<br>
+<center>
+<table border=0 width=100%><tr>
+<td valign=top><p align=center><a href=actualChair.jpg><img src=actualChair.jpg border=0></a>
+</p>
+</td></tr></table>
+</center><p>
+And here you can see my model:<br>
+<center>
+<table border=0 width=100%><tr>
+<td valign=top><p align=center><img src=chair1.jpg border=0></p>
+</td>
+<td valign=top><p align=center><img src=chair2.jpg border=0></p>
+</td>
+<td valign=top><p align=center><img src=chair3.jpg border=0></p>
+</td>
+</tr></table>
+</center>
+<p>
+<a href=chair.avi>chair.avi (3.3 mb Divx AVI)</a> -- A rendered movie of the chair.  Check it out!<br>
+<p>
+</div>
+<p>
+<div class="newsitem">
+<a name="scene"></a>
+<div class="newsitem_title">The Entire Scene</div><p>
+Finally, I combined my chair and book models in a single scene with photographically textured walls and floor.<p>
+<center>
+<table border=0 width=100%><tr>
+<td valign=top><p align=center><img src=scene1.jpg border=0></p>
+</td>
+</tr><tr>
+<td valign=top><p align=center><img src=scene2.jpg border=0></p>
+</td>
+</tr></table>
+</center>
+<p>
+<a href=scene.avi>scene.avi (1.5 mb Divx AVI)</a> -- A rendered movie of the scene.  Check it out!<br>
+</div>
+<p>
+<div class="newsitem">
+<a name="downloads"></a>
+<div class="newsitem_title">Downloads!</div><p>
+<ul>
+<li><a href=OGLAnimations.dmg>OGLAnimations.dmg (4.1 mb)</a> -- The animations as standalone applications for Mac OS X 10.3+.  <i>See the animations in real-time!</i></li>
+<li><a href=chair.avi>chair.avi (3.3 mb Divx AVI)</a> -- A rendered movie of the chair.</li>
+<li><a href=scene.avi>scene.avi (1.5 mb Divx AVI)</a> -- A rendered movie of the scene.</li>
+</ul>
+</div>
+<p>
+<p align=left><font size=-1>[<a href=../index.html>Back to Lab Index</a>]</font>
+</p>
+</body></html>
+

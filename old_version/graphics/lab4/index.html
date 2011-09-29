@@ -1,0 +1,103 @@
+<html><head><title>Computer Graphics: Lab 4</title>
+<LINK REL=StyleSheet HREF="../graphics.css" TYPE="text/css">
+</head>
+<body bgcolor=white text=black>
+<center><font size=+2><b>Lab 4: 2-D Transformations and the 2-D Viewing Pipeline</b><br>
+<font color=blue>Andrew Cantino & Will Moss</font></font></center>
+<p>
+<div style="margin: 5px;">
+This is <a href=http://palantir.swarthmore.edu/maxwell/classes/e26/F04/labs/lab04/>lab 4</a> of <a href=http://palantir.swarthmore.edu/maxwell/classes/e26/F04>Computer Graphics</a>.
+</div>
+<p>
+<b>Sections:</b>
+<ul>
+<li><a href="#section1">3D Tranformations</a>
+<li><a href="#section2">Star Wars vs. Star Trek</a>
+<li><a href="#section3">Questions</a>
+<li><a href="#section4">Extensions</a>
+</ul>
+<p>
+<div class="newsitem">
+<a name="section1"></a>
+<div class="newsitem_title">3D Transformations</div><p>
+For this lab we created a series of 3D matrix transformations that we can apply to a new class created called a point3D, which is a 4-vector storing values for x, y, z, and h.  These transformations and represented in a 4x4 matrix.  All of the transformations are mutators, meaning that they take the current matrix and do the transformation on that matrix.  Listed below are the functions we developed to do these transformations:<p>
+<font size=+1><b>class <i>matrix</i></b>:</font><br>
+<table border=0 cellpadding=5>
+<tr><td>translate3D(double tx, double ty, double tz)</td><td>Causes the matrix to translate by the specificed amount in x, y, and z.</td></tr>
+<tr><td>&nbsp</td><td>&nbsp</td></tr>
+<tr><td>scale3D(double s)</td><td>Causes the matrix to scale by the specified amount in all directions</td></tr>
+<tr><td>scale3D(double sx, double sy, double sz)</td><td>Causes the matrix to scale by the specified amount in each direction</td></tr>
+<tr><td>scale3D(point3D center, double s)</td><td>Causes the matrix to scale by the specified amount in all directions, around the specified point</td></tr>
+<tr><td>scale3D(point3D center, double sx, double sy, double sz)</td><td>Causes the matrix to scale by the specified amount in each direction, around the specified point</td></tr>
+<tr><td>scale3D(point3D center, double theta, double sx, double sy, double sz)</td><td>Causes the matrix to scale by the specified amount in each direction, around the specified point, at the given angle</td></tr>
+<tr><td>&nbsp</td><td>&nbsp</td></tr>
+<tr><td>rotate3Dz(double theta)</td><td>Causes the matrix to rotate by the specified amount</td></tr>
+<tr><td>rotate3Dz(point3D center, double theta)</td><td>Causes the matrix to rotate by the specified amount, around the specified point</td></tr>
+<tr><td>&nbsp</td><td>&nbsp</td></tr>
+<tr><td>sheer3Dx(double shx)</td><td>Causes the matrix to sheer in the x direction</td></tr>
+<tr><td>sheer3Dy(double shy)</td><td>Causes the matrix to sheer in the y direction</td></tr>
+</table>
+<b>Note:</b> We also overloaded the multiplication (*) and inplace multiply (*=) operators for <i>matrix</i> so that matricies are correctly right-multiplied.  Additionally, <i>point3D</i>s know how to be multiplied by matrices.
+</div>
+<p>
+<a name="section2"></a>
+<div class="newsitem">
+<div class="newsitem_title">Star Wars vs. Star Trek</div><p>
+For this lab we were asked to create a model of the Starship Enterprise or another cool (nerdy?) spaceship.  Andrew did model the Enterprise and Will choose to model an X-Wing from Star Wars.  Will's model required 9 instances of the unit box and 6 instances of the unit line.  Andrew's model required a unit circle and 4 instances of a unit box.<br>Here are the models we developed:
+<table width="100%" align="center">
+<tr>
+<td width="50%"><center><img src="xwing-model.gif"><br>Will's X-Wing</center></td>
+<td width="50%"><center><img src="enterprise1.gif"><br>Andrew's Enterprise<br>(Rough version)</center></td>
+</tr>
+</table>
+<p>
+We were then asked to create a model of the spaceship orbiting a planet.  Will made two images, one with it orbiting a simple circle (representing a planet) and then another of it orbiting the moon.  Andrew made an image of his Enterprise, filled, with circular gradient shading, orbiting a nebula.
+<table width="100%" align="center">
+<tr>
+<td><center><a href="xwing-ani.gif"><img src="xwing.gif"></a><br>X-Wing orbiting a metaphorical planet<br><font size="-1">(Click image for animation)</center></td>
+<td><center><a href="xwing2-ani.gif"><img src="xwing2.gif"></a><br>X-Wing orbiting the moon over Cape Cod<br><font size="-1">(Click image for animation)</font></center></td>
+</tr>
+<tr>
+<td width="50%"><center><a href=enterprise3.gif><img src=enterprise3-small.gif border=0></a><br>Enterprise orbiting<br><font size="-1">Click for larger version!</font></center></td>
+<td width="50%"><center><a href=enterprise2.gif><img src="enterprise2-small.gif" border=0></a><br>Andrew's Enterprise<br>(Filled w/ Background)</center></td>
+</tr>
+</table>
+<p>
+For the final part of this lab, we were asked to create an image that scrolled past the rotating ship, using our viewing pipeline.  Below are the images we created:
+<table width="100%" align="center">
+<tr>
+<td width="50%"><center><a href="xwing3-ani.gif"><img src="xwing3.gif"></a><br>X-Wing fly-by<br><font size="-1">(Click image for animation)</font></center></td>
+<td width="50%"><center><a href=enterprise4.gif><img src="enterprise4-small.gif" border=0></a><br>Enterprise Fly-by<br><font size="-1">(Click image for larger version!)</font></center></td>
+</tr>
+</table>
+</div>
+<p>
+<a name="section3"></a>
+<div class="newsitem">
+<div class="newsitem_title">Questions</div>
+<ol>
+<li><i>Who did you work with on this assignment, and what tasks did each of you do?</i><br>
+Will Moss and Andrew Cantino worked together on this lab.  We developed the respresentation and the general process together, as well as helping eachohter out with the mathematical parts.  In terms of coding, Andrew wrote the translate and scale, as well as some of the matrix methods, and will wrote the rotate and some matrix methods.  Will also wrote the simple viewing pipeline.
+<li><i>Describe the mechanicsm you developed for handling the global transformation parameters and matrix.</i><br>
+We defined a matrix (GTM) for our global transformation parameters.  Then, we defined our space ships using small local transformations of the unit box and unit circle in a model space of size about 10x10.  Then, when drawing the ships to the screen, we simply had to do the matrix multiplication GTM * LTM (local transformation matrices) * point.  This allowed us to easily translate, rotate, and scale the whole space ship by modifying only the single GTM matrix.  This made it especially easy to make the ships orbit their planets/nebulae because we could simply apply to the GTM a translation to the edge of the image, then a rotation around the center of the image, causing the ship to rotate around the planet.
+<li><i>Describe the mechanicsm you developed for handling the viewing pipeline parameters and transformation matrix.</i><br>
+We defined a view transformation matrix that was premultiplied in every transformation in our code.  We also defined a function that returned a VTM given a viewing window and a number of rows (the columns were just calculated to be proportional to the defined viewing window).  This allowed us to call the getVTM function on every iteration of our code to generate a moving view frame that also scaled the model to the proper values for image space.
+<li><i>Once you had the code in place, what was the process and how difficult was it to modify the view window and position of the Enterprise?</i><br>
+Once the code was in place, it was resonably simple to modify the location and position of the enterprise.  We had implemented a VTM and a GTM, the VTM took care of the viewing window and the GTM took care of the global positioning of the ship.  Since we had overloaded the multiplication operator for our matrix class, we were able to then type <i>VTM * GTM * LTM</i> and use the output of that to transform all our points.
+</ol>
+</div>
+<p>
+<div class="newsitem">
+<a name="section4"></a>
+<div class="newsitem_title">Extensions</div><p>
+<b>General Extensions</b>:<br>
+As extensions, Will and Andrew both made animated gif movie sequences of our space ships rotating around planets and scrolling off the screen while rotating.  Additionally, we shaded our ships and Andrew used a circular gradient to fill the Enterprise's dish.  We also put our ships over cool space backgrounds!  Finally, we also had a creative use of multiple ships -- see below.
+<p>
+<b>Space Warp!</b><br>
+Additionally, we added a new pen option: alpha.  We could always do alpha blending, but now it's a pen option, called with <i>image.setPenAlpha(unsigned char)</i> and <i>image.getPenAlpha()</i>.  Here is an example image using both alpha blending and multiple versions of the Enterprise made with some nested for-loops:<br>
+<center><table border=0 width=100%><tr><td valign=top><center><a href=warp.gif><img src=warp-small.gif border=0></a><br>Andrew's Space Warp!<br><i>Click for large, full-quality version.</i></center></td></tr></table></center>
+</div>
+<p align=left><font size=-1>[<a href=../index.html>Back to Lab Index</a>]</font>
+</p>
+</body></html>
+

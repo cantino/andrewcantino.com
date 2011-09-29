@@ -1,0 +1,75 @@
+#---SET-HTML bslash=&#92;
+*Title: Conclusions 
+*Author: Andrew Cantino
+*Image-center: email.jpg
+
+---------
+
+*TOC
+
+---------
+
+* Introduction
+Well, this is the last class!  Let's do some review and have a little fun.
+
+* Course Review
+	* [Online content delivery, the Internet, and HTML (:l1.html)]
+	* [UNIX and the command line (:l1.html#UNIX!)]
+		* Remember tab completion and history!
+		* [UNIX file permissions (:l3.html#UNIX%20File%20Permissions)]
+	* [cPanel (:l3.html)]
+		* [Fantastico (:l6.html)]
+	* [PERL programming (:l2.html)]
+		* [Variables (:l2.html#Variables)]
+		* [Conditionals and Loops (:l2.html#Conditionals%20and%20Loops)]
+		* [Comparison Operators (:l2.html#Comparison%20Operators)]
+		* [Functions (:l2.html#Functions)]
+		* [Arrays and hashes (:l2.html#Arrays!)]
+		* [Files (:l4.html#Files)]
+		* [Regular Expressions (:l5.html)]
+		* We didn't cover Perl efficiency, but you should see [this site (http://www.unix.org.ua/orelly/perl/prog3/ch24_02.htm)].
+	* [CGI scripting (:l4.html#CGI)]
+		* [Perl CGI library (:l4.html#CGI)]
+		* Remember the [shebang line (:l2.html#A%20first%20PERL%20program)] and the [CGI headers (:l4.html#CGI%20Headers)]
+		* [HTML forms (:l4.html#HTML%20Forms)]
+	* [SQL (:l7.html#SQL)]
+		* [Basic SQL commands and tables (:l7.html#Tables)]
+		* [MySQL (:l7.html#MySQL)]
+		* [phpMyAdmin (:l7.html#Using%20phpMyAdmin)]
+		* [Connecting Perl to MySQL (:l7.html#MySQL%20and%20PERL)] and [bound parameters (:l7.html#Doing%20SQL%20securely)]
+	* Security
+		* [.htaccess files (:l3.html#Apache%20and%20htaccess%20files)]
+		* [Perl security (:l5.html#PERL%20Security)] and [Taint checking (:l5.html#PERL%20Taint%20Checking)]
+		* [Security issues with GET and POST (:l5.html#Security%20issues%20with%20GET%20and%20POST)]
+		* [SQL security and injection attacks (:l7.html#SQL%20Security)]
+		* [Securing Fantastico and open source packages (:l6.html#Securing%20Fantastico)]
+
+* Some final CGI Security Notes & Common Sense
+	* Use PERL taint checking.
+	* Use bound parameters when using SQL to avoid injection attacks.
+	* Know all of the scripts you have.  Only run scripts that you actually need.
+	* Use .htaccess files to restrict access (password and IP range) to administrative CGIs
+	* Hide source code so people can't look for bugs. Example, name.cgi~ from an Emacs edit is a security hole.
+	* Don't give out system information. (Because it lets people target attacks, which is essential for breaking into a system.)
+	* Don't trust any input, even from hidden variables. Validate in CGI script, not with JavaScript in form.
+	* Remember that your GET/POST forms can be created anywhere!
+	* Keep your scripts up-to-date. Get on the [SANS (http://www.sans.org/)] mailing list!
+	* [Use good passwords! (http://www.alw.nih.gov/Security/Docs/passwd.html)] and |crypt()| passwords.
+	* Maintain logs for your scripts separate from the server logs.
+	* Make yourself an unappealing target and backup your data.
+	* Turn off automatic indexes and make blank index.html files.
+	* Avoid world-writable directories, ESPECIALLY where CGI can be executed. Don't allow world-writable directories where they can be accessed from the web.  If someone finds a way to create a file on your server, you certainly don't want it to be in a place where they can also execute it!
+	* On a similar note, keep data files in a place that is not web accessible!
+	* Don't use special chrs in file names.
+	* Disable Server Side Includes.
+
+* Show and tell
+What have you made during the last month?  Did you make any interesting sites with Fantastico modules?
+
+* Some fun security challenges
+There are some interesting security/hacking related challenges available online.  These can often be very useful in learning about security.  Try some of the following:
+	* [Cypher Challenge (http://cyphercrash.100free.com/wargame/index.html)] will make you think about security through obscurity, and why you shouldn't hide stuff in HTML source or in JavaScripts.
+	* Try the [HackThisSite.org (http://www.hackthissite.org/)] 'Realistic missions'.  Try the first one, in particular.  These are pretty difficult, but well designed, if a bit juvenile in content.
+	* [slyfx (http://www.slyfx.com/)] has some good challenges.
+
+[Back to Course Index (:.)]
