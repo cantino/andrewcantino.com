@@ -1,0 +1,16 @@
+//301 Redirect Old File
+Redirect 301 /contact.cgi /contact.html
+Redirect 301 /contact2.cgi /contact.html
+
+//301 Redirect Entire Directory
+RedirectMatch 301 /class(.*) /old_version/class/$1
+
+//Prevent viewing of .htaccess file
+<Files .htaccess>
+order allow,deny
+deny from all
+</Files>
+
+//Prevent directory listings
+Options All -Indexes
+
