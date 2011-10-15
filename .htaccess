@@ -1,16 +1,13 @@
-//301 Redirect Old File
-Redirect 301 /contact.cgi /contact.html
-Redirect 301 /contact2.cgi /contact.html
 
-//301 Redirect Entire Directory
-RedirectMatch 301 /class(.*) /old_version/class/$1
+RewriteEngine on
 
-//Prevent viewing of .htaccess file
-<Files .htaccess>
-order allow,deny
-deny from all
-</Files>
+RewriteCond %{HTTP_HOST} ^.*$
+RewriteRule ^contact2\.cgi$ "http\:\/\/andrewcantino\.com\/contact\.html" [R=301,L]
 
-//Prevent directory listings
-Options All -Indexes
+RewriteCond %{HTTP_HOST} ^.*$
+RewriteRule ^contact\.cgi$ "http\:\/\/andrewcantino\.com\/contact\.html" [R=301,L]
+
+RewriteCond %{HTTP_HOST} ^andrewcantino\.com$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.andrewcantino\.com$
+RewriteRule ^class\/?(.*)$ "http\:\/\/andrewcantino\.com\/old_version\/class$1" [R=301,L]
 
