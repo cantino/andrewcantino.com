@@ -9,5 +9,5 @@ RewriteRule ^contact\.cgi$ "http\:\/\/andrewcantino\.com\/contact\.html" [R=301,
 
 RewriteCond %{HTTP_HOST} ^andrewcantino\.com$ [OR]
 RewriteCond %{HTTP_HOST} ^www\.andrewcantino\.com$
-RewriteRule ^class\/?(.*)$ "http\:\/\/andrewcantino\.com\/old_version\/class$1" [R=301,L]
+RewriteRule ^class(\/?.*)$ "http\:\/\/andrewcantino\.com\/old_version\/class$1" [R=301,L]
 
