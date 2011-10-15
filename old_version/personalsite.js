@@ -1,6 +1,10 @@
 /**
  * Author: Andrew Cantino
  * Date: 2009
+ *
+ *
+ * This is old code.
+ *
  */
 
 // Some globals

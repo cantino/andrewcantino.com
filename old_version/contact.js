@@ -2,6 +2,10 @@
  * Author: Andrew Cantino
  * Date: 2007
  * Please do not copy without permission.
+ *
+ *
+ * This is ancient code.
+ *
  */
 
 
