@@ -51,7 +51,7 @@ a img.linkIndicator {
 }
 
 .title .firstLetter {
-  font-size: 36px;
+  font-size: 1.5em;
 }
 
 .title img {
@@ -114,6 +114,27 @@ ul {
   bottom: -70px;
 }
 
+@media screen and (max-width: 800px) {
+  .explanation {
+    display: none !important;
+  }
+
+  .bottomBox .expBox {
+		min-width: 480px !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .title {
+		font-size: 16px;
+		white-space: nowrap;
+  }
+
+  .explanation, .expandall {
+    display: none !important;
+  }
+}
+
 @media print {
   * {
     background: transparent !important;
@@ -138,7 +159,7 @@ ul {
     padding: 15px 10px;
   }
 
-  .explanation {
+  .explanation, .expandall {
     display: none !important;
   }
 

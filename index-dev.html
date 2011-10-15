@@ -92,11 +92,13 @@
           }
         };
 
-        $(".showAnts, .showContact").fancybox({
-          width: 820,
-          height: 600,
-          type: 'iframe'
-        });
+				if (navigator.platform.indexOf("iPhone") == -1) {
+	        $(".showAnts, .showContact").fancybox({
+	          width: 820,
+	          height: 600,
+	          type: 'iframe'
+	        });
+				}
 
 				$(".expandall a").click(function() {
 					$(".expander:not(.activated)").each(function() { $(this).data("expand") && $(this).data("expand")(true); });
