@@ -22,7 +22,7 @@
 			    $(".expandall").fadeOut();
 			  });
 			}
-			
+
 			function hideExplanation() {
 				$(".explanation").animate({ bottom: "-70px"}, 1000, function() {
           $(".explanation").fadeOut();
@@ -46,7 +46,7 @@
 							var scope = initial.wrap("<a>").parent();
               initial = initial.parent();
 						}
-						
+
 						var expand = function(force) {
 							scope.addClass('activated');
               initial.hide();
@@ -56,7 +56,7 @@
               expanded.show();
 
               expanded.css("color", "#EF7A28").animate({ color: "#444" }, 2000);
-              expanded.children(".break").animate({ marginBottom: "30px" }, 300);
+              expanded.children(".break").animate({ marginBottom: "25px" }, 300);
 
 							if (!force && !scope.closest(".explanation").length) {
 	              expansionCount++;
@@ -125,55 +125,92 @@
         <span class="expando">
           <span class="initial"><a>experimentalist</a> and</span>
           <span class="expanded">
-            experimentalist. I enjoy making
-            <span class="expando">
-              <span class="initial"><a>online toys</a> and </span>
-              <span class="expanded">
-                online toys.  For example, I made an adaptive <a href="http://iterationprojects.com/rps/">rock-paper-scissors bot</a> that does
-                <span class="expando">
-                  <span class="initial">better than chance.</span>
-                  <span class="expanded"><span style='font-size: 0.8em'>somewhat</span> better than chance.</span>
+            experimentalist. I enjoy making online
+
+			      <span class="expando">
+				      <span class="initial"><a>websites and toys</a> and </span>
+				      <span class="expanded">
+				        websites and toys, such as
+				        <span class="expando">
+                  <span class="initial"><a>UnderTheSite</a>,</span>
+                  <span class="expanded">UnderTheSite (<a href="http://underthesite.com">underthesite.com</a>), a tool for examining the workings of websites,</span>
                 </span>
-                I have spent time
-              </span>
-            </span>
+                <span class="expando">
+                  <span class="initial"><a>Freebie Finder</a>,</span>
+                  <span class="expanded">Freebie Finder (<a href="http://absurdlycool.com">absurdlycool.com</a>), an automated free stuff search engine and aggregator,</span>
+                </span>
+                and a bunch of
+                <span class="expando">
+                  <span class="initial"><a>older projects</a>.</span>
+                  <span class="expanded">
+                    older projects, including:
+                    <ul>
+                      <li><a href="http://recreationparks.net">RecreationParks.net</a> - a database of 50,000+ public parks in the US (now sold to AllTrails, Inc)</li>
+                      <li><a href="http://startupwarrior.com">Startup Warrior</a> - an interactive map of tech companies (now sold)</li>
+                      <li><a href="https://github.com/fizx/parsley/">Parsley</a> - a language and companion website for building web scrapers</li>
+                      <li><a href="http://iterationprojects.com/evolve/">CSSEvolve</a> - a tool to evolve CSS styles through a process of simulated natural selection</li>
+                      <li><a href="http://iterationprojects.com/address/">Flexible Address Parser</a> - a Perl script that can parse US mailing addresses in many formats</li>
+                      <li>... and an adaptive <a href="http://iterationprojects.com/rps/">rock-paper-scissors bot</a> that does
+                        <span class="expando">
+                          <span class="initial">better than chance.</span>
+                          <span class="expanded"><span style='font-size: 0.8em'>somewhat</span> better than chance.</span>
+                        </span>
+                      </li>
+                    </ul>
+                    <div class='break'></div>
+                  </span>
+                </span>
+				      </span>
+			      </span>
 
+			      I've spent time
 
             <span class="expando">
-              <span class="initial"><a>learning about web security</a>.</span>
+              <span class="initial"><a>studying web security</a>.</span>
               <span class="expanded">
-               	researching security and privacy, mostly in web applications.  I'm in the <a href="http://www.google.com/about/corporate/company/halloffame.html">Google Security Hall of Fame</a> for some subtle security holes that I found in Gmail and Google Documents in early 2011.  
+               	researching security and privacy, mostly in web applications.  I'm in the <a href="http://www.google.com/about/corporate/company/halloffame.html">Google Security Hall of Fame</a> for some subtle security holes that I found in Gmail and Google Documents in early 2011.
 		            <div class='break'></div>
               </span>
             </span>
 
-            I also play with  
+            I'm also interested in
             <span class="expando">
               <span class="initial"><a>emergent processes</a> from nature.</span>
               <span class="expanded">
                 the simulation of emergent processes and self-organizing systems, primarily from the natural world.  One recent creation is <a class='showAnts skipRewrite external' href="ants.html">an HTML5 canvas-based simulation of ants exploring</a> and
                 <span class="expando">
                   <span class="initial">working together</span>
-                  <span class="expanded">communicating via pheromone signals.  These pheromone signals are local, and the ants don't know anything about each other, yet the resulting emergent system displays complex behaviors, allowing the ants to</span>
+                  <span class="expanded">communicating via pheromone signals.  These pheromone signals are local, and although the ants know nothing about each other, the resulting emergent system displays complex behaviors, which allow the ants</span>
                 </span>
                 to gather food.
               </span>
             </span>
             <div class='break'></div>
-            My job is as a
+
+            Professionally, I am
           </span>
         </span>
+
+
+        VP of Engineering at
         <span class="expando">
-          <span class="initial"><a>web developer</a>.</span>
+          <span class="initial"><a>Mavenlink</a>, where I</span>
           <span class="expanded">
-            web developer, applying
+		        Mavenlink (<a href="http://mavenlink.com">mavenlink.com</a>), a startup that is empowering consultants and clients to collaborate in new ways.  I
+          </span>
+        </span>
+
+        <span class="expando">
+          <span class="initial">help guide <a>technology development</a>.</span>
+          <span class="expanded">
+            help guide the development team, applying
             <span class="expando">
               <span class="initial"><a>agile practices</a> to</span>
               <span class="expanded">
-                agile software development methodologies including pair-programming and
+                agile software development methodologies that I learned as a consultant at <a href="http://pivotallabs.com">Pivotal Labs</a>, including pair-programming and
                 <span class="expando">
-                  <span class="initial"><a>test-driven development</a> to</span>
-                  <span class="expanded">test-driven development (<span style='font-size: 0.8em'>my experience has been that testing reliably results in better code, and test driving, where appropriate, helps to minimize errors and to spread knowledge</span>) to</span>
+                  <span class="initial"><a>test-driven development</a>, to</span>
+                  <span class="expanded">test-driven development (<span style='font-size: 0.8em'>my experience has been that testing reliably results in better code, and pairing, where appropriate, helps to minimize errors and to spread knowledge</span>), to</span>
                 </span>
               </span>
             </span>
@@ -188,7 +225,7 @@
                 HTML5, and
                 <span class="expando">
                   <span class="initial"><a>CSS</a>,</span>
-                  <span class="expanded">CSS (straight, on the rocks, or with SASS and/or HAML),</span>
+                  <span class="expanded">CSS (straight, on the rocks, or with SASS),</span>
                 </span>
                 and
               </span>
@@ -209,53 +246,32 @@
               </span>
             </span>
 
-            I work with
-            <span class="expando">
-              <span class="initial">clients</span>
-              <span class="expanded">
-                <a href="http://pivotallabs.com">Pivotal Labs</a> and other clients
-              </span>
-            </span>
-            and develop my own
-            <span class="expando">
-              <span class="initial"><a>projects</a>.</span>
-              <span class="expanded">
-                projects, such as
-                <span class="expando">
-                  <span class="initial"><a>UnderTheSite</a>,</span>
-                  <span class="expanded">UnderTheSite (<a href="http://underthesite.com">underthesite.com</a>), a tool for examining the workings of websites,</span>
-                </span>
-                <span class="expando">
-                  <span class="initial"><a>Freebie Finder</a>,</span>
-                  <span class="expanded">Freebie Finder (<a href="http://absurdlycool.com">absurdlycool.com</a>), an automated free stuff search engine and aggregator,</span>
-                </span>
-                and other
-                <span class="expando">
-                  <span class="initial"><a>older projects</a>.</span>
-                  <span class="expanded">
-                    older projects, including:
-                    <ul>
-                      <li><a href="http://recreationparks.net">RecreationParks.net</a> - a database of 50,000+ public parks in the US (now sold to AllTrails, Inc)</li>
-                      <li><a href="http://startupwarrior.com">Startup Warrior</a> - an interactive map of tech companies (now sold)</li>
-                      <li><a href="http://iterationprojects.com/address/">Flexible Address Parser</a> - a Perl script that can parse US mailing addresses in many formats</li>
-                      <li><a href="https://github.com/fizx/parsley/">Parsley</a> - a language and companion website for building web scrapers</li>
-                      <li><a href="http://iterationprojects.com/evolve/">CSSEvolve</a> - a tool to evolve CSS styles through a process of simulated natural selection</li>
-                    </ul>
-                  </span>
-                </span>
-              </span>
-            </span>
             <div class='break'></div>
           </span>
         </span>
 
-        I enjoy using
+        I also enjoy writing
         <span class="expando">
-          <span class="initial"><a>machine learning techniques</a> and</span>
+          <span class="initial"><a>open source software</a> and playing</span>
           <span class="expanded">
-            machine learning techniques that I studied
+            open source software, some of which includes:
+            <ul>
+              <li><a href="http://selectorgadget.com">SelectorGadget</a> - Bookmarklet for CSS selector generation</li>
+              <li><a href="https://github.com/iterationlabs/ruby-readability">ruby-readability</a> - Ruby port of Readability, a tool for extracting text from webpages</li>
+              <li><a href="https://github.com/iterationlabs/my_obfuscate">MyObfuscate</a> - Ruby stream processor that selectively rewrites SQL to protect user privacy</li>
+              <li><a href="https://github.com/iterationlabs/reckon">Reckon</a> - Bayesian learning Ruby gem for command line accounting with <a href="http://ledger-cli.org/">Ledger</a></li>
+            </ul>
+            <div class='break'></div>
+            From time to time I play
+          </span>
+        </span>
+
+        <span class="expando">
+          <span class="initial">with <a>machine learning</a>.</span>
+          <span class="expanded">
+            with machine learning techniques that I studied
             <span class="expando">
-              <span class="initial">in <a>graduate school</a> and</span>
+              <span class="initial">in <a>graduate school</a>.</span>
               <span class="expanded">
                 while doing my Masters research</a> at Georgia Tech.  My research focused on
                 <span class="expando">
@@ -280,24 +296,17 @@
                      stochastic optimization for motion control of high degree-of-freedom manipulators, like octopus arms and elephant trunks (<a href="/papers/octo-agents.pdf" target="_blank">you can read my paper about it</a>),
                   </span>
                 </span>
-                and
-                <span class="expando">
-                  <span class="initial"><a>machine learning in web applications</a>.</span>
-                  <span class="expanded">
-                    machine learning in web applications.
-                    Notably, I developed a remotely hosted tool that analyzed both historical traffic flows through a website and a visitor's personal cursor motion in order to estimate a probability distribution over page links.  Links that a visitor is likely to click are either enlarged or pre-selected, thus improving page flow (and the link's <a href="http://en.wikipedia.org/wiki/Fitts's_law" target="_blank">Fitts's Law</a> properties).
-                    <div class='break'></div>
-                  </span>
-                </span>
+                and machine learning in web applications.
+
                 Prior to Georgia Tech, I graduated from Haverford College with a BS in
                 <span class="expando">
                   <span class="initial"><a>Physics</a>.</span>
                   <span class="expanded">
-                    Physics and a concentration in Computational Science, focusing on
+                    Physics and a concentration in Computational Science, which focused on
                     <span class="expando">
                       <span class="initial"><a>Physics Education</a>.</span>
                       <span class="expanded">
-                        Physics Education, which culminated in the development of three
+                        Physics Education.  This culminated in the development of three
                         <span class="expando">
                           <span class="initial">educational physics applets</span>
                           <span class="expanded">educational physics applets
@@ -311,41 +320,22 @@
                   </span>
                 </span>
                 <div class='break'></div>
-                I also enjoy
               </span>
             </span>
           </span>
         </span>
-        writing
-        <span class="expando">
-          <span class="initial"><a>open source software</a>.</span>
-          <span class="expanded">
-            open source software, some of which includes
-            <ul>
-              <li><a href="http://selectorgadget.com">SelectorGadget</a> - Bookmarklet for CSS selector generation</li>
-              <li><a href="https://github.com/iterationlabs/ruby-readability">ruby-readability</a> - Ruby port of Readability, a tool for extracting text from webpages</li>
-              <li><a href="https://github.com/iterationlabs/my_obfuscate">MyObfuscate</a> - Ruby stream processor for the selective rewriting of MySQL dumps in order to protect user privacy</li>
-              <li><a href="https://github.com/iterationlabs/reckon">Reckon</a> - Bayesian learning Ruby gem for command line accounting with <a href="http://ledger-cli.org/">Ledger</a></li>
-            </ul>
-            <div class='break'></div>
-          </span>
-        </span>
 
-        I
+        I live in
         <span class="expando">
-          <span class="initial">live in <a>San Francisco</a>.</span>
+          <span class="initial">sunny</span>
           <span class="expanded">
-            usually live in San Francisco, but am currently backpacking with my wife through
             <span class="expando">
-              <span class="initial"><a>South America</a> and</span>
-              <span class="expanded">Ecuador, Peru, Bolivia, and Argentina.  Then, after the holidays, we're going to</span>
-            </span>
-            <span class="expando">
-              <span class="initial">Asia.</span>
-              <span class="expanded">China, Thailand, Laos, and Cambodia.</span>
+              <span class="initial">sometimes sunny</span>
+              <span class="expanded">foggy</span>
             </span>
           </span>
         </span>
+		San Francisco.
 
         <span class="expando">
           <span class="initial">You can <a>contact</a> me in various ways.</span>
