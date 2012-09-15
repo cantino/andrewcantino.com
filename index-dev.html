@@ -14,111 +14,72 @@
     <script src='scripts/jquery-ui.min.js'></script>
 
     <script src='scripts/fancybox/jquery.fancybox-1.3.4.pack.js'></script>
-    <link rel="stylesheet" type="text/css" href="scripts/fancybox/jquery.fancybox-1.3.4.css">
+    <script src='scripts/jquery.expando.js'></script>
+    <link rel="stylesheet" type="text/css" href="scripts/fancybox/jquery.fancybox-1.3.4.css" media="all" >
+    <link rel="stylesheet" type="text/css" href="stylesheets/expando.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/home.css" media="all" />
 
     <script>
-			function hideExpandAll() {
-				$(".expandall").animate({ bottom: "-70px"}, 1000, function() {
-			    $(".expandall").fadeOut();
-			  });
-			}
+      $(function() {
+        var expansionCount = 0, explanationIsVisible = true, expandAllIsVisible = false;
 
-			function hideExplanation() {
-				$(".explanation").animate({ bottom: "-70px"}, 1000, function() {
-          $(".explanation").fadeOut();
-        });
-			}
-
-			$(function() {
-        var expansionCount = 0;
-				var explanationIsVisible = true, expandAllIsVisible = false;
-
-        function expando($elem) {
-          $elem.find("a[href]:not(.skipRewrite)").attr("target", "_blank").addClass("external").each(function() {
-//            $(this).append("<img src='linkout_icon.png' border=0 class='linkIndicator'/>");
-          });
-          $elem.find("expando").each(function() {
-            var initial = $(this).children("initial").show();
-            var expanded = $(this).children("expanded").hide();
-            if (initial.children("a").length) {
-							var scope = initial.children("a");
-						} else {
-							var scope = initial.wrap("<a>").parent();
-              initial = initial.parent();
-						}
-
-						var expand = function(force) {
-							scope.addClass('activated');
-              initial.hide();
-              if (expanded.data("callback")) {
-                callbacks[expanded.data("callback")](expanded);
-              }
-              expanded.show();
-
-              expanded.css("color", "#EF7A28").animate({ color: "#444" }, 2000);
-              expanded.children(".break").animate({ marginBottom: "25px" }, 300);
-
-							if (!force && !scope.closest(".explanation").length) {
-	              expansionCount++;
-
-	              if (explanationIsVisible && expansionCount > 2) {
-									hideExplanation();
-									explanationIsVisible = false;
-	              } else if (!expandAllIsVisible && expansionCount > 6) {
-	                $(".expandall").animate({ bottom: "0px"}, 1000);
-									expandAllIsVisible = true;
-								} else if (expandAllIsVisible) {
-									if (!$(".wrapper .expander:not(.activated)").length) {
-										hideExpandAll();
-									}
-								}
-							}
-						};
-
-						scope.addClass("expander").data("expand", expand).click(function() {
-							expand();
-							return false;
-						});
+        function hideExpandAll() {
+          $(".expandall").animate({ bottom: "-70px"}, 1000, function() {
+            $(".expandall").fadeOut();
           });
         }
 
-        var callbacks = {
-          resetExplanation: function() {
-            $(".explanation").find("initial").each(function() {
-              $(this).show();
-              $(this).parent("a").show();
+        $(".expandall a").click(function() {
+          $(".start , .explanation").expando("expandAll");
+          hideExpandAll();
+          return false;
+        });
+
+        $(".start, .explanation").expando({
+          expansionStartColor: "#EF7A28",
+          expansionEndColor: "#444",
+          expansionBreakMargin: "25px",
+        });
+
+        $(".start").bind("expando.expanded", function() {
+          expansionCount++;
+          if (explanationIsVisible && expansionCount > 2) {
+            $(".explanation").animate({ bottom: "-70px"}, 1000, function() {
+              $(".explanation").fadeOut();
             });
-            $(".explanation").find("expanded").hide();
+            explanationIsVisible = false;
+          } else if (!expandAllIsVisible && expansionCount > 6) {
+            $(".expandall").animate({ bottom: "0px"}, 1000);
+            expandAllIsVisible = true;
+          } else if (expandAllIsVisible) {
+            if (!$(".wrapper .expander:not(.activated)").length) {
+              hideExpandAll();
+            }
           }
-        };
+        });
 
-				if (navigator.platform.indexOf("iPhone") == -1) {
-	        $(".showAnts, .showContact").fancybox({
-	          width: 820,
-	          height: 600,
-	          type: 'iframe'
-	        });
-				}
+        $(".reset-explanation").bind("expando.expanded", function() {
+          $(".explanation").find("initial").each(function() {
+            $(this).show();
+            $(this).parent("a").show();
+          });
+          $(".explanation").find("expanded").hide();
+        });
 
-				$(".expandall a").click(function() {
-					$(".expander:not(.activated)").each(function() { $(this).data("expand") && $(this).data("expand")(true); });
-					hideExpandAll();
-					return false;
-				});
-
-        expando($(".start"));
-        expando($(".explanation"));
         $(".wrapper, .explanation").fadeIn();
+
+        if (navigator.platform.indexOf("iPhone") == -1) {
+          $(".showAnts, .showContact").fancybox({ width: 820, height: 600, type: 'iframe' });
+        }
       });
 		</script>
-    <link rel="stylesheet" type="text/css" href="stylesheets/expando.css" />
   </head>
 
   <body>
     <div class='wrapper' style="display: none">
       <div class='title'>
         <img src='images/me-right.jpg' />
-        <span class='firstLetter'>A</span>NDREW <span class='firstLetter'>C</span>ANTINO
+        <span class='first-letter'>A</span>NDREW <span class='first-letter'>C</span>ANTINO
       </div>
       <div class='start'>
         I'm an
@@ -347,14 +308,14 @@
       </div>
     </div>
 
-    <div class='bottomBox expandall'>
-      <span class="expBox">
-				You can <a class='skipRewrite fakeExpander' href="#">see everything</a> if you're lazy.
+    <div class='bottom-box expandall'>
+      <span class="exp-box">
+				You can <a class='skipRewrite fake-expander' href="#">see everything</a> if you're lazy.
 			</span>
 		</div>
 
-    <div class='explanation bottomBox'>
-      <span class="expBox">
+    <div class='explanation bottom-box'>
+      <span class="exp-box">
         You should click around, this page will
         <expando>
           <initial>grow on you.</initial>
@@ -370,7 +331,7 @@
                       <expanded>
                         <expando>
                           <initial><a>start to get recursive</a>.</initial>
-                          <expanded data-callback="resetExplanation">
+                          <expanded class='reset-explanation'>
                           </expanded>
                         </expando>
                       </expanded>
