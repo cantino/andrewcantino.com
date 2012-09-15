@@ -5,7 +5,7 @@
  * Copyright (c) 2012 Andrew Cantino
  *
  * Version: 0.1.0 (9/14/2012)
- * Requires: jQuery
+ * Requires: jQuery, jQuery UI
  *
  * Licensed under the MIT License
  *   http://www.opensource.org/licenses/mit-license.php
@@ -26,9 +26,10 @@
          $(this).data("expandFunction") && $(this).data("expandFunction")(true);
        });
     } else {
-      $(this).find("expando, .expando").addClass("expando").each(function() {
+      $(this).addClass("expando-region").find("expando, .expando").each(function() {
         var initial = $(this).children("initial, .initial").show();
         var expanded = $(this).children("expanded, .expanded").hide();
+
         if (initial.children("a").length) {
           var scope = initial.children("a");
         } else {
@@ -43,11 +44,11 @@
 
           expanded.css("color", options.expansionStartColor || "#EF7A28").animate({
             color: options.expansionEndColor || "#444"
-          }, 2000);
+          }, options.colorFadeTime || 2000);
 
           expanded.children(".break").animate({
             marginBottom: options.expansionBreakMargin || "25px"
-          }, 300);
+          }, options.breakOpenTime || 300);
 
           expanded.trigger("expando.expanded");
         }).click(function() {

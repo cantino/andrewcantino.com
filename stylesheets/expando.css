@@ -5,14 +5,14 @@
  * Copyright (c) 2012 Andrew Cantino
  *
  * Version: 0.1.0 (9/14/2012)
- * Requires: jQuery
+ * Requires: jQuery, jQuery UI
  *
  * Licensed under the MIT License
  *   http://www.opensource.org/licenses/mit-license.php
  */
 
-.expando .expander,
-.expando .fake-expander {
+.expando-region .expander,
+.expando-region .fake-expander {
   cursor: pointer;
   padding: 2px 0px;
   color: #EF7A28;
@@ -21,45 +21,45 @@
   text-decoration: none;
 }
 
-.expando a.expander:hover,
-.expando a.fake-expander:hover {
+.expando-region a.expander:hover,
+.expando-region a.fake-expander:hover {
   -webkit-transition: background-color .25s linear;
   transition: background-color .25s linear;
   background-color: #ececec;
   text-decoration: none;
 }
 
-.expando a.external {
+.expando-region a.external {
   text-decoration: underline;
   color: inherit;
 }
 
-.expando a.external:visited {
+.expando-region a.external:visited {
   color: inherit;
 }
 
-.expando .break {
+.expando-region .break {
   margin-bottom: 0px;
 }
 
 @media print {
-  .expando a.expander:hover,
-  .expando a.fake-expander:hover {
+  .expando-region a.expander:hover,
+  .expando-region a.fake-expander:hover {
     color: #EF7A28 !important;
   }
 
-  .expando .expanded,
-  .expando expanded {
+  .expando-region .expanded,
+  .expando-region expanded {
     display: inline !important;
   }
 
-  .expando .initial,
-  .expando initial {
+  .expando-region .initial,
+  .expando-region initial {
     display: none !important;
   }
 
-  .expando .break,
-  .expando break {
+  .expando-region .break,
+  .expando-region break {
     margin-bottom: 25px !important;
   }
 }
