@@ -60,11 +60,11 @@
         });
 
         $(".reset-explanation").bind("expando.expanded", function() {
-          $(".explanation").find("initial").each(function() {
+          $(".explanation").find("initial, .initial").each(function() {
             $(this).show();
             $(this).parent("a").show();
           });
-          $(".explanation").find("expanded").hide();
+          $(".explanation").find("expanded, .expanded").hide();
         });
 
         $(".wrapper, .explanation").fadeIn();
@@ -340,8 +340,8 @@
                       <expanded>
                         <expando>
                           <initial><a>start to get recursive</a>.</initial>
-                          <expanded class='reset-explanation'>
-                          </expanded>
+                          <span class='expanded reset-explanation'>
+                          </span>
                         </expando>
                       </expanded>
                     </expando>
