@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <link href="build/jquery.json-editor.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="vendor/jquery-1.8.3.js"></script>
+    <script type="text/javascript" src="vendor/json2.js"></script>
+    <script type="text/javascript" src="build/jquery.json-editor.js"></script>
+
+    <script>
+      // Setup control buttons at bottom.
+
+      $(document).ready(function(){
+        JSONEditor.prototype.ADD_IMG = 'lib/images/add.png';
+        JSONEditor.prototype.DELETE_IMG = 'lib/images/delete.png';
+        var j = new JSONEditor($("#t"), 400, 400);
+        j.doTruncation(true);
+        j.showFunctionButtons();
+      });
+    </script>
+  </head>
+  <body>
+<textarea id="t">{
+  "names": ["andy", "ben", "sam"],
+  "some_object": {
+    "foo": "bar",
+    "baz": [{ "woah": "there"}],
+    "long_line": "a b c d e f g h i j | a b c d e f g h i j | match(/dflkjdfkjhdfkjhdf/) | dfjkhsdfh | a b c d e f g h i j"
+  }
+}
+    </textarea>
+  </body>
+</html>
