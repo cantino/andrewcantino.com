@@ -70,7 +70,10 @@
         $(".wrapper, .explanation").fadeIn();
 
         if (navigator.platform.indexOf("iPhone") == -1) {
-          $(".showAnts, .showContact").fancybox({ width: 820, height: 600, type: 'iframe' });
+          $(".showAnts, .showContact, .showLife").fancybox({ width: 820, height: 600, type: 'iframe' });
+          if (pattern = window.location.href.match(/\?open=(show[A-Z]\w+)/)) {
+            $("." + pattern[1]).click();
+          }
         }
       });
 		</script>
@@ -135,7 +138,7 @@
                   <span class="initial">working together</span>
                   <span class="expanded">communicating via pheromone signals.  These pheromone signals are local, and although the ants know nothing about each other, the resulting emergent system displays complex behaviors, which allow the ants</span>
                 </span>
-                to gather food.
+                to gather food.  Another is an <a class='showLife skipRewrite external' href="life.html">implementation of Conway's Game of Life</a>.
               </span>
             </span>
             <div class='break'></div>

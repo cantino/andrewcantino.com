@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Andrew Cantino</title>
+    <link href='http://fonts.googleapis.com/css?family=Nobile:400,400italic' rel='stylesheet' type='text/css'>
+    <script src='scripts/life.js'></script>
+    <script>
+      $(function() {
+        window.world = new LifeWorld({ width: 150, height: 150 });
+        var renderer = new SimpleCanvasRenderer(world, { width: world.width * 3, height: world.height * 3, container: $("#world") });
+        renderer.go();
+        $('#restart').on('click', function(e) {
+          e.preventDefault();
+          world.setup();
+          world.recordChange();
+        });
+      });
+    </script>
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/expando.css">
+    <style>
+      body {
+        padding: 0;
+        margin:  0;
+      }
+    </style>
+  </head>
+  <body>
+    [<a href='#' id='restart'>restart simulation</a>]
+    <div id='world'></div>
+    This simulation of <a href="http://en.wikipedia.org/wiki/Conway's_Game_of_Life" target="_blank">Conway's Game of Life</a> works in most recent web browsers (Chrome, Firefox, Safari).  Chrome is recommended.
+    <p />
+    The simulation starts with a <a href="http://en.wikipedia.org/wiki/Gun_(cellular_automaton)" target="_blank">glider gun</a> in the upper left and with a random population of living and dead cells in the bottom half of the grid.  Often, the random cells spread into the gun and destroy it, but sometimes it survives.  Try restarting a few times.  You may also see stable patterns emerge naturally, such as gliders, guns, and oscillators.
+  </body>
+</html>
