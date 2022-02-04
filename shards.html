@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+  <!-- Make sure window.api_key is set in the User Scripts section of BTT. -->
+  <head>
+    <title>Shards</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="application/javascript">
+      window.addEventListener("load", () => {
+        const shard = document.getElementById("shard");
+        const theForm = document.getElementById("the-form");
+
+        window.api_key = window.api_key || localStorage.getItem('api_key');
+
+        async function postData(text) {
+          const headers = new Headers();
+          try {
+            const response = await fetch("https://datacenter.andrewcantino.com/api/v1/shards", {
+              method: 'POST',
+              mode: 'cors',
+              cache: 'no-cache',
+              credentials: 'omit',
+              headers: { 'Content-Type': 'application/json' },
+              redirect: 'follow',
+              referrerPolicy: 'no-referrer',
+              body: JSON.stringify({
+                api_key: window.api_key,
+                shard: {
+                  text: text
+                }
+              })
+            });
+            return response.json();
+          } catch (error) {
+            theForm.innerText = error;
+          }
+        }
+
+        theForm.addEventListener("submit", function(event) {
+          event.preventDefault();
+          postData(shard.value)
+            .then(data => {
+              if (data.errors) {
+                theForm.innerText = data.errors.join("\n");
+              } else if (data.id) {
+                theForm.innerText = "Saved";
+                setTimeout(() => window.close(), 2000);
+              } else {
+                theForm.innerText = `Unknown error - ${JSON.stringify(data)}`;
+              }
+            });
+        });
+
+        shard.focus();
+
+        // If esc is pressed, close the window.
+        document.addEventListener("keyup", event => {
+          if (event.code === "Escape") window.close();
+        });
+
+        document.getElementById("settings").addEventListener("click", () => {
+          const apiKey = prompt(`Please enter your API key${window.api_key ? ' (one is saved):' : ':'}`);
+          if (apiKey) {
+            localStorage.setItem("api_key", apiKey);
+            window.api_key = apiKey;
+          }
+        });
+      });
+    </script>
+    <style>
+      body {
+        font-size: 18pt;
+        background-color: white;
+      }
+
+      #submit {
+        font-size: 18pt;
+        margin-top: 10px;
+      }
+
+      #shard {
+        width: 90%;
+        font-size: 18pt;
+      }
+
+      #settings {
+        position: fixed;
+        top: 10px;
+        right: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <span id="settings">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+    </span>
+
+    <form id="the-form">
+      <input type="text" name="shard" id="shard" value="" />
+      <input type="submit" id="submit" value="Add" />
+    </form>
+  </body>
+</html>
