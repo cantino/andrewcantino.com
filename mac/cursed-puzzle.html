@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+<head>
+  <title>The Cursed Puzzle</title>
+  <style>
+    * {
+      font-family: sans-serif;
+    }
+    p {
+      font-size: 14px;
+      margin: 8px 0;
+      color: #888;
+    }
+    .pcejs {
+      padding-right: 0;
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+      text-align: center;
+    }
+    div.pcejs-border {
+      border: none;
+    }
+    /* the canvas *must not* have any border or padding, or mouse coords will be wrong */
+    .pcejs-canvas {
+      border: 0px none;
+    }
+    .pcejs-container {
+      margin-top: 32px;
+      text-align: center;
+    }
+
+    /* macplus has mouse integration, so we can hide the host mouse */
+    .pcejs-container canvas {
+      cursor: none;
+    }
+
+    img {
+      margin: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="pcejs pcejs-container">
+    <div class="pcejs pcejs-loading-status">Downloading...</div>
+    <div class="pcejs-border">
+      <canvas class="pcejs pcejs-canvas" oncontextmenu="event.preventDefault()"></canvas>
+    </div>
+  </div>
+
+  <p class="pcejs">press esc + &uarr; to zoom in, esc + &darr; to zoom out</p>
+
+  <p>
+  The Cursed Puzzle is a game I wrote in <a href='https://winworldpc.com/product/quickbasic/10x-for-mac'>Microsoft QuickBASIC</a> in 1995-1996 on my <a href='https://en.wikipedia.org/wiki/Macintosh_Plus'>Mac Plus</a>. It is a GUI on top of an even older, text-only adventure game I'd previously written. Use the menu options to explore the world and find all of the lost puzzle pieces. My 14 year old self was thrilled to receive a couple $5 bills in the mail from people who purchased the full game, which was available via <a href='https://archive.org/details/MacintoshSharewareGamesT'>shareware archives</a>.
+  </p>
+  <p>
+    This online virtual machine, running in JavaScript in your browser and fully simulating the hardware of a Mac Plus, is powered by James Friend's <a href='https://github.com/jsdf/pce'>amazing emscripten port</a> of the <a href='http://www.hampa.ch/pce/'>PCE MC68000 emulator</a>.
+  </p>
+  <p>
+    Here also are a few images of The Cursed Puzzle's old website, originally hosted on Tripod (which was bought by Lycos).
+    <img src='old-website-2.png'>
+    <img src='old-website-1.png'>
+  </p>
+
+  <script type="text/javascript" src="https://unpkg.com/pcejs-macplus@0.2.2/pcejs-macplus.umd.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/pcejs-util@0.2.2/pcejs-util.umd.js"></script>
+  <script>
+    var loadingStatus = PCEJSUtil.loadingStatus(
+      document.querySelector('.pcejs-loading-status')
+    );
+    PCEJSMacplus({
+      arguments: ['-c', 'pce-config.cfg', '-r'],
+      autoloadFiles: [
+        'mac-plus.rom', // a macintosh rom file (you can use this one or any rom from an early macintosh eg. classic or earlier)
+        'hd1.img', // a macintosh disk image
+        'pce-config.cfg', // the PCE config file (edit and replace this file with your own)
+        'macplus-pcex.rom', // the PCE extension rom, from the pcejs-macplus package
+      ],
+      locateFile(filename) {
+        // allows you to specify the absolute path to where the .wasm file is located (from the pcejs-macplus package)
+        return 'https://unpkg.com/pcejs-macplus@latest/' + filename;
+      },
+      print: console.log.bind(console),
+      printErr: console.warn.bind(console),
+      canvas: document.querySelector('.pcejs-canvas'),
+      monitorRunDependencies: function(remainingDependencies) {
+        loadingStatus.update(remainingDependencies);
+      },
+    });
+  </script>
+</body>
+</html>
