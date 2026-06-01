@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Exploring Hilbert Space and Coupled Harmonic Oscillators</title>
+<style>
+  :root { --ink:#1a1a1a; --line:#c9c9c9; --bg:#f4f4f6; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+         background: var(--bg); color: var(--ink); }
+  header { text-align:center; padding: 18px 12px 6px; }
+  header h1 { font-size: 1.3rem; font-weight: 600; margin: 0; }
+  header p { margin: 6px 0 0; color:#555; font-size:.9rem; }
+  .wrap { display:flex; flex-direction:column; align-items:center; padding: 14px; }
+  .app { background:#fff; border:1px solid var(--line); border-radius:8px; overflow:hidden;
+         box-shadow: 0 2px 10px rgba(0,0,0,.06); }
+  .stage { display:flex; }
+  .stage canvas#graph { cursor: crosshair; }
+  .stage > canvas + canvas { border-left:1px solid #ddd; }
+  #beats { border-top:1px solid #ddd; display:block; }
+  canvas { display:block; }
+  .controls { display:flex; align-items:center; gap:14px; padding:8px 12px; border-top:1px solid var(--line);
+              background:#fff; flex-wrap:wrap; }
+  .controls label { font-size:.85rem; display:inline-flex; align-items:center; gap:5px; user-select:none; }
+  button { font: inherit; font-size:.85rem; padding:3px 12px; border:1px solid #aaa; border-radius:5px;
+           background:#fafafa; cursor:pointer; }
+  button:disabled { opacity:.45; cursor:default; }
+  .kval { font-variant-numeric: tabular-nums; min-width:60px; }
+  .hint { max-width: 660px; text-align:center; color:#666; font-size:.82rem; line-height:1.4; margin-top:12px; }
+  a.back { display:inline-block; margin-top:14px; color:#3a5; text-decoration:none; font-size:.85rem; }
+  a.back:hover { text-decoration:underline; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Exploring Hilbert Space and Coupled Harmonic Oscillators</h1>
+  <p>Click or drag in the left plot to choose a state, then press <b>Go!</b></p>
+</header>
+
+<div class="wrap">
+  <div class="app">
+    <div class="stage">
+      <canvas id="graph" width="337" height="311"></canvas>
+      <canvas id="anim"  width="338" height="311"></canvas>
+    </div>
+    <canvas id="beats" width="675" height="140"></canvas>
+    <div class="controls">
+      <button id="go">Go!</button>
+      <label><input type="checkbox" id="vectors" checked> Show Vectors</label>
+      <label><input type="checkbox" id="droplines"> Drop Lines</label>
+      <label>Set k:
+        <input type="range" id="kslider" min="0" max="200" step="5" value="12">
+      </label>
+      <span class="kval" id="ktext">k:</span>
+    </div>
+  </div>
+  <p class="hint">Two pendulums joined by a spring. Any motion is a superposition of two normal modes &mdash; the
+  symmetric &ldquo;pendulum&rdquo; mode and the antisymmetric &ldquo;breathing&rdquo; mode. The left plot is the
+  abstract state (Hilbert) space: the green vector is your chosen state, decomposed onto the individual-mass axes
+  (red &amp; purple) and onto the normal-mode axes (blue &amp; black). The spring constant k tunes the beat frequency.</p>
+  <a class="back" href="../index.html">&larr; Back to all applets</a>
+</div>
+
+<script>
+"use strict";
+// ── Faithful JavaScript port of oscillator4.java (Coupled Oscillators) ───────
+// Original applet © Andrew Cantino, Haverford College, 2004.
+
+const PI = 3.1415, PI6 = 3.1416;   // the source mixed these two literals; preserved per-use
+
+// Model state (defaults from the Java source)
+const g = 9.8, m = 10;
+let k = 0.25;
+const Plength = 80;
+const bobDist = 50;
+let Ws, Wb, Wav, d;
+let showVectors = true;
+let doAnimate = false;
+let dropLines = false;
+
+function updateMath() {
+  Ws = Math.sqrt(g / Plength);
+  Wb = Math.sqrt(2*k/m + g / Plength);
+  Wav = (Ws + Wb) / 2.0;
+  d   = (Ws - Wb) / 2.0;
+}
+
+// Shared time (advances only while animating)
+let time = 0;
+
+// The chosen Hilbert-space point and its normal-mode coordinates
+let thePoint    = { x: 0, y: 0 };  // (X10, X20) — individual mass displacements
+let theNewPoint = { x: 0, y: 0 };  // (breathing amp, swinging amp)
+
+// ── tiny 2d vector helpers ──────────────────────────────────────────────────
+function v(x, y) { return { x, y }; }
+function minus(a, b) { return v(a.x - b.x, a.y - b.y); }
+function dot(a, b) { return a.x*b.x + a.y*b.y; }
+function normalize(a) { const n = Math.sqrt(a.x*a.x + a.y*a.y); return n === 0 ? v(0,0) : v(a.x/n, a.y/n); }
+
+// ── Hilbert-space GraphPanel ────────────────────────────────────────────────
+const graphCv = document.getElementById('graph');
+const gctx = graphCv.getContext('2d');
+const GW = graphCv.width, GH = graphCv.height;
+const xAxis = 12, yAxis = 12;
+gctx.font = "12px sans-serif";
+const fontH = 13;
+
+function screenLocation(wx, wy) { return v(wx + GW/2, -wy + GH/2); }
+function worldLocation(sx, sy) { return v(sx - GW/2, -(sy - GH/2)); }
+
+function drawArrow(ctx, start, end) {
+  const t = minus(end, start);
+  let angle = PI/6.0;
+  let rotated = normalize(v(t.x*Math.cos(angle) + t.y*Math.sin(angle), t.y*Math.cos(angle) - t.x*Math.sin(angle)));
+  ctx.beginPath();
+  ctx.moveTo(start.x, start.y); ctx.lineTo(end.x, end.y);
+  ctx.moveTo(end.x, end.y); ctx.lineTo(end.x - 10*rotated.x, end.y - 10*rotated.y);
+  angle = -PI/6.0;
+  rotated = normalize(v(t.x*Math.cos(angle) + t.y*Math.sin(angle), t.y*Math.cos(angle) - t.x*Math.sin(angle)));
+  ctx.moveTo(end.x, end.y); ctx.lineTo(end.x - 10*rotated.x, end.y - 10*rotated.y);
+  ctx.stroke();
+}
+
+function setDash(ctx, on) { ctx.setLineDash(on ? [9, 9] : []); }
+
+function drawVectors(ctx, p) {
+  ctx.lineWidth = 3;
+  const xspace = GW / xAxis, yspace = GH / yAxis;
+  const slThePoint = screenLocation(xspace * p.x, yspace * p.y);
+  const pt = v(xspace * p.x, yspace * p.y);
+
+  // projection onto the (+,+) normal-mode diagonal  → blue
+  let c = dot(pt, v(xspace, yspace)) / (xspace*xspace + yspace*yspace);
+  let sl = screenLocation(c*xspace, c*yspace);
+  ctx.strokeStyle = "blue";
+  drawArrow(ctx, v(GW/2, GH/2), sl);
+  if (dropLines) { setDash(ctx, true); ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(slThePoint.x, slThePoint.y); ctx.lineTo(sl.x, sl.y); ctx.stroke();
+    setDash(ctx, false); ctx.lineWidth = 3; }
+
+  // projection onto the (-,+) normal-mode diagonal → black
+  ctx.strokeStyle = "black";
+  c = dot(pt, v(-xspace, yspace)) / (xspace*xspace + yspace*yspace);
+  sl = screenLocation(-c*xspace, c*yspace);
+  drawArrow(ctx, v(GW/2, GH/2), sl);
+  if (dropLines) { setDash(ctx, true); ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(slThePoint.x, slThePoint.y); ctx.lineTo(sl.x, sl.y); ctx.stroke();
+    setDash(ctx, false); ctx.lineWidth = 3; }
+
+  // the state vector itself → green
+  ctx.strokeStyle = "green";
+  drawArrow(ctx, v(GW/2, GH/2), slThePoint);
+  // projection onto horizontal mass axis (X10) → purple
+  ctx.strokeStyle = "rgb(186,85,211)";
+  drawArrow(ctx, v(GW/2, GH/2), v(slThePoint.x, GH/2));
+  // projection onto vertical mass axis (X20) → red
+  ctx.strokeStyle = "red";
+  drawArrow(ctx, v(GW/2, GH/2), v(GW/2, slThePoint.y));
+  if (dropLines) {
+    setDash(ctx, true); ctx.lineWidth = 1;
+    ctx.strokeStyle = "rgb(186,85,211)";
+    ctx.beginPath(); ctx.moveTo(slThePoint.x, slThePoint.y); ctx.lineTo(slThePoint.x, GH/2); ctx.stroke();
+    ctx.strokeStyle = "red";
+    ctx.beginPath(); ctx.moveTo(slThePoint.x, slThePoint.y); ctx.lineTo(GW/2, slThePoint.y); ctx.stroke();
+    setDash(ctx, false); ctx.lineWidth = 3;
+  }
+}
+
+function drawGraph() {
+  const ctx = gctx;
+  ctx.clearRect(0,0,GW,GH);
+  ctx.fillStyle = "white"; ctx.fillRect(0, 0, GW, GH);
+  // yellow grid
+  ctx.lineWidth = 1; ctx.strokeStyle = "yellow";
+  for (let i = 0; i <= xAxis; i++) { const x = i*(GW/xAxis); ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,GH); ctx.stroke(); }
+  for (let i = 0; i <= yAxis; i++) { const y = i*(GH/yAxis); ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(GW,y); ctx.stroke(); }
+  // main axes
+  ctx.lineWidth = 2; ctx.strokeStyle = "black";
+  ctx.beginPath(); ctx.moveTo(GW/2, 0); ctx.lineTo(GW/2, GH); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0, GH/2); ctx.lineTo(GW, GH/2); ctx.stroke();
+  // diagonal normal-mode axes
+  ctx.lineWidth = 1.5; ctx.strokeStyle = "red";
+  ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(GW,GH); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(GW,0); ctx.lineTo(0,GH); ctx.stroke();
+  ctx.fillStyle = "red";
+  ctx.fillText("A_breathing", 30, fontH);
+  ctx.fillText("A_pendulum", GW - 30 - ctx.measureText("A_pendulum").width, fontH);
+  // axis labels  (vertical = X20, horizontal = X10)
+  ctx.fillStyle = "red";
+  ctx.fillText("X20", GW/2 + 5, fontH);
+  ctx.fillText("X10", GW - ctx.measureText("X10").width, GH/2 + fontH);
+  // the vectors or the bare point
+  if (showVectors) {
+    drawVectors(ctx, thePoint);
+  } else {
+    const sl = screenLocation((GW/xAxis)*thePoint.x, (GH/yAxis)*thePoint.y);
+    ctx.fillStyle = "blue";
+    ctx.beginPath(); ctx.arc(sl.x, sl.y, 4, 0, 2*Math.PI); ctx.fill();
+  }
+}
+
+function chooseFromEvent(evt) {
+  const r = graphCv.getBoundingClientRect();
+  const l = worldLocation(evt.clientX - r.left, evt.clientY - r.top);
+  let xLoc = l.x / (GW / xAxis);
+  let yLoc = l.y / (GH / yAxis);
+  xLoc = Math.max(-6, Math.min(6, xLoc));
+  yLoc = Math.max(-6, Math.min(6, yLoc));
+  thePoint = v(xLoc, yLoc);
+  theNewPoint = v((xLoc - yLoc) / 2, (xLoc + yLoc) / 2);
+  time = 0;
+  doAnimate = false;
+  goButton.disabled = false;
+  drawGraph();
+}
+let dragging = false;
+graphCv.addEventListener('mousedown', e => { dragging = true; chooseFromEvent(e); });
+graphCv.addEventListener('mousemove', e => { if (dragging) chooseFromEvent(e); });
+window.addEventListener('mouseup', () => { dragging = false; });
+
+// ── Pendulum animation panel ────────────────────────────────────────────────
+const animCv = document.getElementById('anim');
+const actx = animCv.getContext('2d');
+const AW = animCv.width, AH = animCv.height;
+let body1 = v(0,0), body2 = v(0,0);
+function clamp255(x){ return Math.max(0, Math.min(255, Math.round(x))); }
+function drawAnim() {
+  const ctx = actx;
+  ctx.fillStyle = "white"; ctx.fillRect(0, 0, AW, AH);
+  // strings
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = "red";
+  ctx.beginPath(); ctx.moveTo(AW/2 + bobDist, 60); ctx.lineTo(AW/2 + body2.x, 60 + body2.y); ctx.stroke();
+  ctx.strokeStyle = "rgb(186,85,211)";
+  ctx.beginPath(); ctx.moveTo(AW/2 - bobDist, 60); ctx.lineTo(AW/2 + body1.x, 60 + body1.y); ctx.stroke();
+  // hanger bar
+  ctx.fillStyle = "rgb(150,150,150)";
+  ctx.fillRect(AW/2 - bobDist - 10, 55, 2*(bobDist+10), 5);
+  // coupling spring (shade depends on k)
+  const cc = clamp255(200 - 40*k);
+  ctx.strokeStyle = `rgb(${cc},${cc},${cc})`;
+  ctx.beginPath(); ctx.moveTo(AW/2 + body1.x, 60 + body1.y); ctx.lineTo(AW/2 + body2.x, 60 + body2.y); ctx.stroke();
+  // bobs
+  ctx.fillStyle = "rgb(186,85,211)";
+  ctx.beginPath(); ctx.arc(AW/2 + body1.x, 60 + body1.y, 4, 0, 2*Math.PI); ctx.fill();
+  ctx.fillStyle = "red";
+  ctx.beginPath(); ctx.arc(AW/2 + body2.x, 60 + body2.y, 4, 0, 2*Math.PI); ctx.fill();
+}
+
+// ── Normal-mode waveform panel ──────────────────────────────────────────────
+const beatsCv = document.getElementById('beats');
+const bctx = beatsCv.getContext('2d');
+const BW = beatsCv.width, BH = beatsCv.height;
+bctx.font = "12px sans-serif";
+const steps = 150;
+function drawBeats() {
+  const ctx = bctx;
+  ctx.fillStyle = "white"; ctx.fillRect(0, 0, BW, BH);
+  const spacing = (0.75 * BW) / steps;
+  const yspacing = BH / 5;
+  const Tint = 30 * PI6 / Ws;
+  const breath = (i) => theNewPoint.x*2*Math.cos(Wb*((i*Tint/steps) + time - Tint));
+  const swing  = (i) => theNewPoint.y*2*Math.cos(Ws*((i*Tint/steps) + time - Tint));
+
+  // breathing (black)
+  ctx.strokeStyle = "black"; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(spacing, yspacing - breath(1));
+  for (let i = 1; i < steps + 1; i++) ctx.lineTo(i*spacing, yspacing - breath(i));
+  ctx.stroke();
+  ctx.fillStyle = "black";
+  ctx.fillText("Breathing", 0.75*BW + 7, yspacing + 5);
+
+  // swinging / pendulum (blue)
+  ctx.strokeStyle = "blue";
+  ctx.beginPath(); ctx.moveTo(spacing, 2*yspacing - swing(1));
+  for (let i = 1; i < steps + 1; i++) ctx.lineTo(i*spacing, 2*yspacing - swing(i));
+  ctx.stroke();
+  ctx.fillStyle = "blue";
+  ctx.fillText("Pendulum", 0.75*BW + 7, 2*yspacing + 5);
+
+  // divider line
+  ctx.strokeStyle = "black";
+  ctx.beginPath(); ctx.moveTo(0.75*BW, 0); ctx.lineTo(0.75*BW, BH); ctx.stroke();
+
+  // left mass = swing - breath (purple)
+  ctx.strokeStyle = "rgb(186,85,211)";
+  let lx = spacing, ly = 3*yspacing - swing(1) - breath(1);
+  ctx.beginPath(); ctx.moveTo(lx, ly);
+  for (let i = 1; i < steps + 1; i++) { lx = i*spacing; ly = 3*yspacing - swing(i) - breath(i); ctx.lineTo(lx, ly); }
+  ctx.stroke();
+  ctx.fillStyle = "rgb(186,85,211)";
+  ctx.beginPath(); ctx.arc(lx, ly, 4, 0, 2*Math.PI); ctx.fill();
+  ctx.fillText("Left Mass Position", 0.75*BW + 7, 3*yspacing + 5);
+
+  // right mass = swing + breath (red)
+  ctx.strokeStyle = "red";
+  let rx = spacing, ry = 4*yspacing - swing(1) + breath(1);
+  ctx.beginPath(); ctx.moveTo(rx, ry);
+  for (let i = 1; i < steps + 1; i++) { rx = i*spacing; ry = 4*yspacing - swing(i) + breath(i); ctx.lineTo(rx, ry); }
+  ctx.stroke();
+  ctx.fillStyle = "red";
+  ctx.beginPath(); ctx.arc(rx, ry, 4, 0, 2*Math.PI); ctx.fill();
+  ctx.fillText("Right Mass Position", 0.75*BW + 7, 4*yspacing + 5);
+}
+
+// ── Controls ────────────────────────────────────────────────────────────────
+const goButton = document.getElementById('go');
+const kslider  = document.getElementById('kslider');
+const ktext    = document.getElementById('ktext');
+goButton.addEventListener('click', () => { doAnimate = true; goButton.disabled = true; });
+document.getElementById('vectors').addEventListener('change', e => { showVectors = e.target.checked; drawGraph(); });
+document.getElementById('droplines').addEventListener('change', e => { dropLines = e.target.checked; drawGraph(); });
+kslider.addEventListener('input', () => {
+  ktext.textContent = "k: " + (Math.round(parseInt(kslider.value,10)*10000.0 / 50.0)/10000.0);
+  k = (parseInt(kslider.value,10) / 100.0) + 0.00001;
+  updateMath();
+  time = 0;
+});
+
+// ── Animation loop (original used a 6ms tick) ───────────────────────────────
+function tick() {
+  body1.x = -bobDist + theNewPoint.x*3*Math.cos(Wb*time) + theNewPoint.y*3*Math.cos(Ws*time);
+  body2.x =  bobDist - theNewPoint.x*3*Math.cos(Wb*time) + theNewPoint.y*3*Math.cos(Ws*time);
+  body1.y = Math.sqrt(Plength*Plength - Math.pow(body1.x + bobDist, 2)) + Plength;
+  body2.y = Math.sqrt(Plength*Plength - Math.pow(body2.x - bobDist, 2)) + Plength;
+  if (doAnimate) time += 0.1;
+  drawBeats();
+  drawAnim();
+}
+
+// init
+updateMath();
+ktext.textContent = "k: " + (Math.round(parseInt(kslider.value,10)*10000.0 / 50.0)/10000.0);
+drawGraph();
+drawAnim();
+drawBeats();
+setInterval(tick, 6);
+</script>
+</body>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Exploring the Damped Driven Harmonic Oscillator</title>
+<style>
+  :root { --ink:#1a1a1a; --line:#c9c9c9; --bg:#f4f4f6; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+         background: var(--bg); color: var(--ink); }
+  header { text-align:center; padding: 18px 12px 6px; }
+  header h1 { font-size: 1.35rem; font-weight: 600; margin: 0; }
+  header p { margin: 6px 0 0; color:#555; font-size:.9rem; }
+  .wrap { display:flex; flex-direction:column; align-items:center; padding: 14px; gap: 0; }
+  .app { background:#fff; border:1px solid var(--line); border-radius:8px; overflow:hidden;
+         box-shadow: 0 2px 10px rgba(0,0,0,.06); }
+  .stage { display:flex; }
+  .leftcol { display:flex; flex-direction:column; }
+  .leftcol canvas { border-bottom:1px solid #ddd; }
+  .leftcol canvas:last-child { border-bottom:none; }
+  .rightcol { border-left:1px solid #ddd; }
+  canvas { display:block; cursor: crosshair; }
+  .controls { display:flex; align-items:center; gap:14px; padding:8px 12px; border-top:1px solid var(--line);
+              background:#fff; flex-wrap:wrap; }
+  .controls label { font-size:.85rem; display:inline-flex; align-items:center; gap:5px; user-select:none; }
+  .controls input[type=range] { vertical-align:middle; }
+  .qval { font-variant-numeric: tabular-nums; min-width:54px; }
+  .hint { max-width: 540px; text-align:center; color:#666; font-size:.82rem; line-height:1.4; margin-top:12px; }
+  a.back { display:inline-block; margin-top:14px; color:#3a5; text-decoration:none; font-size:.85rem; }
+  a.back:hover { text-decoration:underline; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Exploring the Damped Driven Harmonic Oscillator</h1>
+  <p>Click or drag on either graph to set the driving frequency &omega;.</p>
+</header>
+
+<div class="wrap">
+  <div class="app">
+    <div class="stage">
+      <div class="leftcol">
+        <canvas id="phase" width="410" height="250"></canvas>
+        <canvas id="amp"   width="410" height="250"></canvas>
+      </div>
+      <div class="rightcol">
+        <canvas id="anim" width="110" height="500"></canvas>
+      </div>
+    </div>
+    <div class="controls">
+      <label><input type="checkbox" id="slow"> Slow</label>
+      <label><input type="checkbox" id="vel"> Show Velocity</label>
+      <label>Quality factor (Q):
+        <input type="range" id="qslider" min="1" max="80" value="10">
+      </label>
+      <span class="qval" id="qtext">Q: 10</span>
+    </div>
+  </div>
+  <p class="hint">A mass on a spring driven by an oscillating support. The top graph shows the steady-state
+  phase lag between drive and response; the bottom graph shows the response amplitude. Both peak as the
+  drive frequency &omega; approaches the natural frequency &omega;<sub>o</sub> &mdash; the resonance &mdash;
+  and the sharpness of that peak is set by Q.</p>
+  <a class="back" href="../index.html">&larr; Back to all applets</a>
+</div>
+
+<script>
+"use strict";
+// ── Faithful JavaScript port of DampedDrivenHarmonicOscillator.java ──────────
+// Original applet © Andrew Cantino, Haverford College, 2004.
+
+const PI = 3.1415;             // the applet used 3.1415 literally; keep it for identical numbers
+
+// Physical / model state (defaults taken verbatim from the Java source)
+const g = 9.8, k = 10;
+let A;                          // amplitude
+let Fo = 25, m = 0.1, Wo = 10, W = 2, delta = 0;
+let Q = 10;
+let shift = 0, Wold = 0;
+
+// Animation state
+let time = 0;
+let slow = false;
+let showVel = false;
+let velocity = 0;
+let driveY = 0, bodyY = 0;
+
+const phaseCv = document.getElementById('phase');
+const ampCv   = document.getElementById('amp');
+const animCv  = document.getElementById('anim');
+
+// ── GraphPanel: a reusable coordinate-mapped plot, mirroring the Java class ──
+function makeGraph(canvas, opts) {
+  const ctx = canvas.getContext('2d');
+  const W_ = canvas.width, H_ = canvas.height;
+  const shiftOrigin = { x: -(W_/2 - 20), y: H_/2 - 20 };
+  const G = {
+    canvas, ctx,
+    xAxis: opts.xAxis, yAxis: opts.yAxis,
+    xLabel: opts.xLabel, yLabel: opts.yLabel,
+    equation: opts.equation,
+    labelExtras: opts.labelExtras,
+    thePoint: { x: 0, y: 0 },
+    drawSteps: 200,
+    fontH: 13,
+  };
+  ctx.font = "12px sans-serif";
+
+  function screenLocation(wx, wy) {
+    return { x: wx + W_/2 + shiftOrigin.x, y: -wy + H_/2 + shiftOrigin.y };
+  }
+  function worldLocation(sx, sy) {
+    return { x: sx - (W_/2 + shiftOrigin.x), y: -(sy - (H_/2 + shiftOrigin.y)) };
+  }
+  function getPoint(px, py) {
+    return screenLocation((W_/G.xAxis) * px, (H_/G.yAxis) * py);
+  }
+  G.getPoint = getPoint;
+
+  G.displayString = function(s, vx, vy) {
+    const p = getPoint(vx, vy);
+    ctx.fillStyle = "red";
+    ctx.fillText(s, p.x, p.y);
+  };
+  G.labelAxisPoint = function(axis, value, label) {
+    ctx.strokeStyle = "black"; ctx.lineWidth = 1;
+    if (axis === 0) {
+      const p = getPoint(value, 0);
+      ctx.beginPath(); ctx.moveTo(p.x, p.y - 5); ctx.lineTo(p.x, p.y + 5); ctx.stroke();
+      ctx.fillStyle = "red"; ctx.fillText(label, p.x + 5, p.y + G.fontH);
+    } else {
+      const p = getPoint(0, value);
+      ctx.beginPath(); ctx.moveTo(p.x - 5, p.y); ctx.lineTo(p.x + 5, p.y); ctx.stroke();
+      ctx.fillStyle = "red"; ctx.fillText(label, p.x + 10, p.y + 2);
+    }
+  };
+
+  G.repaint = function() {
+    // clear
+    ctx.fillStyle = "white"; ctx.fillRect(0, 0, W_, H_);
+    // equation curve
+    ctx.lineWidth = 1; ctx.strokeStyle = "black";
+    let last = getPoint(0, 0);
+    ctx.beginPath(); ctx.moveTo(last.x, last.y);
+    for (let i = 0; i < G.xAxis; i += G.xAxis / G.drawSteps) {
+      const yv = G.equation(i);
+      const now = getPoint(i, yv);
+      ctx.lineTo(now.x, now.y);
+    }
+    ctx.stroke();
+    // axes
+    ctx.lineWidth = 2; ctx.strokeStyle = "black";
+    const vx = W_/2 + shiftOrigin.x, hy = H_/2 + shiftOrigin.y;
+    ctx.beginPath(); ctx.moveTo(vx, 0); ctx.lineTo(vx, H_); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0, hy); ctx.lineTo(W_, hy); ctx.stroke();
+    // axis labels
+    ctx.fillStyle = "black";
+    ctx.fillText(G.yLabel, vx + 5, G.fontH);
+    ctx.fillText(G.xLabel, W_ - ctx.measureText(G.xLabel).width, hy + G.fontH);
+    // current point
+    const sl = getPoint(G.thePoint.x, G.thePoint.y);
+    ctx.fillStyle = "blue";
+    ctx.beginPath(); ctx.arc(sl.x, sl.y, 4, 0, 2*Math.PI); ctx.fill();
+    // overlays (labels + readout)
+    G.labelExtras(G);
+  };
+
+  G.updatePoint = function() { G.thePoint = { x: W, y: G.equation(W) }; };
+
+  // Mouse: set driving frequency W from the clicked x-coordinate
+  function setFromEvent(evt) {
+    const r = canvas.getBoundingClientRect();
+    const ex = evt.clientX - r.left, ey = evt.clientY - r.top;
+    const l = worldLocation(ex, ey);
+    W = l.x / (W_ / G.xAxis);
+    updateMath();
+  }
+  let dragging = false;
+  canvas.addEventListener('mousedown', e => { dragging = true; setFromEvent(e); });
+  canvas.addEventListener('mousemove', e => { if (dragging) setFromEvent(e); });
+  window.addEventListener('mouseup', () => { dragging = false; });
+  canvas.addEventListener('mouseleave', () => { /* keep dragging tracked at window level */ });
+
+  return G;
+}
+
+// Phase graph
+const phase = makeGraph(phaseCv, {
+  xAxis: 25, yAxis: 4, xLabel: "Drive Freq.", yLabel: "Phase",
+  equation: function(x) {
+    let d = Math.atan2((Wo/Q)*x, Wo*Wo - x*x);
+    if (d < 0) d = PI + d;
+    if (x < 0) return 0;
+    return d;
+  },
+  labelExtras: function(G) {
+    G.labelAxisPoint(0, Wo, "ωo");
+    G.labelAxisPoint(1, PI, "π");
+    G.labelAxisPoint(1, PI/2, "π/2");
+    G.displayString("Phase angle: " + Math.round(G.equation(W) * (180/PI)) + " degrees", 14, 3.4);
+  }
+});
+
+// Amplitude graph
+const amp = makeGraph(ampCv, {
+  xAxis: 25, yAxis: 100, xLabel: "Drive Freq.", yLabel: "Amplitude",
+  equation: function(x) {
+    const a = (Fo/m) / Math.sqrt(Math.pow(Wo*Wo - x*x, 2) + Math.pow((Wo/Q)*x, 2));
+    return x < 0 ? 0 : a;
+  },
+  labelExtras: function(G) {
+    G.labelAxisPoint(0, Wo, "ωo");
+    G.displayString("Amplitude: " + (Math.round((G.equation(W)/(Fo/k))*100.0)/100.0) + " A*k/Fo", 14, 85);
+  }
+});
+
+// ── updateMath: recompute amplitude & phase, keep phase continuous ──────────
+function updateMath() {
+  if (Math.abs(W - Wo) < 0.1) W = Wo;          // "sticky" snap to resonance
+  shift += (W - Wold) * time;                   // keep the running phase continuous
+  A = (Fo/m) / Math.sqrt(Math.pow(Wo*Wo - W*W, 2) + Math.pow((Wo/Q)*W, 2));
+  delta = Math.atan2((Wo/Q)*W, Wo*Wo - W*W);
+  if (delta < 0) delta = PI + delta;
+  amp.updatePoint();
+  phase.updatePoint();
+  phase.repaint();
+  amp.repaint();
+  Wold = W;
+}
+
+// ── Oscillator animation panel ──────────────────────────────────────────────
+const animCtx = animCv.getContext('2d');
+const AW = animCv.width, AH = animCv.height;
+function drawAnim() {
+  const ctx = animCtx;
+  ctx.fillStyle = "white"; ctx.fillRect(0, 0, AW, AH);
+  // drive bar
+  ctx.fillStyle = "blue";
+  ctx.fillRect(AW/2 - 40, 55 + driveY, 80, 5);
+  // spring/rod line
+  ctx.strokeStyle = "blue"; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(AW/2, 60 + driveY); ctx.lineTo(AW/2, AH/2 + bodyY); ctx.stroke();
+  // bob
+  ctx.fillStyle = "black";
+  ctx.beginPath(); ctx.arc(AW/2, AH/2 + bodyY, 4, 0, 2*Math.PI); ctx.fill();
+  // velocity vector
+  if (showVel) {
+    ctx.strokeStyle = "red"; ctx.lineWidth = 1;
+    const bx = AW/2 + 40, cy = AH/2;
+    ctx.beginPath(); ctx.moveTo(bx, cy); ctx.lineTo(bx, cy + velocity); ctx.stroke();
+    if (velocity < 0) {
+      ctx.beginPath();
+      ctx.moveTo(bx, cy + velocity); ctx.lineTo(bx + 5, cy + velocity + 5);
+      ctx.moveTo(bx, cy + velocity); ctx.lineTo(bx - 5, cy + velocity + 5);
+      ctx.stroke();
+    } else if (velocity > 0) {
+      ctx.beginPath();
+      ctx.moveTo(bx, cy + velocity); ctx.lineTo(bx + 5, cy + velocity - 5);
+      ctx.moveTo(bx, cy + velocity); ctx.lineTo(bx - 5, cy + velocity - 5);
+      ctx.stroke();
+    }
+  }
+}
+
+// ── Controls ────────────────────────────────────────────────────────────────
+const qslider = document.getElementById('qslider');
+const qtext   = document.getElementById('qtext');
+document.getElementById('slow').addEventListener('change', e => { slow = e.target.checked; });
+document.getElementById('vel').addEventListener('change', e => { showVel = e.target.checked; });
+qslider.addEventListener('input', () => {
+  qtext.textContent = "Q: " + qslider.value;
+  Q = parseInt(qslider.value, 10) + 0.00001;
+  updateMath();
+});
+
+// ── Animation loop (matches the original ~10ms tick) ────────────────────────
+function tick() {
+  driveY = Fo * Math.cos(W*time - shift);
+  bodyY  = A  * Math.cos(W*time - delta - shift);
+  velocity = -1 * A * 2 * Math.sin(W*time - delta - shift);
+  time += slow ? 0.001 : 0.01;
+  drawAnim();
+}
+
+// init
+qtext.textContent = "Q: " + qslider.value;
+Q = parseInt(qslider.value, 10) + 0.00001;
+updateMath();
+drawAnim();
+setInterval(tick, 10);
+</script>
+</body>
+</html>

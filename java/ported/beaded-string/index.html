@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Exploring Waves on a Beaded String</title>
+<style>
+  :root { --ink:#1a1a1a; --line:#c9c9c9; --bg:#f4f4f6; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+         background: var(--bg); color: var(--ink); }
+  header { text-align:center; padding: 18px 12px 6px; }
+  header h1 { font-size: 1.3rem; font-weight: 600; margin: 0; }
+  header p { margin: 6px 0 0; color:#555; font-size:.9rem; }
+  .wrap { display:flex; flex-direction:column; align-items:center; padding: 14px; }
+  .app { background:#fff; border:1px solid var(--line); border-radius:8px; overflow:hidden;
+         box-shadow: 0 2px 10px rgba(0,0,0,.06); }
+  #string { display:block; background:#fff; border-bottom:1px solid #ddd; }
+  .bottom { display:flex; align-items:stretch; }
+  #graph { display:block; border-right:1px solid #ddd; }
+  .controls { display:flex; flex-direction:column; justify-content:center; gap:6px; padding:8px 14px; }
+  .row { display:flex; align-items:center; gap:8px; font-size:.85rem; }
+  .row label { min-width:150px; }
+  .val { font-variant-numeric: tabular-nums; min-width:74px; }
+  .hint { max-width: 750px; text-align:center; color:#666; font-size:.82rem; line-height:1.4; margin-top:12px; }
+  a.back { display:inline-block; margin-top:14px; color:#3a5; text-decoration:none; font-size:.85rem; }
+  a.back:hover { text-decoration:underline; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Exploring Waves on a Beaded String</h1>
+  <p>N beads on a stretched string. Watch how high mode numbers alias onto the low fundamental modes.</p>
+</header>
+
+<div class="wrap">
+  <div class="app">
+    <canvas id="string" width="750" height="150"></canvas>
+    <div class="bottom">
+      <canvas id="graph" width="100" height="100"></canvas>
+      <div class="controls">
+        <div class="row">
+          <label>Select mode (n):</label>
+          <input type="range" id="modeSlider" min="1" max="12" value="1">
+          <span class="val" id="modeText">Mode: 1</span>
+        </div>
+        <div class="row">
+          <label>Number of masses (N):</label>
+          <input type="range" id="massSlider" min="1" max="24" value="4">
+          <span class="val" id="massText">Masses: 4</span>
+        </div>
+        <div class="row">
+          <label><input type="checkbox" id="slow"> Slow Animation</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="hint">Only N distinct standing-wave patterns can exist on N beads. Asking for a mode number higher than
+  N folds back ("aliases") onto one of those fundamentals &mdash; the beads (black dots) trace exactly the same
+  motion even though the continuous blue curve wiggles faster. The small graph plots the dispersion relation
+  &omega;<sub>n</sub> &prop; sin(n&pi;/2(N+1)).</p>
+  <a class="back" href="../index.html">&larr; Back to all applets</a>
+</div>
+
+<script>
+"use strict";
+// ── Faithful JavaScript port of beadedString2.java ──────────────────────────
+// Original applet © Andrew Cantino, Haverford College, 2004.
+
+const PI = 3.1415;
+
+// Model state (defaults from the Java source)
+let nMasses = 4;
+const T = 100, m = 1;
+let L = 0, a = 0, Wa = 0;
+let mode = 1;
+let slow = false;
+let time = 0;
+
+const stringCv = document.getElementById('string');
+const sctx = stringCv.getContext('2d');
+const SW = stringCv.width, SH = stringCv.height;
+sctx.font = "12px sans-serif";
+
+const graphCv = document.getElementById('graph');
+const gctx = graphCv.getContext('2d');
+const GW = graphCv.width, GH = graphCv.height;
+gctx.font = "11px sans-serif";
+const fontH = 12;
+
+function updateMath() {
+  L = SW;
+  a = L / (nMasses + 1);
+  Wa = (2*T) / (a*m);
+  drawGraph();
+}
+
+// ── small ωn-vs-n graph ─────────────────────────────────────────────────────
+const xAxis = 3.18, yAxis = 2;
+const shiftOrigin = { x: -(GW/2 - 5), y: GH/2 - 20 };
+function gScreen(wx, wy) { return { x: wx + GW/2 + shiftOrigin.x, y: -wy + GH/2 + shiftOrigin.y }; }
+function gPoint(px, py) { return gScreen((GW/xAxis)*px, (GH/yAxis)*py); }
+function equation(x) { return Math.sin(x); }
+
+function gLabelAxisPoint(axis, value, label) {
+  gctx.strokeStyle = "black"; gctx.lineWidth = 1;
+  if (axis === 0) {
+    const p = gPoint(value, 0);
+    gctx.beginPath(); gctx.moveTo(p.x, p.y - 5); gctx.lineTo(p.x, p.y + 5); gctx.stroke();
+    gctx.fillStyle = "red"; gctx.fillText(label, p.x + 5, p.y + fontH);
+  } else {
+    const p = gPoint(0, value);
+    gctx.beginPath(); gctx.moveTo(p.x - 5, p.y); gctx.lineTo(p.x + 5, p.y); gctx.stroke();
+    gctx.fillStyle = "red"; gctx.fillText(label, p.x + 10, p.y + 2);
+  }
+}
+function gDrawPoint(vx, vy) {
+  const sl = gPoint(vx, vy);
+  gctx.beginPath(); gctx.arc(sl.x, sl.y, 4, 0, 2*Math.PI); gctx.fill();
+}
+
+function drawGraph() {
+  const ctx = gctx;
+  ctx.fillStyle = "white"; ctx.fillRect(0, 0, GW, GH);
+  // equation curve (dashed past pi/2)
+  ctx.lineWidth = 1; ctx.strokeStyle = "black";
+  let last = gPoint(0, 0);
+  let toggle = 0;
+  const drawSteps = 200;
+  for (let i = 0; i < xAxis; i += xAxis/drawSteps) {
+    const now = gPoint(i, equation(i));
+    if (i > PI/2) {
+      if (toggle > 4) {
+        ctx.beginPath(); ctx.moveTo(last.x, last.y); ctx.lineTo(now.x, now.y); ctx.stroke();
+        toggle = 0;
+      }
+    } else {
+      ctx.beginPath(); ctx.moveTo(last.x, last.y); ctx.lineTo(now.x, now.y); ctx.stroke();
+    }
+    toggle += 1;
+    last = now;
+  }
+  // axes
+  ctx.lineWidth = 2; ctx.strokeStyle = "black";
+  const vx = GW/2 + shiftOrigin.x, hy = GH/2 + shiftOrigin.y;
+  ctx.beginPath(); ctx.moveTo(vx, 0); ctx.lineTo(vx, GH); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0, hy); ctx.lineTo(GW, hy); ctx.stroke();
+  // axis labels
+  ctx.fillStyle = "black";
+  ctx.fillText("ωn", vx + 5, fontH);
+  ctx.fillText("n ", GW - ctx.measureText("n ").width, hy + fontH);
+
+  // current mode marker
+  const nmode = mode % (2*(nMasses+1));
+  const loopNum = Math.floor(mode / (2*(nMasses+1)));
+  const xpos = (nmode/((nMasses + 1)*2))*PI;
+  const ypos = equation(xpos);
+  const funmode = ((nMasses + 1) - Math.abs(nmode - nMasses - 1)) % (nMasses + 1);
+
+  if (loopNum < 1) {
+    gLabelAxisPoint(0, PI/2, "N+1=" + (nMasses + 1));
+    ctx.fillStyle = "blue";
+  } else {
+    gLabelAxisPoint(0, PI/2, "");
+    gLabelAxisPoint(0, 0, "n=" + (loopNum*(2*(nMasses+1))));
+    ctx.fillStyle = "rgb(160,32,240)";
+  }
+  gDrawPoint(xpos, ypos);
+
+  if (funmode !== nmode && funmode > 0) {
+    const funxpos = (funmode/((nMasses + 1)*2))*PI;
+    ctx.fillStyle = "red";
+    gDrawPoint(funxpos, equation(funxpos));
+  }
+
+  ctx.fillStyle = "black";
+  const s = "n=" + mode;
+  ctx.fillText(s, GW - 10 - ctx.measureText(s).width, 5 + fontH);
+}
+
+// ── string animation ────────────────────────────────────────────────────────
+function drawString() {
+  const ctx = sctx;
+  ctx.fillStyle = "white"; ctx.fillRect(0, 0, SW, SH);
+  const sq2 = Math.sqrt(2);
+  let place = L/150.0;
+  let nmode = mode % (2*(nMasses+1));
+  nmode = ((nMasses + 1) - Math.abs(nmode - nMasses - 1)) % (nMasses + 1);
+  let ln = (2*L)/mode;
+  let nln = (2*L)/nmode;
+  if (nmode === 0) nln = ln;
+
+  // requested-mode waveform (blue)
+  ctx.strokeStyle = "blue"; ctx.lineWidth = 1;
+  let old = { x: 0, y: SH/2 };
+  ctx.beginPath(); ctx.moveTo(old.x, old.y);
+  for (let i = 1; i < 150; i++) {
+    const ypos = 15*Math.sin((2*PI*i*place)/ln)*Math.cos(sq2*Wa*Math.sin(PI/nln)*a*time);
+    ctx.lineTo(i*place, (SH/2) - ypos);
+  }
+  ctx.stroke();
+
+  // equivalent fundamental waveform (red) + status text
+  let s;
+  if (nmode !== mode) {
+    ctx.strokeStyle = "red";
+    place = L/150.0;
+    let nm = mode % (2*(nMasses+1));
+    nm = ((nMasses + 1) - Math.abs(nm - nMasses - 1)) % (nMasses + 1);
+    ln = (2*L)/mode;
+    nln = (2*L)/nm;
+    const shift = Math.floor(mode / (nMasses + 1)) % 2;
+    ctx.beginPath(); ctx.moveTo(0, SH/2);
+    for (let i = 1; i < 150; i++) {
+      const ypos = 15*Math.sin(PI*shift + (2*PI*i*place)/nln)*Math.cos(sq2*Wa*Math.sin(PI/nln)*a*time);
+      ctx.lineTo(i*place, (SH/2) - ypos);
+    }
+    ctx.stroke();
+    if (nm === 0) {
+      s = "Mode " + mode + " is the same as no motion.";
+    } else {
+      s = "Mode " + mode + " is the same as fundamental mode " + nm + ".";
+    }
+  } else {
+    s = "Displaying fundamental mode " + mode + ".";
+  }
+  ctx.fillStyle = "black";
+  ctx.fillText(s, SW - 10 - ctx.measureText(s).width, SH - 5 - fontH);
+
+  // the beads (black dots) — sampled on the requested-mode curve
+  nmode = mode % (2*(nMasses+1));
+  nmode = ((nMasses + 1) - Math.abs(nmode - nMasses - 1)) % (nMasses + 1);
+  ln = (2*L)/mode;
+  nln = (2*L)/nmode;
+  ctx.fillStyle = "black";
+  for (let i = 1; i < nMasses + 1; i++) {
+    const ypos = 15*Math.sin((2*PI*i*a)/ln)*Math.cos(sq2*Wa*Math.sin(PI/nln)*a*time);
+    ctx.beginPath(); ctx.arc(i*a, (SH/2) - ypos, 4, 0, 2*Math.PI); ctx.fill();
+  }
+}
+
+// ── controls ────────────────────────────────────────────────────────────────
+const modeSlider = document.getElementById('modeSlider');
+const massSlider = document.getElementById('massSlider');
+const modeText = document.getElementById('modeText');
+const massText = document.getElementById('massText');
+
+massSlider.addEventListener('input', () => {
+  nMasses = parseInt(massSlider.value, 10);
+  modeSlider.max = nMasses * 3;
+  massText.textContent = "Masses: " + nMasses;
+  if (parseInt(modeSlider.value,10) > nMasses*3) modeSlider.value = nMasses*3;
+  mode = parseInt(modeSlider.value, 10);
+  modeText.textContent = "Mode: " + mode;
+  updateMath();
+});
+modeSlider.addEventListener('input', () => {
+  modeSlider.max = massSlider.value * 3;
+  mode = parseInt(modeSlider.value, 10);
+  modeText.textContent = "Mode: " + mode;
+  updateMath();
+});
+document.getElementById('slow').addEventListener('change', e => { slow = e.target.checked; });
+
+// ── animation loop (original used a 10ms tick) ──────────────────────────────
+function tick() {
+  time += slow ? 0.01 : 0.1;
+  drawString();
+}
+
+// init
+modeSlider.max = nMasses * 3;
+modeText.textContent = "Mode: " + mode;
+massText.textContent = "Masses: " + nMasses;
+updateMath();
+drawString();
+setInterval(tick, 10);
+</script>
+</body>
+</html>

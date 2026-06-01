@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Physics Applets</title>
+<style>
+  :root { --ink:#1a1a1a; --bg:#f4f4f6; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+         background: var(--bg); color: var(--ink); }
+  header { text-align:center; padding: 40px 16px 8px; }
+  header h1 { margin:0; font-size: 1.9rem; font-weight: 700; }
+  header p { margin: 10px auto 0; max-width: 620px; color:#555; line-height:1.5; }
+  .grid { display:grid; gap:18px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          max-width: 1000px; margin: 28px auto; padding: 0 16px 40px; }
+  a.card { display:block; text-decoration:none; color:inherit; background:#fff; border:1px solid #d8d8dc;
+           border-radius:12px; padding: 22px; transition: transform .12s ease, box-shadow .12s ease;
+           box-shadow: 0 1px 4px rgba(0,0,0,.05); }
+  a.card:hover { transform: translateY(-3px); box-shadow: 0 8px 22px rgba(0,0,0,.10); }
+  a.card h2 { margin:0 0 8px; font-size: 1.12rem; }
+  a.card p { margin:0; color:#666; font-size:.9rem; line-height:1.45; }
+  .tag { display:inline-block; margin-top:14px; font-size:.78rem; color:#3a8; font-weight:600; }
+  footer { text-align:center; color:#999; font-size:.8rem; padding: 0 16px 40px; line-height:1.5; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Physics Applets</h1>
+  <p>A set of interactive physics demonstrations, originally written as Java applets in 2004 and
+  re-implemented here in modern HTML5 &amp; JavaScript so they run in any browser.</p>
+</header>
+
+<div class="grid">
+  <a class="card" href="damped-driven-harmonic-oscillator/index.html">
+    <h2>Damped Driven Harmonic Oscillator</h2>
+    <p>A driven mass-on-a-spring. Explore resonance by watching the response amplitude and phase lag
+    as you sweep the driving frequency. Adjust the quality factor Q.</p>
+    <span class="tag">Resonance &amp; phase &rarr;</span>
+  </a>
+  <a class="card" href="coupled-oscillators/index.html">
+    <h2>Hilbert Space &amp; Coupled Oscillators</h2>
+    <p>Two spring-coupled pendulums. See any motion decomposed into its normal modes as a vector in an
+    abstract state space, and watch the resulting beats.</p>
+    <span class="tag">Normal modes &amp; beats &rarr;</span>
+  </a>
+  <a class="card" href="beaded-string/index.html">
+    <h2>Waves on a Beaded String</h2>
+    <p>N beads on a stretched string. Discover how only N standing-wave modes exist, and how higher mode
+    numbers alias back onto the fundamentals.</p>
+    <span class="tag">Standing waves &amp; aliasing &rarr;</span>
+  </a>
+</div>
+
+<footer>
+  Original Java applets &copy; Andrew Cantino, Haverford College, 2004.<br>
+  Ported to HTML5 / JavaScript by Claude in 2026 while preserving the original physics and behavior.
+</footer>
+</body>
+</html>
