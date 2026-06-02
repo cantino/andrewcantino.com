@@ -1,0 +1,112 @@
+/* The Cursed Puzzle — faithful classic-Macintosh System look */
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0; min-height: 100%;
+  background: #b9b9b9;
+  background-image:
+    linear-gradient(45deg, #aeaeae 25%, transparent 25%, transparent 75%, #aeaeae 75%),
+    linear-gradient(45deg, #aeaeae 25%, transparent 25%, transparent 75%, #aeaeae 75%);
+  background-size: 4px 4px; background-position: 0 0, 2px 2px;
+  font-family: "Geneva", "Lucida Grande", "Helvetica Neue", Arial, sans-serif;
+  color: #000; -webkit-font-smoothing: none;
+}
+#desktop { max-width: 720px; margin: 0 auto; padding: 0 8px 30px; }
+.hidden { display: none !important; }
+
+/* ---- menu bar ---- */
+#menubar {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: stretch; gap: 2px;
+  background: #fff; border: 1px solid #000; border-radius: 0 0 6px 6px;
+  padding: 2px 8px; font-size: 14px; height: 24px;
+}
+#menubar .apple { width: 14px; align-self: center; }
+.menu { position: relative; display: flex; align-items: center; }
+.menu > span { padding: 2px 8px; cursor: default; white-space: nowrap; }
+.menu.disabled > span { color: #aaa; }
+.menu:not(.disabled):hover > span { background: #000; color: #fff; }
+.menu .drop {
+  display: none; position: absolute; top: 22px; left: 0; min-width: 160px;
+  background: #fff; border: 1px solid #000; box-shadow: 2px 2px 0 #000; z-index: 60; padding: 2px;
+}
+.menu:not(.disabled):hover .drop { display: block; }
+.menu .drop button {
+  display: flex; justify-content: space-between; gap: 18px; width: 100%;
+  text-align: left; background: #fff; border: 0; font: inherit; padding: 3px 10px; cursor: default;
+}
+.menu .drop button .key { color: #666; }
+.menu .drop button:hover:not(:disabled) { background: #000; color: #fff; }
+.menu .drop button:hover:not(:disabled) .key { color: #fff; }
+.menu .drop button:disabled { color: #bbb; }
+
+/* ---- windows ---- */
+.window { background: #fff; border: 2px solid #000; box-shadow: 3px 3px 0 rgba(0,0,0,.5); }
+.titlebar {
+  display: flex; align-items: center; gap: 8px; height: 22px; padding: 0 6px;
+  border-bottom: 2px solid #000;
+  background: repeating-linear-gradient(to bottom,#000 0,#000 1px,#fff 1px,#fff 3px);
+}
+.titlebar .closebox { width: 12px; height: 12px; background: #fff; border: 1px solid #000; }
+.titlebar .title { background: #fff; padding: 0 10px; font-size: 14px; }
+
+#mainwin { margin-top: 12px; }
+#mainwin .body { display: flex; gap: 0; }
+#leftcol { border-right: 2px solid #000; }
+#picwrap { border-bottom: 2px solid #000; background: #fff; line-height: 0; }
+#pic { display: block; width: 317px; height: 230px; image-rendering: pixelated; }
+#statuswin { display: flex; align-items: center; gap: 8px; height: 60px; padding: 2px 6px; }
+#statusfig { width: 40px; height: 56px; image-rendering: pixelated; }
+#statustext { font-family: "Monaco","Menlo",monospace; font-size: 13px; white-space: pre; }
+
+#textcol {
+  flex: 1; padding: 8px 10px; min-height: 290px; max-height: 290px; overflow-y: auto;
+  font-family: "Geneva","Lucida Grande",sans-serif; font-size: 14px; line-height: 1.3;
+}
+#textcol .ln { white-space: pre-wrap; }
+#textcol .bold { font-weight: bold; }
+#textcol .you  { font-weight: bold; }            /* player-attack / heading colour */
+#textcol .mon  { }                                /* monster lines */
+#textcol .warn { font-weight: bold; }
+#textcol .item { font-weight: bold; }
+#textcol .yay  { font-weight: bold; }
+
+#cmdform { display: flex; align-items: center; border-top: 2px solid #000; padding: 4px 8px; }
+#cmdform .prompt { font-weight: bold; margin-right: 6px; }
+#cmd { flex: 1; border: 0; outline: 0; font-family: "Monaco","Menlo",monospace; font-size: 14px; background: transparent; }
+
+/* ---- modal sub-window ---- */
+#overlay {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(0,0,0,.25); display: flex; align-items: flex-start; justify-content: center;
+  padding-top: 60px;
+}
+#modal { width: min(560px, 94vw); max-height: 80vh; display: flex; flex-direction: column; }
+#modalbody {
+  padding: 10px 14px; overflow-y: auto;
+  font-family: "Monaco","Menlo","Geneva",monospace; font-size: 13px; line-height: 1.35;
+}
+#modalbody .ln { white-space: pre-wrap; }
+#modalbody .bold { font-weight: bold; }
+#modalbody .yay { font-weight: bold; }
+#modalbody .warn { font-weight: bold; }
+#modalbody .map { white-space: pre; font-size: 12px; }
+#modalbody img { display: block; image-rendering: pixelated; border: 1px solid #000; margin: 4px 0; }
+#modalfoot { border-top: 2px solid #000; padding: 8px 14px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+#modalfoot input[type=text] {
+  font-family: "Monaco","Menlo",monospace; font-size: 14px; padding: 3px 6px;
+  border: 2px solid #000; flex: 1; min-width: 120px;
+}
+#modalfoot button {
+  font: inherit; font-size: 14px; padding: 4px 16px; background: #fff;
+  border: 2px solid #000; border-radius: 12px; cursor: pointer; box-shadow: 1px 1px 0 #000;
+}
+#modalfoot button.default { box-shadow: 0 0 0 2px #000, 1px 1px 0 #000; font-weight: bold; }
+#modalfoot button:active { background: #000; color: #fff; }
+
+@media (max-width: 700px) {
+  #mainwin .body { flex-direction: column; }
+  #leftcol { border-right: 0; border-bottom: 2px solid #000; }
+  #pic { width: 100%; height: auto; }
+}

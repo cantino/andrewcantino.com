@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Cursed Puzzle</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="desktop">
+
+  <!-- Classic Mac menu bar (mirrors the original MENU setup, routine 3000) -->
+  <div id="menubar">
+    <span class="apple"></span>
+    <div class="menu" data-m="1"><span>File</span>
+      <div class="drop">
+        <button data-cmd="save">Save</button>
+        <button data-cmd="open">Open</button>
+        <button data-cmd="quit"><span class="lbl">Quit</span><span class="key">⌘Q</span></button>
+        <button data-cmd="scores">Scores</button>
+        <button data-cmd="unregister" data-need-reg="1">Unregister</button>
+      </div>
+    </div>
+    <div class="menu" data-m="2"><span>Game</span>
+      <div class="drop">
+        <button data-cmd="inventory"><span class="lbl">Inventory</span><span class="key">⌘I</span></button>
+        <button data-cmd="spells">Spells</button>
+        <button data-cmd="map">Map</button>
+      </div>
+    </div>
+    <div class="menu" data-m="3"><span>Use-Find</span>
+      <div class="drop">
+        <button data-cmd="use">Use</button>
+        <button data-cmd="look"><span class="lbl">Look</span><span class="key">⌘L</span></button>
+        <button data-cmd="get"><span class="lbl">Get</span><span class="key">⌘G</span></button>
+        <button data-cmd="kill"><span class="lbl">Kill</span><span class="key">⌘K</span></button>
+        <button data-cmd="drop">Drop</button>
+        <button data-cmd="cast"><span class="lbl">Cast</span><span class="key">⌘C</span></button>
+        <button data-cmd="light">Light</button>
+      </div>
+    </div>
+    <div class="menu" data-m="4"><span>Move</span>
+      <div class="drop">
+        <button data-cmd="e"><span class="lbl">East</span><span class="key">⌘E</span></button>
+        <button data-cmd="w"><span class="lbl">West</span><span class="key">⌘W</span></button>
+        <button data-cmd="n"><span class="lbl">North</span><span class="key">⌘N</span></button>
+        <button data-cmd="s"><span class="lbl">South</span><span class="key">⌘S</span></button>
+        <button data-cmd="jump" data-need-reg="1">Jump</button>
+        <button data-cmd="u"><span class="lbl">Up</span><span class="key">⌘U</span></button>
+        <button data-cmd="d"><span class="lbl">Down</span><span class="key">⌘D</span></button>
+        <button data-cmd="swim" data-need-reg="1">Swim</button>
+        <button data-cmd="downtree">Down Tree</button>
+        <button data-cmd="portal">Enter Portal</button>
+        <button data-cmd="hole">Enter Hole</button>
+      </div>
+    </div>
+    <div class="menu" data-m="5"><span>Options</span>
+      <div class="drop">
+        <button data-cmd="wimpyon">Wimpy on</button>
+        <button data-cmd="wimpyoff">Wimpy off</button>
+      </div>
+    </div>
+    <div class="menu" data-m="6"><span>Help</span>
+      <div class="drop"><button data-cmd="help">Help</button></div>
+    </div>
+    <div class="menu" data-m="7"><span>Store</span>
+      <div class="drop">
+        <button data-cmd="sell">Sell</button>
+        <button data-cmd="buy">Buy</button>
+        <button data-cmd="prices">Prices</button>
+        <button data-cmd="whatiget">What I will get</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main game window -->
+  <div id="mainwin" class="window">
+    <div class="titlebar"><span class="closebox"></span><span class="title">The Cursed Puzzle</span></div>
+    <div class="body">
+      <div id="leftcol">
+        <div id="picwrap"><img id="pic" width="317" height="230" alt=""></div>
+        <div id="statuswin">
+          <img id="statusfig" width="40" height="56" alt="">
+          <div id="statustext">Hit: 70 / 70  Spell: 30 / 40</div>
+        </div>
+      </div>
+      <div id="textcol"></div>
+    </div>
+    <form id="cmdform" autocomplete="off">
+      <span class="prompt">&gt;</span>
+      <input id="cmd" type="text" spellcheck="false" placeholder="use the menus, or type a command (help)">
+    </form>
+  </div>
+
+  <!-- Modal sub-window (Mac dialog look): used for intro, scores, map, help,
+       inventory, spells, verb prompts, combat, win/death, registration. -->
+  <div id="overlay" class="hidden">
+    <div id="modal" class="window">
+      <div class="titlebar"><span class="closebox"></span><span class="title" id="modaltitle">Start</span></div>
+      <div id="modalbody"></div>
+      <div id="modalfoot"></div>
+    </div>
+  </div>
+
+</div>
+
+<script src="rooms.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
