@@ -1,0 +1,3 @@
+{ "name": "Random mortality events", "size": 12, "frag": 0,
+  "settings": { "mp": 0.05, "br": 2, "rhalf": true, "prob": 50, "fluc": false },
+  "note": "Frequent local catastrophes wipe out cells at random; dispersal helps recolonise." }

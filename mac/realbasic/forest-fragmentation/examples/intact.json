@@ -1,0 +1,3 @@
+{ "name": "Intact habitat (10×10)", "size": 10, "frag": 0,
+  "settings": { "mp": 0.01, "br": 2, "rhalf": false, "fluc": false },
+  "note": "A continuous habitat. Population fills the grid to carrying capacity." }

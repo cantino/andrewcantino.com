@@ -1,0 +1,3 @@
+{ "name": "30% fragmentation", "size": 12, "frag": 30, "applyFrag": true,
+  "settings": { "mp": 0.01, "br": 2, "make_mode": 2, "rhalf": false, "fluc": false },
+  "note": "30% of cells walled off (solid). Walls block dispersal and hurt neighbours." }

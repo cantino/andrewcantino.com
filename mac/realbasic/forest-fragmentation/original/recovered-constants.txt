@@ -1,0 +1,65 @@
+Recovered constants / default settings for the 2000 project
+"Computer Modeling of Factors Affecting Species Extinction" (habitat
+fragmentation simulator).
+
+Source: "Sci Fair 2000/scifair 4" (RealBASIC project binary), classes World /
+Plot and the Settings window 's'; cross-checked against the author's own
+"Saved Prefs" files in "Run Folders/" and the UI screenshot
+(Habitat Fragmentation 2000.png).
+
+--- World.init (per-cell starting state) ---
+Capacity  = 300
+p2        = 200      (stage-2 / adult population)
+p1        = 0        (stage-1 / juvenile-disperser population)
+total     = 0        (recomputed on first tick = p1 + p2)
+d1        = 0.123    (local survival/recruitment modifier, 0..1)
+d2        = 0.85     (local survival/recruitment modifier, 0..1)
+wall_mode = 0        (0 = habitat, 1 = passable-hurting, 2 = solid wall)
+
+--- Settings window 's' defaults (text fields / slider) ---
+mp           (dispersal / migration fraction) = 0.01
+d1           (death-rate field, see force-set) = 0.123
+d2                                              = 0.85
+br           (birth rate, offspring/adult/yr)   = 2
+wall_d1      (d1 penalty per adjacent wall)      = 0.02
+wall_d2      (d2 penalty per adjacent wall)      = 0.05
+srate        (survival rate in a passable-hurting cell) = 0.5
+life1        (life-span numerator)               = 24
+life2        (life-span denominator)             = 25
+prob         (random-event rarity; event if round(rnd*prob)==1) = 1000
+lessthan     (auto-save/stop population threshold) = 1200
+autostoptime (years before auto-stop)            = 150
+slider1      (habitat fragmentation %)           = 0
+make_mode    (wall type added by fragmentation; 2 = solid) = 2
+
+--- Default grid size (Window1.Open / canvas init) ---
+size = 10   (the grid is size x size; saved runs also used 20)
+
+--- Plot.tick population dynamics (verbatim) ---
+if wall_mode = 0:
+    n2 = (1/6)*p1 + (life1/life2)*p2*d2
+    if Capacity > total:  n1 = (5/6)*p1 + (br*p2)*d1
+    else:                 n1 = (5/6)*p1
+    p1 = n1 ; p2 = n2 ; total = p1 + p2
+elif wall_mode = 1:
+    n1 = p1 * srate ; p1 = n1 ; total = p1
+(wall_mode = 2: cell stays empty)
+
+--- do_tick order ---
+year++ ; (random events) ; (capacity fluctuation) ; world.tick ; migrate ; record
+
+--- Random event (if "Random Events" on) ---
+for each cell: if round(rnd*prob) == 1 then p1 = 0, p2 = 0
+
+--- Capacity fluctuation (if "Capacity Movement" on) ---
+for each cell: Capacity += (rnd*5) - 2 ; clamp d1,d2 to [0,1]
+
+--- Migration (stage-1 only) ---
+for each cell with >=1 non-solid orthogonal neighbour:
+    if wall_mode = 1:  c = p1 ; p1 = 0           (all disperse out)
+    else:              c = p1*mp ; p1 = p1*(1-mp)
+    share c equally to each in-bounds neighbour with wall_mode < 2
+
+--- Save file (Window1.save, RB prefs) ---
+per cell key "P<a>,<b>" -> "Capacity:d1:d2:p1:p2:wall_mode:total"
+plus size, years, and all settings.  Default cell string: "300:.123:.85:0:200:0"

@@ -1,0 +1,71 @@
+@import "../shared/retro-mac.css?v=3";
+
+/* ----- intro big title ----- */
+.bigtitle { text-align: center; margin: 4px 0 12px; line-height: 1.05; }
+.bigtitle .l1 { font-size: 30px; font-weight: bold; letter-spacing: -0.5px; }
+.bigtitle .l2 { font-size: 15px; font-style: italic; margin: 2px 0; }
+.bigtitle .l3 { font-size: 30px; font-weight: bold; }
+
+/* ----- control strips ----- */
+.controlstrip {
+  display: flex; align-items: center; gap: 8px;
+  padding: 4px 0; flex-wrap: wrap;
+}
+
+/* ----- status read-outs ----- */
+.statgrid {
+  display: grid; grid-template-columns: auto 1fr; gap: 2px 10px;
+  margin: 10px 2px 2px; align-items: baseline;
+}
+.statlabel { font-weight: bold; }
+.statval {
+  font-family: "Monaco", "Courier New", monospace;
+  background: #fff; border: 1px solid #808080; box-shadow: inset 1px 1px 0 #bbb;
+  padding: 0 6px; min-width: 48px; text-align: right;
+}
+.foodlabel { font-weight: bold; margin: 10px 2px 4px; }
+.foodbox { padding: 6px 10px; }
+.foodgrid {
+  display: grid; grid-template-columns: auto 1fr; gap: 3px 10px; align-items: baseline;
+}
+.foodval {
+  font-family: "Monaco", "Courier New", monospace; text-align: left;
+}
+.statusline { margin: 2px 2px 8px; }
+.statusline span { font-weight: bold; }
+
+/* ----- graphs ----- */
+.graphrow { display: flex; gap: 10px; justify-content: space-between; }
+.graphcell { text-align: center; }
+.graphcell .sunken { display: inline-block; }
+.axis { font-size: 10px; margin-top: 3px; color: #222; }
+.highlightgrid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px 8px;
+}
+
+/* ----- options ----- */
+.optcols { display: flex; gap: 14px; }
+.optcols > .groupbox { flex: 1; margin: 8px 0; }
+.optgrid {
+  display: grid; grid-template-columns: auto 70px; gap: 5px 8px; align-items: center;
+}
+.optgrid input { width: 64px; }
+.optgrid .colhead { font-weight: bold; }
+.optgrid .colhead + .colhead { text-align: left; }
+
+/* Food Zones tab table */
+.foodzones {
+  display: grid; grid-template-columns: auto repeat(3, 1fr);
+  gap: 5px 8px; align-items: center; margin-top: 8px;
+}
+.foodzones label { white-space: nowrap; }
+.foodzones .fz { width: 100%; }
+.foodzones .fz[readonly] { background: #f0f0f0; color: #222; }
+.fzhead { font-weight: bold; }
+.fzhead.fzname { color: #cc0000; }
+.fzhead.fzw, .fzhead.fzl, .fzhead.fzc { color: #008060; text-align: left; }
+
+/* Mating tab */
+.matehead { margin-top: 8px; }
+.matedesc { margin: 2px 0 0 22px; color: #222; line-height: 1.35; }
+#optTabs p { line-height: 1.4; margin: 6px 0; }

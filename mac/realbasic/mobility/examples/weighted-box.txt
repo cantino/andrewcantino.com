@@ -1,0 +1,12 @@
+JT 100 200 7 false
+JT 50 200 10 false
+JT 50 100 1 false
+JT 100 100 1 false
+SP 1 2 -1
+SP 2 3 -1
+SP 3 4 -1
+SP 1 4 -1
+SP 2 4 -1
+SP 1 3 -1
+WF 0 5 90 1
+WF 0 2 20 1

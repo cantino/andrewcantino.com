@@ -1,0 +1,2034 @@
+CreatureDisplay.run:
+Sub run()
+  if (f <> nil) then
+    f.tick(tickAmt)
+    if (doGraphics) then
+      output.graphics.drawpicture f.paint(output.width,output.height),0,0
+      wave.graphics.drawpicture f.paintWave(wave.width,wave.height),0,0
+    end if
+  end if
+End Sub
+
+CreatureDisplay.CancelClose:
+Function CancelClose() As Boolean
+  if (not stopped) then
+    beep
+    return true
+  else
+    return false
+  end if
+End Function
+
+CreatureDisplay.EnableMenuItems:
+Sub EnableMenuItems()
+  ControlRun.enabled = true
+  ControlStop.enabled = true
+  ControlToggleGraphics.enabled = true
+  ControlViewSource.enabled = true
+  ControlDebug.enabled = true
+  ControlLoadModel.enabled = true
+  ControlSaveModel.enabled = true
+  WindowsNewCreatureWindow.enabled = true
+End Sub
+
+CreatureDisplay.Open:
+Sub Open()
+  dim ex as FolderItem
+  dim a as integer
+  
+  doGraphics = true
+  stopped = true
+  
+  ex = GetFolderItem("")
+  ex = ex.child("Examples")
+  if (ex.directory) then
+    if (ex.exists) then
+      examples.deleteAllRows
+      
+      for a = 1 to ex.count
+        if (not ex.item(a).directory) then
+          examples.addRow(ex.item(a).name)
+        end if
+      next
+      
+    end if
+  end if
+End Sub
+
+CreatureDisplay.output.Paint:
+Sub Paint(g As Graphics)
+  if (f <> nil) then
+    output.graphics.drawpicture f.paint(output.width,output.height),0,0
+  else
+    output.graphics.drawstring "No Framework Attached",10,15
+  end if
+End Sub
+
+CreatureDisplay.PushButton3.Action:
+Sub Action()
+  dim m as creatureThread
+  m = new creatureThread
+  m.p = self
+  stop = false
+  m.run
+End Sub
+
+CreatureDisplay.PushButton4.Action:
+Sub Action()
+  stop = true
+End Sub
+
+CreatureDisplay.wave.Paint:
+Sub Paint(g As Graphics)
+  if (f <> nil) then
+    wave.graphics.drawpicture f.paintWave(wave.width,wave.height),0,0
+  else
+    wave.graphics.drawstring "No Framework Attached",10,10
+  end if
+End Sub
+
+CreatureDisplay.examples.Change:
+Sub Change()
+  dim fw as Framework
+  dim folder as folderitem
+  
+  if (me.listindex > -1) then
+    if (stopped) then
+      
+      folder = GetFolderItem("")
+      folder = folder.child("Examples")
+      folder = folder.child(me.list(me.listindex))
+      if (folder <> nil) then
+        if (not folder.directory) then
+          
+          fw = loadSavedFramework(folder)
+          if (fw <> nil) then
+            f.mirror(fw)
+          end if
+          
+        end if
+      end if
+      
+    else
+      msgbox "The run must be stopped before this command can be processed."
+    end if
+  else
+    msgbox "Error"
+  end if
+End Sub
+
+CreatureDisplay.ScrollBar1.ValueChanged:
+Sub ValueChanged()
+  dim a,c as integer
+  if (me.value < 0) then
+    me.value = 0
+    c = 100
+  elseif (me.value > 0) then
+    me.value = 0
+    c = -100
+  end if
+  for a = 1 to ubound(f.joints)
+    f.joints(a).x = f.joints(a).x + c
+  next
+End Sub
+
+joint.addGravity:
+Sub addGravity()
+  vectors.append new vector
+  vectors(ubound(vectors)).angle = 270
+  if (mass = 0) then
+    mass = 1
+  end if
+  vectors(ubound(vectors)).mag = 9.8*mass
+End Sub
+
+joint.addVector:
+Sub addVector(v as vector)
+  vectors.append new vector
+  vectors(ubound(vectors)).angle = v.angle
+  vectors(ubound(vectors)).mag = v.mag
+End Sub
+
+joint.joint:
+Sub joint()
+  redim vectors(0)
+  addGravity
+End Sub
+
+joint.debug:
+Function debug() As String
+  dim a as integer
+  dim s as string
+  for a = 1 to ubound(vectors)
+    s = s + "Vector " + str(a) + ":  Angle = " + str(vectors(a).angle) + "  Mag = " + str(vectors(a).mag) + "  Slope = " + str(vectors(a).getSlope)
+    s = s + chr(13)
+  next
+  s = s + "Velocity:  Angle = " + str(velocity.angle) + "  Mag = " + str(velocity.mag) + "  Slope = " + str(velocity.getSlope) + chr(13)
+  return s
+End Function
+
+joint.shift:
+Sub shift(s as double)
+  dim amount,slope,midx,midy,distperslope,amount,newamount as double
+  
+  ' The following is the slope of the line between the two known points.
+  slope = velocity.getSlope
+  
+  ' Hopefully the distance traveled per slope step
+  distperslope = sqrt((slope*slope) + 1)
+  
+  ' The following is the amount to shift up or down from the midpoint.
+  amount = velocity.mag * s
+     
+  ' This is the number of 'slopes' needed to be traveled
+  newamount = amount/distperslope
+  
+  if (slope > 0) then
+    if (velocity.angle < 180) then
+      'going up!
+      x = x + newamount
+      y = y + newamount*slope
+    else
+      'going down
+      x = x - newamount
+      y = y - newamount*slope
+    end if
+  else
+    if (velocity.angle < 180) then
+      'going up!
+      x = x - newamount
+      y = y - newamount*slope
+    else
+      'going down
+      x = x + newamount
+      y = y + newamount*slope
+    end if
+  end if
+  
+  if (y <= floorY) then
+    if (velocity.angle > 180 and velocity.angle <= 270) then
+      velocity.angle = 90 + (90 - (velocity.angle - 180))
+    elseif (velocity.angle > 270 and velocity.angle < 360) then
+      velocity.angle = 90 - ((velocity.angle - 180) - 90)
+    end if
+    'if (velocity.mag < 5) then
+    y = y + abs(floorY - y)*.5
+    'end if
+    velocity.mag = velocity.mag * floorAbsorbtion
+  end if
+End Sub
+
+joint.init:
+Sub init()
+  mass = 1
+  velocity = new vector
+  myColor = rgb(0,0,0)
+  locked = false
+  x = 0
+  y = 0
+  id = 0
+End Sub
+
+joint.mirror:
+Sub mirror(j as joint)
+  dim a as integer
+  init
+  redim vectors(0)
+  for a = 1 to ubound(j.vectors)
+    addVector j.vectors(a)
+  next
+  id = j.id
+  locked = j.locked
+  mass = j.mass
+  myColor = j.myColor
+  velocity.mirror(j.velocity)
+  x = j.x
+  y = j.y
+End Sub
+
+vector.getSlope:
+Function getSlope() As double
+  return tan(angle*(PI/180))
+End Function
+
+vector.setSlope:
+Sub setSlope(slope as double)
+  angle = atan(slope)*(180/PI)
+  if (angle < 0) then
+    angle = 360 + angle
+  end if
+End Sub
+
+vector.trueSetSlope:
+Sub trueSetSlope(y as double, x as double)
+  if (x <= 0 and y <= 0) then
+    angle = 180 + (atan(y/x)*(180/PI))
+  elseif (x < 0 and y >= 0) then
+    angle = 180 + (atan(y/x)*(180/PI))
+  elseif (x >= 0 and y < 0) then
+    angle = 360 + (atan(y/x)*(180/PI))
+  else
+    angle = atan(y/x)*(180/PI)
+  end if
+  if (angle < 0) then
+    angle = 360 + angle
+  end if
+End Sub
+
+vector.mirror:
+Sub mirror(v as vector)
+  angle = v.angle
+  mag = v.mag
+End Sub
+
+vector.debug:
+Function debug() As string
+  return "Angle: " + str(angle) + "  Mag: " + str(mag)
+End Function
+
+MathAndMethods.userLoadSavedFramework:
+Function userLoadSavedFramework() As Framework
+  dim f as folderitem
+  dim fw as Framework
+  dim s as textinputstream
+  dim ipt as string
+  
+  fw = new Framework
+  
+  f = getopenfolderitem("text")
+  
+  if (f <> nil and f.exists) then
+    s = f.openastextfile
+    if (s <> nil) then
+      
+      while (s.eof = false)
+        ipt = s.readline
+        Select Case nthfield(ipt," ",1)
+        Case "JT"
+          fw.addJoint(val(nthfield(ipt," ",2)),val(nthfield(ipt," ",3)))
+          fw.joints(ubound(fw.joints)).mass = val(nthfield(ipt," ",4))
+          if (fw.joints(ubound(fw.joints)).mass = 0) then
+            fw.joints(ubound(fw.joints)).mass = 1
+          end if
+          if (nthfield(ipt," ",5) = "true") then
+            fw.joints(ubound(fw.joints)).locked = true
+          else
+            fw.joints(ubound(fw.joints)).locked = false
+          end if
+          fw.joints(ubound(fw.joints)).velocity.angle = val(nthfield(ipt," ",6))
+          fw.joints(ubound(fw.joints)).velocity.mag = val(nthfield(ipt," ",7))
+        Case "SP"
+          fw.addSpring(val(nthfield(ipt," ",2)),val(nthfield(ipt," ",3)))
+          fw.springs(ubound(fw.springs)).wavePosition = val(nthfield(ipt," ",4))
+        Case "WF"
+          fw.addWaveForm(val(nthfield(ipt," ",2)),val(nthfield(ipt," ",3)),val(nthfield(ipt," ",4)),val(nthfield(ipt," ",5)))
+        Else
+          msgbox "'" + ipt + "' is not a valid definition line."
+        End Select
+      wend
+      
+      s.close
+      fw.doStart
+      return fw
+      
+    end if
+  end if
+End Function
+
+MathAndMethods.saveFramework:
+Sub saveFramework(folder as folderitem, f as Framework)
+  dim s as textoutputstream
+  dim a as integer
+  dim d as date
+  dim st,l as string
+  d = new date
+  
+  if (folder <> nil) then
+    if (not folder.exists) then
+      s = folder.createtextfile
+      if (s <> nil) then
+        
+        for a = 1 to ubound(f.joints)
+          if (f.joints(a).locked) then
+            l = "true"
+          else
+            l = "false"
+          end if
+          s.writeline "JT " + str(f.joints(a).x) + " " + str(f.joints(a).y) + " " + str(f.joints(a).mass) + " " + l
+        next
+        
+        for a = 1 to ubound(f.springs)
+          s.writeline "SP " + str(f.springs(a).Jt1Code) + " " + str(f.springs(a).Jt2Code) + " " + str(f.springs(a).wavePosition)
+        next
+        
+        for a = 1 to ubound(f.waveforms)
+          s.writeline "WF " + str(f.waveforms(a).average) + " " + str(f.waveforms(a).amplitude) + " " + str(f.waveforms(a).period) + " " + str(f.waveforms(a).phase)
+        next
+        
+        s.close
+        folder.mactype = "TEXT"
+        folder.maccreator = "ljwt"
+      end if
+    end if
+  end if
+End Sub
+
+MathAndMethods.loadSavedFramework:
+Function loadSavedFramework(folder as folderitem) As Framework
+  dim f as folderitem
+  dim fw as Framework
+  dim s as textinputstream
+  dim ipt as string
+  
+  fw = new Framework
+  
+  f = folder
+  
+  if (f <> nil and f.exists) then
+    s = f.openastextfile
+    if (s <> nil) then
+      
+      while (s.eof = false)
+        ipt = s.readline
+        Select Case nthfield(ipt," ",1)
+        Case "JT"
+          fw.addJoint(val(nthfield(ipt," ",2)),val(nthfield(ipt," ",3)))
+          fw.joints(ubound(fw.joints)).mass = val(nthfield(ipt," ",4))
+          if (fw.joints(ubound(fw.joints)).mass = 0) then
+            fw.joints(ubound(fw.joints)).mass = 1
+          end if
+          if (nthfield(ipt," ",5) = "true") then
+            fw.joints(ubound(fw.joints)).locked = true
+          else
+            fw.joints(ubound(fw.joints)).locked = false
+          end if
+          fw.joints(ubound(fw.joints)).velocity.angle = val(nthfield(ipt," ",6))
+          fw.joints(ubound(fw.joints)).velocity.mag = val(nthfield(ipt," ",7))
+        Case "SP"
+          fw.addSpring(val(nthfield(ipt," ",2)),val(nthfield(ipt," ",3)))
+          fw.springs(ubound(fw.springs)).wavePosition = val(nthfield(ipt," ",4))
+        Case "WF"
+          fw.addWaveForm(val(nthfield(ipt," ",2)),val(nthfield(ipt," ",3)),val(nthfield(ipt," ",4)),val(nthfield(ipt," ",5)))
+        Else
+          msgbox "'" + ipt + "' is not a valid definition line."
+        End Select
+      wend
+      
+      s.close
+      fw.doStart
+      return fw
+      
+    end if
+  end if
+End Function
+
+Framework.Framework:
+Sub Framework()
+  redim joints(0)
+  redim springs(0)
+  redim waveforms(0)
+  o = nil
+  waveformSpeed = .5
+  debuging = false
+  time = 0
+  waveLCM = 0
+  jokingMode = true
+End Sub
+
+Framework.addJoint:
+Sub addJoint(xi as integer, yi as integer)
+  joints.append new joint
+  joints(ubound(joints)).init
+  joints(ubound(joints)).x = xi
+  joints(ubound(joints)).y = yi
+  joints(ubound(joints)).id = ubound(joints)
+  joints(ubound(joints)).mass = 1
+  joints(ubound(joints)).myColor = rgb(0,0,0)
+End Sub
+
+Framework.addSpring:
+Sub addSpring(p1 as integer, p2 as integer)
+  springs.append new spring
+  springs(ubound(springs)).k = constK
+  springs(ubound(springs)).Jt1Code = p1
+  springs(ubound(springs)).Jt2Code = p2
+  springs(ubound(springs)).restLength = dist(p1,p2)
+  springs(ubound(springs)).originalRestLength = springs(ubound(springs)).restLength
+End Sub
+
+Framework.changeRestLength:
+Sub changeRestLength(s as integer, l as double)
+  springs(s).restLength = l
+End Sub
+
+Framework.dist:
+Function dist(p1 as integer, p2 as integer) As Double
+  return sqrt((joints(p2).y - joints(p1).y)*(joints(p2).y - joints(p1).y) + (joints(p2).x - joints(p1).x)*(joints(p2).x - joints(p1).x))
+End Function
+
+Framework.debug:
+Sub debug()
+  dim a,b as integer
+  if (debuging) then
+    debuging = false
+    o.closebox = true
+  else
+    o = new textout
+    o.f = self
+    o.closebox = false
+    o.add("DEBUG OUTPUT:" + chr(13))
+    debuging = true
+  end if
+End Sub
+
+Framework.paint:
+Function paint(w as integer, h as integer) As picture
+  dim p as picture
+  dim a,b as integer
+  p = newpicture(w,h,4)
+  
+  p.graphics.textsize = 9
+  
+  
+  for a = 1 to ubound(springs)
+    if (springs(a).wavePosition > -1) then
+      p.graphics.forecolor = rgb(0,0,255)
+      p.graphics.drawline(joints(springs(a).Jt1Code).x,h - joints(springs(a).Jt1Code).y,joints(springs(a).Jt2Code).x,h - joints(springs(a).Jt2Code).y)
+      p.graphics.drawstring str(a),(joints(springs(a).Jt2Code).x + joints(springs(a).Jt1Code).x)/2,h - ((joints(springs(a).Jt2Code).y + joints(springs(a).Jt1Code).y)/2)
+    else
+      p.graphics.forecolor = rgb(0,0,0)
+      p.graphics.drawline(joints(springs(a).Jt1Code).x,h - joints(springs(a).Jt1Code).y,joints(springs(a).Jt2Code).x,h - joints(springs(a).Jt2Code).y)
+    end if
+  next
+  
+  p.graphics.forecolor = rgb(255,0,0)
+  p.graphics.filloval(centerOfGravityX,h - centerOfGravityY,4,4)
+  
+  p.graphics.textsize = 12
+  
+  for a = 1 to ubound(joints)
+    p.graphics.forecolor = joints(a).myColor
+    p.graphics.filloval(joints(a).x,h - joints(a).y,2,2)
+    p.graphics.drawstring str(a),joints(a).x,h - joints(a).y
+  next
+  
+  if (centerOfGravityX > w and jokingMode) then
+    for a = 1 to ubound(joints)
+      if (joints(a).x < w) then
+        goto out
+      end if
+    next
+    p.graphics.drawpicture left,(w/2) - (left.width/2),(h/2) - (left.height/2)
+  end if
+  out:
+  
+  return p
+End Function
+
+Framework.tick:
+Sub tick(s as double)
+  dim a,b,c as integer
+  dim slope,force,xcomponent,ycomponent,xsum,ysum as double
+  dim finalvolx,finalvoly as double
+  dim v as vector
+  
+  ' Okay, first we find all of the vectors for every point, then we
+  ' find the sums for every point and move the points accordingly.
+  ' This model should account for floor friction, gravity, and springs.
+  
+  ' The following function increments the waveforms.  It will also
+  ' update the spring restLengths.
+  tickWaveforms(waveFormSpeed)
+  
+  ' The following function adds force vectors for all springs in the springs array.
+  addSpringVectors
+  
+  ' Now we find vector sums for every joint and shift the points the nessesary
+  ' amount.
+  
+  for a = 1 to ubound(joints)
+    if (not joints(a).locked) then
+      xsum = 0
+      ysum = 0
+      for b = 1 to ubound(joints(a).vectors)
+        xcomponent = joints(a).vectors(b).mag * cos(joints(a).vectors(b).angle*(PI/180))
+        ycomponent = joints(a).vectors(b).mag * sin(joints(a).vectors(b).angle*(PI/180))
+        xsum = xsum + xcomponent
+        ysum = ysum + ycomponent
+        if (debuging) then
+          o.add("Joint " + str(a) + ", vector " + str(b) + ":  xcomponent = " + str(xcomponent) + "  ycomponent = " + str(ycomponent) + "  xsum = " + str(xsum) + "  ysum = " + str(ysum) + chr(13))
+        end if
+      next
+      
+      ' Lets check for floor friction.  This friction is an approximation.  It DOES
+      ' NOT take the previous momentum into account!
+      
+      if (joints(a).y <= (floorY+2)) then
+        ' Okay, we are on the floor.  Any x velocity should have friction 
+        ' applied to it.
+        
+        if (abs(floorFrict*ysum) > abs(xsum)) then
+          if (debuging) then
+            o.add("Joint " + str(a) + ": Friction applied (to zero, old velx = " + str((joints(a).velocity.mag * cos(joints(a).velocity.angle * (PI/180)))) + ")." + chr(13))
+          end if
+          xsum = .00000001
+        else
+          if (xsum > 0) then
+            xsum = xsum - abs(floorFrict*ysum)
+          else
+            xsum = xsum + abs(floorFrict*ysum)
+          end if
+          if (debuging) then
+            o.add("Joint " + str(a) + ": Friction applied.  (Amt. left: " + str(xsum) + ")" + chr(13))
+          end if
+        end if
+      end if
+      
+      ' Fx = MAx, Fy = MAy
+      
+      finalvolx = (joints(a).velocity.mag * cos(joints(a).velocity.angle * (PI/180)))*airFriction + ((xsum/joints(a).mass)*s)
+      finalvoly = (joints(a).velocity.mag * sin(joints(a).velocity.angle * (PI/180)))*airFriction + ((ysum/joints(a).mass)*s)
+      
+      if (debuging) then
+        o.add("Joint " + str(a) + " Finalvolx: " + str(finalvolx) + " Finalvoly: " + str(finalvoly) + chr(13))
+      end if
+      
+      joints(a).velocity.trueSetSlope(finalvoly,finalvolx)
+      
+      joints(a).velocity.mag = sqrt((finalvoly*finalvoly) + (finalvolx*finalvolx))
+      
+      if (joints(a).velocity.angle < 0) then
+        joints(a).velocity.angle = 360 + joints(a).velocity.angle
+      end if
+      
+      while (joints(a).velocity.angle > 360)
+        joints(a).velocity.angle = joints(a).velocity.angle - 360
+      wend
+      
+      joints(a).shift(s)
+    end if
+  next
+  
+  if (debuging) then
+    for a = 1 to ubound(joints)
+      o.add("Joint " + str(a) + chr(13) + joints(a).debug + chr(13))
+    next
+  end if
+  
+  ' Lets keep track of the current 'time'
+  time = time + s
+  
+  ' Lets reset everything.
+  for a = 1 to ubound(joints)
+    joints(a).joint
+  next
+End Sub
+
+Framework.addSpringVectors:
+Sub addSpringVectors()
+  dim a as integer
+  dim slope,force,newRestLength as double
+  dim v as vector
+  
+  ' The following loop adds force vectors for all springs in the springs array.
+  for a = 1 to ubound(springs)
+    v = new vector
+    
+    if (springs(a) = nil) then
+      msgbox "Spring is nil!"
+    elseif (joints(springs(a).Jt2Code) = nil) then
+      msgbox "joints(springs(a).Jt2Code) is nil!"
+    elseif (joints(springs(a).Jt1Code) = nil) then
+      msgbox "joints(springs(a).Jt1Code) is nil!"
+    end if
+    
+    ' This is the slope between the two joints on the ends of the spring:
+    slope = (joints(springs(a).Jt2Code).y - joints(springs(a).Jt1Code).y)/(joints(springs(a).Jt2Code).x - joints(springs(a).Jt1Code).x)
+    
+    ' Useful equations:
+    '   Hooke's law: SpringForce = -kx, where x is the displacement
+    '   Impulse: Force * time = mass * change in v
+    '   Acceleration by a spring: -(k/m)*x
+    
+    ' This spring could be a muscle.  Lets find out if it is.
+    newRestLength = springs(a).restLength
+    
+    ' Okay, lets look at the length of the spring and figure out about the force.
+    force = -1 * springs(a).k * (dist(springs(a).Jt1Code,springs(a).Jt2Code) - newRestLength)
+    
+    ' If the force is negitive, the spring has been stretched too far.
+    ' Both joints have vectors pointing towards the other joint.
+    ' Otherwise, both joints have vectors pointing away from the other joint.
+    
+    ' if top, and neg force, vector is down
+    ' if top and pos force, vector is up
+    ' if bottom and neg force, vector is up
+    ' if bottom and pos force, vector is down
+    
+    ' if the slope is positive, to go down, the angle must be 180 + atan(slope)*(180/PI)
+    ' if the slope is positive, to go up, the angle must be atan(slope)*(180/PI)
+    ' if the slope is neg, to go down, the angle must be 360 + atan(slope)*(180/PI)
+    ' if the slope is neg, to go up, the angle must be 180 + atan(slope)*(180/PI)
+    
+    if (debuging) then
+      o.add(str(a) + "  Slope: " + str(slope) + "  Force: " + str(force) + chr(13))
+    end if
+    
+    
+    if (joints(springs(a).Jt1Code).y >= joints(springs(a).Jt2Code).y) then
+      ' top
+      if (force < 0) then
+        'neg force
+        if (slope > 0) then
+          'pos slope
+          v.angle = 180 + atan(slope)*(180/PI)
+        else
+          'neg slope
+          v.angle = 360 + atan(slope)*(180/PI)
+        end if
+      else
+        'pos force
+        if (slope > 0) then
+          'pos slope
+          v.angle = atan(slope)*(180/PI)
+        else
+          'neg slope
+          v.angle = 180 + atan(slope)*(180/PI)
+        end if
+      end if
+    else
+      'bottom
+      if (force > 0) then
+        'pos force
+        if (slope > 0) then
+          'pos slope
+          v.angle = 180 + atan(slope)*(180/PI)
+        else
+          'neg slope
+          v.angle = 360 + atan(slope)*(180/PI)
+        end if
+      else
+        'neg force
+        if (slope > 0) then
+          'pos slope
+          v.angle = atan(slope)*(180/PI)
+        else
+          'neg slope
+          v.angle = 180 + atan(slope)*(180/PI)
+        end if
+      end if
+    end if
+    v.mag = abs(force)*absorbtion
+    joints(springs(a).Jt1Code).addVector v
+    
+    v.mag = abs(force)*absorbtion
+    if (v.angle >= 0 and v.angle <= 180) then
+      v.angle = v.angle + 180
+    else
+      v.angle = v.angle - 180
+    end if
+    
+    if (v.angle < 0) then
+      v.angle = 360 + v.angle   'Make sure this shouldn't be a - sign
+    elseif (v.angle > 360) then
+      v.angle = v.angle - 360
+    end if
+    joints(springs(a).Jt2Code).addVector v
+  next
+  
+Exception err as OutOfBoundsException
+  msgbox "Ubound of springs: " + str(ubound(springs))
+  msgbox "Jt1Code of a is " + str(springs(a).Jt1Code)
+  msgbox "Jt2Code of a is " + str(springs(a).Jt2Code)
+  msgbox "Ubound of joints: " + str(ubound(joints))
+  MsgBox "Out of bounds!"
+Exception err as NilObjectException
+  MsgBox "Tried to access a Nil object!"
+End Sub
+
+Framework.paintWave:
+Function paintWave(w as integer, h as integer) As picture
+  dim p as picture
+  dim a,b as integer
+  dim c as double
+  p = newpicture(w,h,4)
+  
+  p.graphics.forecolor = rgb(0,0,0)
+  
+  for a = 1 to w
+    c = 0
+    for b = 1 to ubound(waveforms)
+      c = c + waveforms(b).at(a)
+    next
+    p.graphics.drawline(a,(h/2) - c,a,(h/2) - c)
+  next
+  
+  p.graphics.forecolor = rgb(0,0,255)
+  
+  for a = 1 to ubound(springs)
+    if (springs(a).wavePosition > -1) then
+      p.graphics.drawline(springs(a).wavePosition,0,springs(a).wavePosition,h)
+      p.graphics.drawstring str(a),springs(a).wavePosition + 2,10
+    end if
+  next
+  
+  return p
+End Function
+
+Framework.addWaveform:
+Sub addWaveform(avg as double, amp as double, prd as double, phas as double)
+  waveforms.append new waveform
+  waveforms(ubound(waveforms)).average = avg
+  waveforms(ubound(waveforms)).amplitude = amp
+  waveforms(ubound(waveforms)).period = prd
+  waveforms(ubound(waveforms)).phase = phas
+  
+  updateWaveLCM
+End Sub
+
+Framework.tickWaveforms:
+Sub tickWaveforms(amt as double)
+  dim a as integer
+  
+  for a = 1 to ubound(waveforms)
+    'if (waveforms(a).phase = waveLCM) then
+    'waveforms(a).phase = 0
+    'else
+    waveforms(a).phase = waveforms(a).phase + amt
+    'end if
+  next
+  
+  updateSpringLengths
+  
+End Sub
+
+Framework.updateSpringLengths:
+Sub updateSpringLengths()
+  dim a,b as integer
+  dim c as double
+  
+  for a = 1 to ubound(springs)
+    if (springs(a).wavePosition > -1) then
+      
+      c = 0
+      for b = 1 to ubound(waveforms)
+        c = c - (waveforms(b).at(springs(a).wavePosition)*waveScale)
+      next
+      
+      springs(a).restLength = springs(a).originalRestLength + c
+    end if
+  next
+End Sub
+
+Framework.updateWaveLCM:
+Sub updateWaveLCM()
+  dim a,b,c,d as integer
+  
+  if (ubound(waveforms) = 0) then
+    waveLCM = 0
+  elseif (ubound(waveforms) = 1) then
+    waveLCM = waveforms(1).period
+  else
+    c = bruteLCM(waveforms(1).period,waveforms(2).period)
+    for a = 3 to ubound(waveforms)
+      c = bruteLCM(c,waveforms(a).period)
+    next
+    waveLCM  =c
+  end if
+End Sub
+
+Framework.mirror:
+Sub mirror(f as Framework)
+  dim a as integer
+  Framework
+  
+  debuging = false
+  o = nil
+  
+  for a = 1 to ubound(f.joints)
+    joints.append new joint
+    joints(ubound(joints)).mirror(f.joints(a))
+  next
+  
+  jokingMode = f.jokingMode
+  
+  for a = 1 to ubound(f.springs)
+    springs.append new spring
+    springs(ubound(springs)).mirror(f.springs(a))
+  next
+  
+  startingCenterX = f.startingCenterX
+  startingCenterY = f.startingCenterY
+  
+  time = f.time
+  
+  for a = 1 to ubound(f.waveforms)
+    waveforms.append new waveform
+    waveforms(ubound(waveforms)).mirror(f.waveforms(a))
+  next
+  
+  waveformSpeed = f.waveformSpeed
+  waveLCM = f.waveLCM
+End Sub
+
+Framework.centerOfGravityX:
+Function centerOfGravityX() As double
+  dim a as integer
+  dim n,d as double
+  
+  for a = 1 to ubound(joints)
+    n = n + (joints(a).mass*joints(a).x)
+    d = d + joints(a).mass
+  next
+  
+  return n/d
+End Function
+
+Framework.centerOfGravityY:
+Function centerOfGravityY() As double
+  dim a as integer
+  dim n,d as double
+  
+  for a = 1 to ubound(joints)
+    n = n + (joints(a).mass*joints(a).y)
+    d = d + joints(a).mass
+  next
+  
+  return n/d
+End Function
+
+Framework.doStart:
+Sub doStart()
+  startingCenterX = centerOfGravityX
+  startingCenterY = centerOfGravityY
+End Sub
+
+Framework.distMoved:
+Function distMoved() As double
+  return sqrt(pow((centerOfGravityY - startingCenterY),2) + pow((centerOfGravityX - startingCenterX),2))
+End Function
+
+Framework.updateAllSpringLengths:
+Sub updateAllSpringLengths()
+  dim a as integer
+  
+  for a = 1 to ubound(springs)
+    springs(a).restLength = dist(springs(a).Jt1Code,springs(a).Jt2Code)
+    springs(a).originalRestLength = springs(a).restLength
+  next
+End Sub
+
+Framework.complexity:
+Function complexity() As Integer
+  dim a,c as integer
+  c = c + ubound(joints)
+  
+  for a = 1 to ubound(springs)
+    if (springs(a).wavePosition > -1) then
+      c = c + 1
+    end if
+  next
+  
+  for a = 1 to ubound(springs)
+    c = c + (ubound(waveforms)*2)
+  next
+  
+  return c
+End Function
+
+spring.spring:
+Sub spring()
+  k = constK
+  wavePosition = -1
+End Sub
+
+spring.mirror:
+Sub mirror(s as spring)
+  Jt1Code = s.Jt1Code
+  Jt2Code = s.Jt2Code
+  k = s.k
+  originalRestLength = s.originalRestLength
+  restLength = s.restLength
+  wavePosition = s.wavePosition
+End Sub
+
+spring.debug:
+Function debug() As string
+  return "Jt1Code = " + str(Jt1Code) + "  Jt2Code = " + str(Jt2Code) + "  k = " + str(k) + "  originalRestLength = " + str(originalRestLength) + "  restLength = " + str(restLength) + "  wavePosition = " + str(wavePosition)
+End Function
+
+textout.add:
+Sub add(s as string)
+  data.selstart = len(data.text)
+  data.seltext = s
+  data.selstart = len(data.text)
+End Sub
+
+textout.Close:
+Sub Close()
+  f.debuging = false
+End Sub
+
+creatureThread.Run:
+Sub Run()
+  p.stopped = false
+  while not p.stop
+    p.run
+  wend
+  p.stopped = true
+End Sub
+
+waveform.at:
+Function at(x as double) As Double
+  ' The general formula for a sinusoidal oscillation:
+  ' A + Bcos[ 2PI
+  '                ---- (t - phase) ]
+  '                  T
+  
+  return average + (amplitude*(cos(((2*PI)/(period))*(x - phase))))
+  
+End Function
+
+waveform.addw:
+Function addw(w as waveform, x as double) As Double
+  return w.at(x) + at(x)
+End Function
+
+waveform.add:
+Function add(x_in as double, x as double) As Double
+  return x_in + at(x)
+End Function
+
+waveform.mirror:
+Sub mirror(w as waveform)
+  amplitude = w.amplitude
+  average = w.average
+  period = w.period
+  phase = w.phase
+End Sub
+
+list.list:
+Sub list()
+  redim list(0)
+  id = -1
+End Sub
+
+list.append:
+Sub append(v as variant)
+  list.append v
+End Sub
+
+list.get:
+Function get(n as integer) As variant
+  if (n <= ubound(list)) then
+    return list(n)
+  else
+    msgbox "List request out of bounds."
+    return -1
+  end if
+End Function
+
+list.report:
+Function report() As string
+  dim s as string
+  dim a as integer
+  s = "List report for list id " + str(id) + ":"
+  for a = 1 to ubound(list)
+    if (VarType(list(a)) = 8) then
+      s = s + chr(13) + list(a)
+    elseif (VarType(list(a)) = 2 or VarType(list(a)) = 5) then
+      s = s + chr(13) + str(list(a))
+    elseif (VarType(list(a)) = 11) then
+      if (list(a)) then
+        s = s + chr(13) + "true"
+      else
+        s = s + chr(13) + "false"
+      end if
+    else
+      s = s + chr(13) + "unable to report this variant type"
+    end if
+  next
+  
+  return s
+End Function
+
+list.contains:
+Function contains(v as variant) As boolean
+  dim a as integer
+  dim d as double
+  dim s,s2 as string
+  dim bool,bool2 as boolean
+  
+  if (VarType(v) = 2 or VarType(v) = 5) then
+    d = v
+    for a = 1 to ubound(list)
+      if (list(a) = d) then
+        return true
+      end if
+    next
+  elseif (VarType(v) = 8) then
+    s = v
+    for a = 1 to ubound(list)
+      if (VarType(list(a)) = 8) then
+        s2 = list(a)
+        if (s2 = s) then
+          return true
+        end if
+      end if
+    next
+  elseif (VarType(v) = 11) then
+    bool = v
+    for a = 1 to ubound(list)
+      if (VarType(list(a)) = 11) then
+        bool2 = list(a)
+        if (bool2 = bool) then
+          return true
+        end if
+      end if
+    next
+  else
+    msgbox "Unknown contains type."
+  end if
+  return false
+End Function
+
+list.merge:
+Sub merge(l1 as list, l2 as list)
+  dim temp as list
+  dim a as integer
+  temp = new list
+  
+  ' We use temp incase l1 or l2 is this list.
+  
+  'There is probably a better way to do this.  I'm to tired to
+  ' figure it out now.
+  
+  for a = 1 to ubound(l1.list)
+    if (l2.contains(l1.get(a))) then
+    else
+      temp.append l1.get(a)
+    end if
+  next
+  
+  for a = 1 to ubound(l2.list)
+    temp.append l2.get(a)
+  next
+  
+  setEqual(temp)
+  
+End Sub
+
+list.setEqual:
+Sub setEqual(l as list)
+  dim a as integer
+  
+  redim list(0)
+  
+  for a = 1 to ubound(l.list)
+    list.append l.get(a)
+  next
+End Sub
+
+list.numContains:
+Function numContains(v as variant) As integer
+  dim a,total as integer
+  dim d as double
+  dim s,s2 as string
+  dim bool,bool2 as boolean
+  
+  if (VarType(v) = 2 or VarType(v) = 5) then
+    d = v
+    for a = 1 to ubound(list)
+      if (list(a) = d) then
+        total = total + 1
+      end if
+    next
+  elseif (VarType(v) = 8) then
+    s = v
+    for a = 1 to ubound(list)
+      if (VarType(list(a)) = 8) then
+        s2 = list(a)
+        if (s2 = s) then
+          total = total + 1
+        end if
+      end if
+    next
+  elseif (VarType(v) = 11) then
+    bool = v
+    for a = 1 to ubound(list)
+      if (VarType(list(a)) = 11) then
+        bool2 = list(a)
+        if (bool2 = bool) then
+          total = total + 1
+        end if
+      end if
+    next
+  else
+    msgbox "Unknown contains type."
+  end if
+  return total
+End Function
+
+PrimeModule.getPrimes:
+Sub getPrimes(GenTo as integer)
+  dim b,hold,a as integer
+  redim primes(2)
+  a = 5
+  primes(0) = 2
+  primes(1) = 3
+  primes(2) = 5
+  while not usercancelled and ubound(primes) < GenTo
+    a = a + 1
+    hold = 0
+    for b = 0 to ubound(primes)-1
+      if (a = primes(b)) then
+        hold = 1
+        b = ubound(primes)
+      elseif (floor(a/primes(b)) = a/primes(b)) then
+        hold = 1
+        goto out
+      end if
+    next
+    out:
+    if (hold = 0) then
+      primes.append a
+    end if
+  wend
+End Sub
+
+PrimeModule.isPrime:
+Function isPrime(n as integer) As boolean
+  dim b as integer
+  if primes(ubound(primes)) < ((n+1)/2) then
+    msgbox "Error, not enough primes known."
+    return false
+  else
+    for b = 0 to ubound(primes)-2
+      if (n = primes(b)) then
+        'return false
+      elseif (floor(n/primes(b)) = n/primes(b)) then
+        return false
+      end if
+    next
+    return true
+  end if
+End Function
+
+PrimeModule.primeFactors:
+Function primeFactors(n as integer) As list
+  dim a,b,c as integer
+  dim bool as boolean
+  dim l as list
+  l = new list
+  
+  bool = isPrime(n)
+  
+  a = n
+  b = 0
+  
+  while (a > 1)
+    if ((a/primes(b)) = floor(a/primes(b))) then
+      
+      l.append primes(b)
+      a = a/primes(b)
+      
+    else
+      
+      b = b + 1
+      
+    end if
+  wend
+  
+  return l
+End Function
+
+PrimeModule.lcm:
+Function lcm(n1 as integer, n2 as integer) As integer
+  dim l1, l2,temp as list
+  dim a,b,c as integer
+  
+  ' This method does not seem to be quite as effective as the
+  ' bruteLCm module.  However, for large numbers is it MUCH faster.
+  
+  b = 1
+  temp = new list
+  
+  l1 = primeFactors(n1)
+  l2 = primeFactors(n2)
+  
+  for a = 1 to ubound(l1.list)
+    if (l1.numContains(l1.get(a)) > l2.numContains(l1.get(a))) then
+      temp.append l1.get(a)
+    end if
+  next
+  
+  for a = 1 to ubound(l2.list)
+    temp.append l2.get(a)
+  next
+  
+  for a = 1 to ubound(temp.list)
+    b = b * temp.get(a)
+  next
+  
+  return b
+  
+End Function
+
+PrimeModule.bruteLCM:
+Function bruteLCM(n1 as integer, n2 as integer) As integer
+  dim a,b,c as integer
+  
+  do
+    b = b + 1
+    if (n1 > n2) then
+      a = n1 * b
+    else
+      a = n2 * b
+    end if
+  loop until (((a/n1) = floor(a/n1)) and ((a/n2) = floor(a/n2)))
+  
+  return a
+End Function
+
+MainWindow.run:
+Sub run()
+  ' This is our main evolution loop.
+  
+  ' For now, this will only pick one creature
+  pickBestCreature
+  
+  spawnCreatures
+  
+  if (saveSteps.value) then
+    steps = steps + 1
+    if (steps > 10) then
+      steps = 0
+      stepSave
+    end if
+  end if
+  
+  cycles.text = str(val(cycles.text) + 1)
+  
+End Sub
+
+MainWindow.pickBestCreature:
+Sub pickBestCreature()
+  dim a,b,bestCreatureSoFar as integer
+  dim bestSoFar as double
+  dim creatureHolder as Framework
+  
+  creatureHolder = new Framework
+  bestSoFar = 0
+  
+  for a = 1 to ubound(frames)
+    creatureHolder.mirror(frames(a))
+    for b = 1 to numberOfCycles
+      creatureHolder.tick(tickAmt)
+      if (doGraphics) then
+        if (watch <> nil) then
+          watch.text.text = "Testing creature " + str(a)
+        end if
+        if (watch <> nil) then
+          watch.output.graphics.drawpicture creatureHolder.paint(watch.output.width,watch.output.height),0,0
+        end if
+        if (watch <> nil) then
+          watch.wave.graphics.drawpicture creatureHolder.paintWave(watch.wave.width,watch.wave.height),0,0
+        end if
+      end if
+      if (creatureHolder.distMoved > bestSoFar) then
+        bestSoFar = creatureHolder.distMoved
+        bestCreatureSoFar = a
+      end if
+    next
+  next
+  
+  addlog("End of cycle " + cycles.text + chr(13) + "Best creature: " + str(bestCreatureSoFar) + "  Moved: " + str(bestSoFar) + chr(13))
+  addlog2(cycles.text + ") Best creature: " + str(bestCreatureSoFar) + "  Moved: " + str(bestSoFar) + " Complex.: " + str(frames(bestCreatureSoFar).complexity) + chr(13))
+  
+  creatureHolder.mirror(frames(bestCreatureSoFar))
+  
+  if (storeSteps.value) then
+    storage.append new Framework
+    storage(ubound(storage)).mirror(creatureHolder)
+  end if
+  
+  redim frames(0)
+  frames.append new Framework
+  frames(ubound(frames)).mirror(creatureHolder)
+End Sub
+
+MainWindow.spawnCreatures:
+Sub spawnCreatures()
+  dim a,choice,b as integer
+  
+  addlog("Creating offspring" + chr(13))
+  
+  for a = 1 to spawnNumber
+    frames.append new Framework
+    frames(ubound(frames)).mirror(frames(1))
+    choice = round(rnd*5)+1
+    
+    if (choice = 1) then
+      ' We will mutate the waveforms
+      addlog("Mutating waveform" + chr(13))
+      mutateWaveform
+    elseif (choice = 2) then
+      ' We will mutate existing positions on the waveform or
+      ' we will add a new position
+      addlog("Mutating waveform positions" + chr(13))
+      mutateWaveformPositions
+    elseif (choice = 3) then
+      ' We will add a new joint
+      b = round(rnd*4)+1
+      if (b < 4) then
+        addlog("Adding a random joint between" + chr(13))
+        addRandomJointBetween
+      else
+        addlog("Adding a random joint" + chr(13))
+        addRandomJoint
+      end if
+    elseif (choice = 4) then
+      ' We will add a new spring
+      addlog("Adding a random spring" + chr(13))
+      addRandomSpring
+    elseif (choice = 5) then
+      ' We will remove a spring
+      addlog("Removing random spring" + chr(13))
+      removeRandomSpring
+    elseif (choice = 6) then
+      ' We will move the initial position of a joint
+      addlog("Moving a joint" + chr(13))
+      moveJoint
+    else
+      msgbox "Illeagal mutation choice: " + str(choice)
+    end if
+    
+    frames(ubound(frames)).doStart
+  next
+End Sub
+
+MainWindow.threadDone:
+Sub threadDone()
+  start.caption = "Start"
+  running.visible = false
+  storeSteps.enabled = true
+  addlog("Run stopped" + chr(13))
+  start.enabled = true
+End Sub
+
+MainWindow.mutateWaveform:
+Sub mutateWaveform()
+  dim a,b,c,d as integer
+  
+  a = round(rnd*10)+1
+  
+  if (a < 10) then
+    b = round(rnd*2)+1
+    if (b = 1) then
+      ' Change a waveform's phase
+      addlog("Changing a waveform's phase" + chr(13))
+      c = round(rnd*(ubound(frames(ubound(frames)).waveforms)-1))+1
+      if (frames(ubound(frames)).waveforms(c) <> nil) then
+        d = round(rnd*19)-10
+        frames(ubound(frames)).waveforms(c).phase = frames(ubound(frames)).waveforms(c).phase + d
+      end if
+    elseif (b = 2) then
+      ' Change a waveform's period
+      addlog("Changing a waveform's period" + chr(13))
+      c = round(rnd*(ubound(frames(ubound(frames)).waveforms)-1))+1
+      d = round(rnd*19)-10
+      if (frames(ubound(frames)).waveforms(c) <> nil) then
+        frames(ubound(frames)).waveforms(c).period = frames(ubound(frames)).waveforms(c).phase + d
+        if (frames(ubound(frames)).waveforms(c).period < minPeriod) then
+          frames(ubound(frames)).waveforms(c).period = minPeriod
+        end if
+      end if
+    elseif (b = 3) then
+      ' Change a waveform's amplitude
+      addlog("Changing a waveform's amplitude" + chr(13))
+      c = round(rnd*(ubound(frames(ubound(frames)).waveforms)-1))+1
+      d = round(rnd*3)-2
+      if (frames(ubound(frames)).waveforms(c) <> nil) then
+        frames(ubound(frames)).waveforms(c).amplitude = frames(ubound(frames)).waveforms(c).phase + d
+      end if
+    end if
+  elseif (a = 10) then
+    ' Add a waveform
+    addlog("Added a waveform" + chr(13))
+    frames(ubound(frames)).addWaveform(0,round(rnd*14)+1,round(rnd*359 + minPeriod)+1-minPeriod,round(rnd*99)+1)
+    if (frames(ubound(frames)).waveforms(ubound(frames(ubound(frames)).waveforms)).period < minPeriod) then
+      frames(ubound(frames)).waveforms(ubound(frames(ubound(frames)).waveforms)).period = minPeriod
+    end if
+  else
+    ' Remove a waveform
+    if (ubound(frames(ubound(frames)).waveforms) > 1) then
+      c = round(rnd*(ubound(frames(ubound(frames)).waveforms)-1))+1
+      if (frames(ubound(frames)).waveforms(c) <> nil) then
+        addlog("Removed a waveform" + chr(13))
+        frames(ubound(frames)).waveforms.remove c
+      end if
+    end if
+  end if
+End Sub
+
+MainWindow.mutateWaveformPositions:
+Sub mutateWaveformPositions()
+  dim a,b,c,d,e as integer
+  dim r(0) as integer
+  
+  a = round(rnd*4)+1
+  
+  for b = 1 to ubound(frames(ubound(frames)).springs)
+    if (frames(ubound(frames)).springs(b).wavePosition > -1) then
+      e = e + 1
+    end if
+  next
+  if (e = 0) then
+    a = 5
+  end if
+  
+  if (a < 4) then
+    ' Move a waveform position
+    addlog("Moving a waveform position" + chr(13))
+    for b = 1 to ubound(frames(ubound(frames)).springs)
+      if (frames(ubound(frames)).springs(b).wavePosition > -1) then
+        r.append b
+      end if
+    next
+    if (ubound(r) > 0) then
+      b = round(rnd*(ubound(r)-1))+1
+      c = round(rnd*9) - 5
+      if (b <> 0) then
+        frames(ubound(frames)).springs(r(b)).wavePosition = frames(ubound(frames)).springs(r(b)).wavePosition + c
+        if (frames(ubound(frames)).springs(r(b)).wavePosition < 1) then
+          frames(ubound(frames)).springs(r(b)).wavePosition = -1
+        end if
+      end if
+    end if
+  else
+    ' Add a waveform position
+    for b = 1 to ubound(frames(ubound(frames)).springs)
+      if (frames(ubound(frames)).springs(b).wavePosition = -1) then
+        r.append b
+      end if
+    next
+    if (ubound(r) > 0) then
+      b = round(rnd*(ubound(r)-1))+1
+      c = round(rnd*199) + 1
+      if (b > 0) then
+        if (frames(ubound(frames)).springs(r(b)) <> nil) then
+          frames(ubound(frames)).springs(r(b)).wavePosition = c
+          addlog("Added a waveform position for " + str(r(b)) + chr(13))
+        end if
+      end if
+    end if
+  end if
+End Sub
+
+MainWindow.addRandomJoint:
+Sub addRandomJoint()
+  dim x,y,a,newx,newy,ref,abort as integer
+  dim rangle,slope,distperslope,newamount as double
+  
+  x = round(rnd*99) + 1
+  y = round(rnd*99) + 1
+  abort = 0
+  while (y > -1*x + 100 and abort < 100)
+    abort = abort + 1
+    x = round(rnd*99) + 1
+    y = round(rnd*99) + 1
+  wend
+  
+  ' Okay, x is now a distance.  We use the probability curve: -1x + 100
+  ' Now we need a random slope:
+  
+  rangle = round(rnd*359)+1
+  slope = tan(rangle*(PI/180))
+  
+  ' Hopefully the distance traveled per slope step
+  distperslope = sqrt((slope*slope) + 1)
+  
+  ' This is the number of 'slopes' needed to be traveled
+  newamount = x/distperslope
+  
+  ref = round(rnd*(ubound(frames(ubound(frames)).joints)-1))+1
+  
+  if (ref > 0) then
+    
+    newx = frames(ubound(frames)).joints(ref).x
+    newy = frames(ubound(frames)).joints(ref).y
+    
+    if (slope > 0) then
+      if (rangle < 180) then
+        'going up!
+        newx = newx + newamount
+        newy = newy + newamount*slope
+      else
+        'going down
+        newx = newx - newamount
+        newy = newy - newamount*slope
+      end if
+    else
+      if (rangle < 180) then
+        'going up!
+        newx = newx - newamount
+        newy = newy - newamount*slope
+      else
+        'going down
+        newx = newx + newamount
+        newy = newy + newamount*slope
+      end if
+    end if
+    
+    frames(ubound(frames)).addJoint(newx,newy)
+    frames(ubound(frames)).addSpring(ref,ubound(frames(ubound(frames)).joints))
+    
+    addlog("Added random joint at " + str(newx) + "," + str(newy) + chr(13))
+  end if
+  
+End Sub
+
+MainWindow.moveJoint:
+Sub moveJoint()
+  dim x,y,a,newx,newy,ref,abort as integer
+  dim rangle,slope,distperslope,newamount as double
+  
+  x = round(rnd*99) + 1
+  y = round(rnd*99) + 1
+  abort = 0
+  while (y > -1*x + 100 and abort < 100)
+    abort = abort + 1
+    x = round(rnd*99) + 1
+    y = round(rnd*99) + 1
+  wend
+  
+  ' Okay, x is now a distance.  We use the probability curve: -1x + 100
+  ' Now we need a random slope:
+  
+  rangle = round(rnd*359)+1
+  slope = tan(rangle*(PI/180))
+  
+  ' Hopefully the distance traveled per slope step
+  distperslope = sqrt((slope*slope) + 1)
+  
+  ' This is the number of 'slopes' needed to be traveled
+  newamount = x/distperslope
+  
+  ref = round(rnd*(ubound(frames(ubound(frames)).joints)-1))+1
+  
+  if (ref > 0) then
+    
+    newx = frames(ubound(frames)).joints(ref).x
+    newy = frames(ubound(frames)).joints(ref).y
+    
+    if (slope > 0) then
+      if (rangle < 180) then
+        'going up!
+        newx = newx + newamount
+        newy = newy + newamount*slope
+      else
+        'going down
+        newx = newx - newamount
+        newy = newy - newamount*slope
+      end if
+    else
+      if (rangle < 180) then
+        'going up!
+        newx = newx - newamount
+        newy = newy - newamount*slope
+      else
+        'going down
+        newx = newx + newamount
+        newy = newy + newamount*slope
+      end if
+    end if
+    
+    frames(ubound(frames)).joints(ref).x = newx
+    frames(ubound(frames)).joints(ref).x = newy
+    frames(ubound(frames)).updateAllSpringLengths
+    
+    addlog("Moved joint " + str(ref) + " to " + str(newx) + "," + str(newy) + chr(13))
+  end if
+  
+End Sub
+
+MainWindow.addRandomJointBetween:
+Sub addRandomJointBetween()
+  dim pt1,pt2,pt3,ref as integer
+  dim xpos,ypos,length as double
+  
+  ref = round(rnd*(ubound(frames(ubound(frames)).springs)-1))+1
+  if (ref > 0) then
+    
+    pt1 = frames(ubound(frames)).springs(ref).Jt1Code
+    pt3 = frames(ubound(frames)).springs(ref).Jt2Code
+    
+    ypos = (frames(ubound(frames)).joints(pt3).y + frames(ubound(frames)).joints(pt1).y)/2
+    xpos = (frames(ubound(frames)).joints(pt3).x + frames(ubound(frames)).joints(pt1).x)/2
+    
+    frames(ubound(frames)).addJoint(xpos,ypos)
+    
+    pt2 = ubound(frames(ubound(frames)).joints)
+    
+    frames(ubound(frames)).springs.remove ref
+    
+    frames(ubound(frames)).addSpring(pt1,pt2)
+    frames(ubound(frames)).addSpring(pt2,pt3)
+    
+    addlog("Added joint between " + str(pt1) + " and " + str(pt3) + chr(13))
+  end if
+End Sub
+
+MainWindow.addlog:
+Sub addlog(s as string)
+  log.selstart = len(log.text)
+  log.seltext = s
+End Sub
+
+MainWindow.removeRandomSpring:
+Sub removeRandomSpring()
+  dim pt1,pt2,ref,a as integer
+  dim xpos,ypos,length as double
+  dim pt1Unlinked,pt2Unlinked as boolean
+  
+  pt1Unlinked = true
+  pt2Unlinked = true
+  
+  ref = round(rnd*(ubound(frames(ubound(frames)).springs)-1))+1
+  if (ref > 0) then
+    
+    pt1 = frames(ubound(frames)).springs(ref).Jt1Code
+    pt2 = frames(ubound(frames)).springs(ref).Jt2Code
+    
+    frames(ubound(frames)).springs.remove ref
+    addlog("Removed spring " + str(ref))
+    
+    for a = 1 to ubound(frames(ubound(frames)).springs)
+      if (frames(ubound(frames)).springs(a).Jt1Code = pt1 or frames(ubound(frames)).springs(a).Jt2Code = pt1) then
+        pt1Unlinked = false
+      end if
+      if (frames(ubound(frames)).springs(a).Jt1Code = pt2 or frames(ubound(frames)).springs(a).Jt2Code = pt2) then
+        pt2Unlinked = false
+      end if
+    next
+    
+    if (pt1Unlinked) then
+      frames(ubound(frames)).joints.remove pt1
+      addlog(" and joint " + str(pt1))
+      for a = 1 to ubound(frames(ubound(frames)).springs)
+        if (frames(ubound(frames)).springs(a).Jt1Code > pt1) then
+          frames(ubound(frames)).springs(a).Jt1Code = frames(ubound(frames)).springs(a).Jt1Code - 1
+        end if
+        if (frames(ubound(frames)).springs(a).Jt2Code > pt1) then
+          frames(ubound(frames)).springs(a).Jt2Code = frames(ubound(frames)).springs(a).Jt2Code - 1
+        end if
+      next
+    end if
+    if (pt2Unlinked) then
+      frames(ubound(frames)).joints.remove pt2
+      addlog(" and joint " + str(pt2))
+      for a = 1 to ubound(frames(ubound(frames)).springs)
+        if (frames(ubound(frames)).springs(a).Jt1Code > pt2) then
+          frames(ubound(frames)).springs(a).Jt1Code = frames(ubound(frames)).springs(a).Jt1Code - 1
+        end if
+        if (frames(ubound(frames)).springs(a).Jt2Code > pt2) then
+          frames(ubound(frames)).springs(a).Jt2Code = frames(ubound(frames)).springs(a).Jt2Code - 1
+        end if
+      next
+    end if
+  end if
+  addlog(chr(13))
+end if
+End Sub
+
+MainWindow.addRandomSpring:
+Sub addRandomSpring()
+  dim x,y,a,ref,bestJt,cycle,abort as integer
+  dim dist,bestDist as double
+  
+  while (cycle < 10 and bestJt = 0)
+    
+    cycle = cycle + 1
+    bestDist = 0
+    bestJt = 0
+    
+    x = round(rnd*124) + 1
+    y = round(rnd*124) + 1
+    abort = 0
+    while (y > -4*x + 500 and abort < 100)
+      abort = abort + 1
+      x = round(rnd*124) + 1
+      y = round(rnd*124) + 1
+    wend
+    
+    
+    ref = round(rnd*(ubound(frames(ubound(frames)).joints)-1))+1
+    
+    if (ref > 0) then
+      
+      for a = 1 to ubound(frames(ubound(frames)).joints)
+        dist = pow((frames(ubound(frames)).joints(ref).y - frames(ubound(frames)).joints(a).y),2)
+        dist = dist + pow((frames(ubound(frames)).joints(ref).x - frames(ubound(frames)).joints(a).x),2)
+        dist = sqrt(dist)
+        if (dist > bestDist and dist < x) then
+          bestDist = dist
+          bestJt = a
+        end if
+      next
+      
+      if (bestJt > 0) then
+        
+        for a = 1 to ubound(frames(ubound(frames)).springs)
+          if (frames(ubound(frames)).springs(a).Jt1Code = bestJt or frames(ubound(frames)).springs(a).Jt2Code = bestJt) then
+            if (frames(ubound(frames)).springs(a).Jt1Code = ref or frames(ubound(frames)).springs(a).Jt2Code = ref) then
+              goto exists
+            end if
+          end if
+        next
+        
+        frames(ubound(frames)).addSpring(ref,bestJt)
+        
+        addlog("Added random spring from " + str(ref) + " to " + str(bestJt) + chr(13))
+        
+        exists:
+        
+      end if
+    end if
+    
+  wend
+End Sub
+
+MainWindow.stepSave:
+Sub stepSave()
+  dim folder as folderitem
+  dim d as date
+  dim st as string
+  d = new date
+  
+  folder = desktopfolder
+  st = d.shortdate + " " + d.shorttime
+  st = replaceall(st,":","-")
+  if (right(folder.absolutepath,1) = ":") then
+    folder = getfolderitem(folder.absolutepath + st)
+  else
+    folder = getfolderitem(folder.absolutepath + ":" + st)
+  end if
+  
+  if (not folder.exists) then
+    if (not folder.directory) then
+      saveFramework(folder,frames(1))
+    end if
+  end if
+End Sub
+
+MainWindow.addlog2:
+Sub addlog2(s as string)
+  log2.selstart = len(log2.text)
+  log2.seltext = s
+End Sub
+
+MainWindow.EnableMenuItems:
+Sub EnableMenuItems()
+  WindowsNewCreatureWindow.enabled = true
+  ControlLoadModel.enabled = true
+End Sub
+
+MainWindow.Open:
+Sub Open()
+  frames.append new Framework
+  frames(ubound(frames)).addJoint(100,2)
+  frames(ubound(frames)).addJoint(100,102)
+  frames(ubound(frames)).addJoint(200,102)
+  frames(ubound(frames)).addJoint(200,2)
+  frames(ubound(frames)).addSpring(1,2)
+  frames(ubound(frames)).addSpring(2,3)
+  frames(ubound(frames)).addSpring(3,4)
+  frames(ubound(frames)).addSpring(4,1)
+  frames(ubound(frames)).addSpring(1,3)
+  frames(ubound(frames)).addWaveForm(0,9,180,1)
+  
+  frames(ubound(frames)).doStart
+  
+  doGraphics = false
+  stopped = true
+  stop = false
+  steps = 15
+End Sub
+
+MainWindow.PushButton1.Action:
+Sub Action()
+  dim c as CreatureDisplay
+  dim g as graphWindow
+  dim a as integer
+  
+  if (log2.seltext <> "") then
+    if (instr(log2.seltext,chr(13)) > 0) then
+      g = new graphWindow
+      for a = 1 to countfields(log2.text,chr(13))
+        g.addpt(val(nthfield(nthfield(log2.text,chr(13),a),")",1)),val(nthfield(nthfield(log2.text,chr(13),a),":",3)))
+        g.addpt2(val(nthfield(nthfield(log2.text,chr(13),a),")",1)),val(nthfield(nthfield(log2.text,chr(13),a),":",4)))
+      next
+      '0) Best creature: 1  Moved: 2.5390905 Complex.: 14
+    else
+      if (storeSteps.value) then
+        if (instr(log2.seltext,")") > 0) then
+          c = new CreatureDisplay
+          c.f = new Framework
+          c.f.mirror(storage(val(left(log2.seltext, instr(log2.seltext,")") - 1))+1))
+          'msgbox str(val(left(log2.seltext, instr(log2.seltext,")") - 1)+1))
+        end if
+      end if
+    end if
+  else
+    c = new CreatureDisplay
+    c.f = new Framework
+    c.f.mirror(frames(val(editfield1.text)))
+  end if
+End Sub
+
+MainWindow.start.Action:
+Sub Action()
+  dim m as mainThread
+  
+  if (me.caption = "Start") then
+    m = new mainThread
+    m.p = self
+    stop = false
+    m.run
+    storeSteps.enabled = false
+    running.visible = true
+    me.caption = "Stop"
+    addlog("Starting run" + chr(13))
+  elseif (me.caption = "Stop") then
+    stop = true
+    me.caption = "Stopping"
+    me.enabled = false
+    addlog("Stopping run" + chr(13))
+  end if
+End Sub
+
+MainWindow.PushButton2.Action:
+Sub Action()
+  if (watch <> nil) then
+    me.caption = "Watch"
+    doGraphics = false
+    watch = nil
+  else
+    me.caption = "Stop Watching"
+    watch = new watchWindow
+    watch.p = self
+    doGraphics = true
+  end if
+End Sub
+
+MainWindow.storeSteps.Action:
+Sub Action()
+  if (ubound(storage) > 0) then
+    redim storage(0)
+    log2.text = ""
+  end if
+End Sub
+
+mainThread.Run:
+Sub Run()
+  p.stopped = false
+  while (not p.stop)
+    p.run
+  wend
+  p.stopped = true
+  p.threadDone
+End Sub
+
+watchWindow.CancelClose:
+Function CancelClose() As Boolean
+  if (p.watch = nil) then
+    return false
+  else
+    beep
+    return true
+  end if
+End Function
+
+graphWindow.addpt:
+Sub addpt(xi as integer, yi as integer)
+  pts.append new point
+  pts(ubound(pts)).x = xi*xscale
+  pts(ubound(pts)).y = yi*yscale
+  
+  paint
+End Sub
+
+graphWindow.paint:
+Sub paint()
+  dim a as integer
+  p.graphics.clearrect(0,0,p.width,p.height)
+  if (ubound(pts) > 1) then
+    p.graphics.forecolor = rgb(0,0,0)
+    for a = 1 to ubound(pts) - 2
+      p.graphics.drawline(pts(a).x,display.height - pts(a).y,pts(a+1).x,display.height - pts(a+1).y)
+      p.graphics.textsize = 8
+      'p.graphics.drawstring str(a-1),pts(a).x,display.height - pts(a).y
+    next
+    'p.graphics.drawstring str(a),pts(a+1).x,display.height - pts(a+1).y
+  end if
+  
+  if (ubound(pts2) > 1) then
+    p.graphics.forecolor = rgb(0,0,255)
+    for a = 1 to ubound(pts2) - 2
+      p.graphics.drawline(pts2(a).x,display.height - pts2(a).y,pts2(a+1).x,display.height - pts2(a+1).y)
+      p.graphics.textsize = 8
+      'p.graphics.drawstring str(a-1),pts2(a).x,display.height - pts2(a).y
+    next
+    'p.graphics.drawstring str(a),pts2(a+1).x,display.height - pts2(a+1).y
+  end if
+  
+  'for a = 1 to display.height/(500*yscale)
+  'p.graphics.drawline(0,a*(500*yscale),5,a*(500*yscale))
+  'next
+  
+  for a = 1 to display.width/xscale
+    if (a/5 = floor(a/5)) then
+      p.graphics.drawline(a*xscale,display.height,a*xscale,display.height - 10)
+    else
+      p.graphics.drawline(a*xscale,display.height,a*xscale,display.height - 5)
+    end if
+  next
+  
+  p.graphics.textsize = 10
+  
+  p.graphics.forecolor = rgb(0,0,0)
+  p.graphics.drawstring "Displacement",display.width - (p.graphics.stringwidth("Displacement") + 5),20
+  
+  p.graphics.forecolor = rgb(0,0,255)
+  p.graphics.drawstring "Complexity",display.width - (p.graphics.stringwidth("Complexity") + 5),32
+  
+  display.graphics.drawpicture p,0,0
+End Sub
+
+graphWindow.addpt2:
+Sub addpt2(xi as integer, yi as integer)
+  pts2.append new point
+  pts2(ubound(pts2)).x = xi*xscale
+  pts2(ubound(pts2)).y = yi*yscale*2
+  
+  paint
+End Sub
+
+graphWindow.Resized:
+Sub Resized()
+  p = newpicture(me.width,me.height,8)
+  paint
+End Sub
+
+graphWindow.Open:
+Sub Open()
+  p = newpicture(me.width,me.height,8)
+  xscale = 15
+  yscale = .1
+End Sub
+
+graphWindow.display.Paint:
+Sub Paint(g As Graphics)
+  me.graphics.drawpicture p,0,0
+End Sub
+

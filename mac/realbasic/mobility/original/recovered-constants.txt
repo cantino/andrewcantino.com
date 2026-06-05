@@ -1,0 +1,17 @@
+Physics constants recovered byte-for-byte from the RealBASIC project file
+"Mobility Simulator (revised).rbp" (constants block at offset ~22163).
+These are the EXACT values the original used; they live in engine.js CONST.
+
+  PI               3.1415792   (sic -- slightly imprecise)
+  constK           10
+  floorY           1
+  absorbtion       0.8
+  floorAbsorbtion  0.8
+  waveScale        1.8
+  floorFrict       0.5
+  numberOfCycles   2000
+  spawnNumber      15
+  minPeriod        40
+  airFriction      0.98
+  tickAmt          0.1
+  waveformSpeed    0.5  (from source: Framework constructor)

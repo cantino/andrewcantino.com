@@ -1,0 +1,3 @@
+{ "name": "60% fragmentation", "size": 12, "frag": 60, "applyFrag": true,
+  "settings": { "mp": 0.01, "br": 2, "make_mode": 2, "rhalf": false, "fluc": false },
+  "note": "Heavy fragmentation. The population often collapses toward extinction." }

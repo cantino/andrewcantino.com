@@ -1,0 +1,5652 @@
+AAAAAAAAAAAAAAAA
+????
+Science Fair Simulator
+ics#
+ICN#
+ics4
+ics8
+uKKKKK
+uKKKKKK
+uuuKK
+uuuu
+uuuu
+uuuu
+icl4
+icl8
+uKKK
+uKKKKKKK
+uKKKKKKKKKKK
+uKKKKKKKKKKKKKKK
+uuKKKKKKKKKKKK
+uuuuKKKKKKKK
+uuuuuuKKKK
+uuuuuuuu
+uuuuuuuu
+uuuuuuuu
+uuuuuuuu
+uuuuuuuu
+uuuuuuuu
+{uuuuuuu
+{uuuuu
+{uuu
+blah
+????
+????
+View
+Window1
+Name
+Window1
+Frame
+HasBackColor
+False	BackColor
+16777215
+Backdrop
+Title
+Display Window
+Visible
+True
+CloseBox
+False
+GrowIcon
+True
+ZoomIcon
+True
+BalloonHelp
+	MacProcID
+0	Placement
+Width
+Height
+MinWidth
+64	MinHeight
+MaxWidth
+32000	MaxHeight
+32000
+Window1
+Applet
+w as world
+running as boolean
+stop as boolean
+t as mythread
+current_test as integer
+root as folderitem
+current_save as integer
+current_setting as integer
+update_grid
+Sub update_grid()
+dim a,b,c as integer
+dim ss as string
+if s.showw.value = true then
+c = 1
+else#if canvas1.get_text(1,1) <> "" then
+c = 2
+end if
+end if
+for a = 1 to w.size
+for b = 1 to w.size if (w.p(a,b).wall_mode < 1) then
+ss = "C:" + str(w.p(a,b).Capacity) + " T:" + str(round(w.p(a,b).total))
+canvas1.sc(a,b) = rgb(255*(w.p(a,b).total/w.p(a,b).Capacity),255*(w.p(a,b).total/w.p(a,b).Capacity),255*(w.p(a,b).total/w.p(a,b).Capacity))
+canvas1.fill_memory(a,b) = 1
+if c = 1 then
+canvas1.put_text(a,b,ss) 
+elseif c = 2 then
+canvas1.put_text(a,b,"") 
+end if$elseif (w.p(a,b).wall_mode = 1) then
+canvas1.sc(a,b) = rgb(0,0,255)
+canvas1.fill_memory(a,b) = 1
+else
+canvas1.sc(a,b) = rgb(0,255,0)
+canvas1.fill_memory(a,b) = 1
+end if
+next
+next
+canvas1.draw
+End Sub
+show
+x as integer, y as integer
+#$Sub show(x as integer, y as integer)
+dim o as string
+info.x.text = str(x)
+info.y.text = str(y)
+info.d1.text = str(w.p(x,y).d1)
+info.d2.text = str(w.p(x,y).d2)
++'o = "Total: " + str(round(w.p(x,y).total))?'o = o + "       Capacity: " + str(w.p(x,y).Capacity) + chr(13)2'o = o + "1: " + str(round(w.p(x,y).p1)) + chr(13)2'o = o + "2: " + str(round(w.p(x,y).p2)) + chr(13)
+?o = o + "Num Near: " + str(num_near(x,y,canvas1.num)) + chr(13)
+'o = o + "   Received (1) last tick: " + str(round(w.p(x,y).in1_last)) + chr(13)
+'o = o + "   Out (1) last tick: " + str(round(w.p(x,y).out1_last)) + chr(13)
+'o = o + "Deaths in 1: " + str(round(w.p(x,y).d_in_1)) + chr(13)
+'o = o + "Deaths in 2: " + str(round(w.p(x,y).d_in_2)) + chr(13)
+#o = "Total: " + str(w.p(x,y).total)>o = o + "       Capacity: " + str(w.p(x,y).Capacity) + chr(13)*o = o + "1: " + str(w.p(x,y).p1) + chr(13)*o = o + "2: " + str(w.p(x,y).p2) + chr(13)?o = o + "Num Near: " + str(num_near(x,y,canvas1.num)) + chr(13)
+o = o + "   Received (1) last tick: " + str(w.p(x,y).in1_last) + chr(13)
+o = o + "   Out (1) last tick: " + str(w.p(x,y).out1_last) + chr(13)8o = o + "Deaths in 1: " + str(w.p(x,y).d_in_1) + chr(13)8o = o + "Deaths in 2: " + str(w.p(x,y).d_in_2) + chr(13);o = o + "New Offspring: " + str(w.p(x,y).new_off) + chr(13)
+'o = o + "New Offspring: " + str(round(w.p(x,y).new_off)) + chr(13)
+info.out.text = o
+End Sub
+num_near+x as integer, y as integer, size as integer
+integer
+Function num_near(x as integer, y as integer, size as integer) As integer
+dim n,d as integer
+dim pt(4) as point
+pt(1) = new point
+pt(2) = new point
+pt(3) = new point
+pt(4) = new point
+pt(1).x = x - 1
+pt(1).y = y
+pt(2).x = x + 1
+pt(2).y = y
+pt(3).x = x
+pt(3).y = y - 1
+pt(4).x = x
+pt(4).y = y + 1
+for d = 1 to ubound(pt)
+if (pt(d).x < 1 or pt(d).x > canvas1.num or pt(d).y < 1 or pt(d).y > canvas1.num) then
+else,if (w.p(pt(d).x,pt(d).y).wall_mode < 2) then	n = n + 1
+end if
+end if
+next
+return n
+End Function
+do_tick
+Sub do_tick()
+dim c as double
+dim a,b,d,t,e as integer
+dim holder(0,0) as plot
+dim pt(4) as point
+redim holder(w.size,w.size)
+for a = 1 to w.size
+for b = 1 to w.size
+holder(a,b) = new plot
+next
+next
+pt(1) = new point
+pt(2) = new point
+pt(3) = new point
+pt(4) = new point
+'It's a new year!!yrs.text = str(val(yrs.text) + 1)
+if (s.rhalf.value) then
+'Cause a random event.
+for a = 1 to w.size
+for b = 1 to w.size
+e = round(rnd*val(s.prob.text))
+if e = 1 then
+w.p(a,b).p1 = 0
+w.p(a,b).p2 = 0
+end if
+next
+next
+end if
+if s.fluc.value then
+for a = 1 to w.size
+for b = 1 to w.size3w.p(a,b).capacity = w.p(a,b).capacity + ((rnd*5)-2)
+if w.p(a,b).d2 > 1 then
+w.p(a,b).d2 = 1
+end if
+if w.p(a,b).d1 > 1 then
+w.p(a,b).d1 = 1
+end if
+if w.p(a,b).d2 < 0 then
+w.p(a,b).d2 = 0
+end if
+if w.p(a,b).d1 < 0 then
+w.p(a,b).d1 = 0
+end if
+w.p(a,b).in1_last = 0
+next
+next
+end if
+w.tick
+'Migrate:'Okay, now we need to use a duplicate world for this work.
+for a = 1 to w.size
+for b = 1 to w.size%if num_near(a,b,canvas1.num) > 0 then if (w.p(a,b).wall_mode = 1) then
+c = w.p(a,b).p1
+w.p(a,b).p1 = 0
+else c = w.p(a,b).p1 * val(s.mp.text)0w.p(a,b).p1 = w.p(a,b).p1 * (1 - val(s.mp.text))
+end if
+w.p(a,b).out1_last = c!c = c / num_near(a,b,canvas1.num)
+pt(1).x = a - 1
+pt(1).y = b
+pt(2).x = a + 1
+pt(2).y = b
+pt(3).x = a
+pt(3).y = b - 1
+pt(4).x = a
+pt(4).y = b + 1
+for d = 1 to ubound(pt)
+if (pt(d).x < 1 or pt(d).x > canvas1.num or pt(d).y < 1 or pt(d).y > canvas1.num) then
+else,if (w.p(pt(d).x,pt(d).y).wall_mode < 2) then
+holder(pt(d).x,pt(d).y).in1_last = holder(pt(d).x,pt(d).y).in1_last + c;holder(pt(d).x,pt(d).y).p1 = holder(pt(d).x,pt(d).y).p1 + c
+end if
+end if
+next
+else
+w.p(a,b).out1_last = 0
+end if
+next
+next
+for a = 1 to w.size
+for b = 1 to w.size(w.p(a,b).in1_last = holder(a,b).in1_last*w.p(a,b).p1 = w.p(a,b).p1 + holder(a,b).p1
+next
+next
+if s.update1.value then
+update_grid
+end if
+if s.update2.value then
+if canvas1.selected(0) > 0 and canvas1.selected(0) < canvas1.num + 1 and canvas1.selected(1) > 0 and canvas1.selected(1) < canvas1.num + 1 then-show(canvas1.selected(0),canvas1.selected(1))
+end if
+end if
+t = w.get_total7if s.autosave2.value and t <= val(s.lessthan.text) then
+do_check(2);elseif s.autostop2.value and t <= val(s.lessthan.text) then
+stop = true
+elseif s.autosave.value and val(s.autostoptime.text) = val(yrs.text) then
+do_check(1)
+elseif s.rset.value and val(s.autostoptime.text) = val(yrs.text) then
+do_check(1)
+else
+if s.gr.value then+graphwin.g.addpt(val(yrs.text),w.get_total)
+graphwin.t.text = str(t)
+end if
+end if
+End Sub
+	Sub run()
+if not stop then
+if (val(yrs.text)+1 > val(s.autostoptime.text)) and (s.autostop.value = true) then
+stop = true
+else
+do_tick
+end if
+else
+msgbox "Stopped."
+end if
+End Sub
+add_wall*x as integer, y as integer,mode as integer
+58Sub add_wall(x as integer, y as integer,mode as integer)
+dim pt(4) as point
+dim d,h as integer
+pt(1) = new point
+pt(2) = new point
+pt(3) = new point
+pt(4) = new point
+if mode = 2 then
+'solid wall
+if w.p(x,y).wall_mode > 0 then
+h = 1
+end if
+w.p(x,y).wall_mode = 2
+w.p(x,y).p1 = 0
+w.p(x,y).p2 = 0
+w.p(x,y).total = 0
+canvas1.sc(x,y) = rgb(0,255,0)
+canvas1.fill_memory(x,y) = 1
+else
+'passable hurting area
+if w.p(x,y).wall_mode > 0 then
+h = 1
+end if
+w.p(x,y).wall_mode = 1
+w.p(x,y).p1 = 0
+w.p(x,y).p2 = 0
+w.p(x,y).total = 0
+canvas1.sc(x,y) = rgb(0,0,255)
+canvas1.fill_memory(x,y) = 1
+end if
+pt(1).x = x - 1
+pt(1).y = y
+pt(2).x = x + 1
+pt(2).y = y
+pt(3).x = x
+pt(3).y = y - 1
+pt(4).x = x
+pt(4).y = y + 1
+if h = 0 then
+for d = 1 to ubound(pt)
+if (pt(d).x < 1 or pt(d).x > canvas1.num or pt(d).y < 1 or pt(d).y > canvas1.num) then
+else
+w.p(pt(d).x,pt(d).y).d1 = w.p(pt(d).x,pt(d).y).d1 - val(s.wall_d1.text)
+w.p(pt(d).x,pt(d).y).d2 = w.p(pt(d).x,pt(d).y).d2 - val(s.wall_d2.text)
+end if
+next
+end if
+End Sub
+rem_wall
+x as integer, y as integer
+%(Sub rem_wall(x as integer, y as integer)
+dim pt(4) as point
+dim d as integer
+pt(1) = new point
+pt(2) = new point
+pt(3) = new point
+pt(4) = new point
+ if (w.p(x,y).wall_mode > 0) then
+w.p(x,y).wall_mode = 0
+w.p(x,y).p1 = 0
+w.p(x,y).p2 = 0
+w.p(x,y).total = 0
+canvas1.sc(x,y) = rgb(0,0,0)
+canvas1.fill_memory(x,y) = 1
+pt(1).x = x - 1
+pt(1).y = y
+pt(2).x = x + 1
+pt(2).y = y
+pt(3).x = x
+pt(3).y = y - 1
+pt(4).x = x
+pt(4).y = y + 1
+for d = 1 to ubound(pt)
+if (pt(d).x < 1 or pt(d).x > canvas1.num or pt(d).y < 1 or pt(d).y > canvas1.num) then
+else
+w.p(pt(d).x,pt(d).y).d1 = w.p(pt(d).x,pt(d).y).d1 + val(s.wall_d1.text)
+w.p(pt(d).x,pt(d).y).d2 = w.p(pt(d).x,pt(d).y).d2 + val(s.wall_d2.text)
+end if
+next
+end if
+End Sub
+load
+Sub load()
+dim f as folderitem
+dim a,b as integer
+dim data as string
+f = getopenfolderitem("blah")
+if f <> nil then
+Reset("????")	readin(f)
+,w.init(GetIntegerValue("size",w.size,false))2canvas1.init(GetIntegerValue("size",w.size,false))<yrs.text = str(GetIntegerValue("years",val(yrs.text),false))
+for a =1 to w.size
+for b = 1 to w.size
+data = GetStringValue("P" + str(a) + "," + str(b),"300:.123:.85:0:200:0",false)-w.p(a,b).Capacity = val(nthfield(data,":",1))'w.p(a,b).d1 = val(nthfield(data,":",2))'w.p(a,b).d2 = val(nthfield(data,":",3))'w.p(a,b).p1 = val(nthfield(data,":",4))'w.p(a,b).p2 = val(nthfield(data,":",5)).w.p(a,b).wall_mode = val(nthfield(data,":",6))*w.p(a,b).total = val(nthfield(data,":",7))
+next
+next
+0s.mp.text = GetStringValue("mp",s.mp.text,false)0s.d1.text = GetStringValue("d1",s.d1.text,false)0s.d2.text = GetStringValue("d2",s.d2.text,false)0s.br.text = GetStringValue("br",s.br.text,false)?s.wall_d1.text = GetStringValue("wall_d1",s.wall_d1.text,false)?s.wall_d2.text = GetStringValue("wall_d2",s.wall_d2.text,false)9s.srate.text = GetStringValue("srate",s.srate.text,false)9s.life1.text = GetStringValue("life1",s.life1.text,false)9s.life2.text = GetStringValue("life2",s.life2.text,false)
+s.lessthan.text = GetStringValue("lessthan",s.lessthan.text,false)6s.prob.text = GetStringValue("prob",s.prob.text,false)
+s.autostoptime.text = GetStringValue("autostoptime",s.autostoptime.text,false)
+editfield1.text = GetStringValue("editfield1",editfield1.text,false)
+s.slider1.value = GetIntegerValue("slider1",s.slider1.value,false)<s.rhalf.value = GetBooleanValue("rhalf",s.rhalf.value,false)<s.showw.value = GetBooleanValue("showw",s.showw.value,false)
+s.update1.value = GetBooleanValue("update1",s.update1.value,false)9s.fluc.value = GetBooleanValue("fluc",s.fluc.value,false)3s.gr.value = GetBooleanValue("gr",s.gr.value,false)
+s.update2.value = GetBooleanValue("update2",s.update2.value,false)
+s.autosave.value = GetBooleanValue("autosave",s.autosave.value,false)
+s.autosave2.value = GetBooleanValue("autosave2",s.autosave2.value,false)
+s.autostop2.value = GetBooleanValue("autostop2",s.autostop2.value,false)
+s.autostop.value = GetBooleanValue("autostop",s.autostop.value,false)6s.e11.value = GetBooleanValue("e11",s.e11.value,false)6s.e21.value = GetBooleanValue("e21",s.e21.value,false)6s.e12.value = GetBooleanValue("e12",s.e12.value,false)6s.e22.value = GetBooleanValue("e22",s.e22.value,false)
+s.apply_frag.value = GetBooleanValue("apply_frag",s.apply_frag.value,false)9s.rset.value = GetBooleanValue("rset",s.rset.value,false)
+)data = GetStringValue("graph",data,false)+redim graphwin.g.pts(countfields(data,":"))"for a = 1 to countfields(data,":")
+graphwin.g.pts(a) = new Point
+next"for a = 1 to countfields(data,":")?graphwin.g.pts(a).x = val(nthfield(nthfield(data,":",a)," ",1))?graphwin.g.pts(a).y = val(nthfield(nthfield(data,":",a)," ",2))
+next
+update_grid
+end if
+End Sub
+save
+f as folderitem
+Sub save(f as folderitem)
+dim a,b as integer
+dim data as string
+if f <> nil then
+Reset("????")
+$SetIntegerValue("size",w.size,false),SetIntegerValue("years",val(yrs.text),false)
+for a =1 to w.size
+for b = 1 to w.size
+'lets seperate it with :'s#data = str(w.p(a,b).Capacity) + ":"$data = data + str(w.p(a,b).d1) + ":"$data = data + str(w.p(a,b).d2) + ":"$data = data + str(w.p(a,b).p1) + ":"$data = data + str(w.p(a,b).p2) + ":"+data = data + str(w.p(a,b).wall_mode) + ":"!data = data + str(w.p(a,b).total)6SetStringValue("P" + str(a) + "," + str(b),data,false)
+next
+next
+$SetStringValue("mp",s.mp.text,false)$SetStringValue("d1",s.d1.text,false)$SetStringValue("d2",s.d2.text,false)$SetStringValue("br",s.br.text,false).SetStringValue("wall_d1",s.wall_d1.text,false).SetStringValue("wall_d2",s.wall_d2.text,false)*SetStringValue("srate",s.srate.text,false)*SetStringValue("life1",s.life1.text,false)0SetStringValue("lessthan",s.lessthan.text,false)8SetStringValue("autostoptime",s.autostoptime.text,false)*SetStringValue("life2",s.life2.text,false)(SetStringValue("prob",s.prob.text,false)2SetStringValue("editfield1",editfield1.text,false)0SetIntegerValue("slider1",s.slider1.value,false),SetBooleanValue("rhalf",s.rhalf.value,false),SetBooleanValue("showw",s.showw.value,false)0SetBooleanValue("update1",s.update1.value,false)*SetBooleanValue("fluc",s.fluc.value,false)&SetBooleanValue("gr",s.gr.value,false)0SetBooleanValue("update2",s.update2.value,false)2SetBooleanValue("autosave",s.autosave.value,false)4SetBooleanValue("autosave2",s.autosave2.value,false)4SetBooleanValue("autostop2",s.autostop2.value,false)2SetBooleanValue("autostop",s.autostop.value,false)(SetBooleanValue("e11",s.e11.value,false)(SetBooleanValue("e21",s.e21.value,false)(SetBooleanValue("e12",s.e12.value,false)(SetBooleanValue("e22",s.e22.value,false)6SetBooleanValue("apply_frag",s.apply_frag.value,false)*SetBooleanValue("rset",s.rset.value,false)
+#for a = 1 to ubound(graphwin.g.pts)
+data = data + str(graphwin.g.pts(a).x) + " " + str(graphwin.g.pts(a).y) + ":"
+next"SetStringValue("graph",data,false)
+writeout(f)
+end if
+End Sub
+save_current
+Sub save_current()
+dim f,g,h as folderitem
+if root = nil then
+stop = true)msgbox "Sorry, no root has been defined."
+goto out
+end if
+'current_test
+'current_save
+0f = root.child("setting" + str(current_setting))
+if f.exists then
+if not f.directory then;msgbox "Error, setting" + str(current_setting) + " exists!"
+stop = true
+goto out
+end if
+else
+f.createasfolder
+end if
+'g = f.child("test" + str(current_test))
+if g.exists then
+if not g.directory then5msgbox "Error, test" + str(current_test) + " exists!"
+stop = true
+goto out
+end if
+else
+g.createasfolder
+end if
+'h = g.child("save" + str(current_save))
+while h.exists
+current_save = current_save + 1'h = g.child("save" + str(current_save))
+wend
+save(h)
+out:
+End Sub
+do_check
+mode as integer
+Sub do_check(mode as integer)
+dim a,b,c as integer
+if s.rset.value and val(s.autostoptime.text) = val(yrs.text) then
+else
+save_current
+end if
+w.init(w.size)
+yrs.text = "0"
+graphwin.g.init
+ if s.e11.value and mode = 1 then
+'Event 1 for Time Limit
+end if
+if s.e21.value and mode = 1then
+'Event 2 for Time Limit
+end if if s.e12.value and mode = 2 then
+'Event 1 for Lower Limit
+current_test = current_test + 1
+if current_test = 4 then
+current_test = 0%current_setting = current_setting + 1
+'Change da setting!
+*'s.life1.text = str(val(s.life1.text) + 2)*'s.life2.text = str(val(s.life2.text) + 2)#'s.br.text = str(val(s.br.text)+.3)
+1'editfield1.text = str(val(editfield1.text)+3000)%s.mp.text = str(val(s.mp.text) + .05)
+end if
+s.prob.text = "100"
+current_save = 0
+'s.slider1.value = 0
+end if if s.e22.value and mode = 2 then
+'Event 2 for Lower Limit
+end if
+)'a = val(editfield1.text)/(w.size*w.size)
+'for b = 1 to w.size
+'for c = 1 to w.size
+'w.p(b,c).p2 = a
+'next
+'next
+'s.prob.text = str(val(s.prob.text) - 3)
+if val(s.prob.text) < 1 then
+s.prob.text = "1"
+end if
+&'s.slider1.value = s.slider1.value + 5
+if s.apply_frag.value then	s.do_frag
+end if
+End Sub
+	MouseDown
+9Function MouseDown(X As Integer, Y As Integer) As Boolean
+clearfocus
+End Function
+Open
+Sub Open()
+w = new world
+w.init(10)
+s.show()
+GraphWin.show()
+me.left = 30
+root = selectfolder
+End Sub
+GridC
+"Sub in(x as integer, y as integer)
+me.lit(0) = x
+me.lit(1) = y
+me.draw
+End Sub	MouseExit
+Sub MouseExit()
+me.lit(0) = 0
+me.lit(1) = 0
+me.draw
+End Sub
+clicked
+'Sub clicked(x as integer, y as integer)'if keyboard.asynccontrolkey = true then if (w.p(x,y).wall_mode = 2) then
+rem_wall(x,y)
+else
+add_wall(x,y,2)
+end if
+me.draw,elseif (keyboard.asyncoptionkey = true) then if (w.p(x,y).wall_mode = 1) then
+rem_wall(x,y)
+else
+add_wall(x,y,1)
+end if
+me.draw
+else
+if (not me.picked(x,y)) then	show(x,y)
+end if
+me.pick(x,y)
+end if
+End Sub	MouseDown
+9Function MouseDown(X As Integer, Y As Integer) As Boolean
+End Function
+Open
+Sub Open()
+me.init(10)
+End Sub
+Paint
+Sub Paint(g As Graphics)
+End Sub
+	ImageWell
+PushButton
+Action
+Sub Action()
+dim a as double
+if running = false then if keyboard.asynccontrolkey then
+stop = false
+while not UserCancelled
+wend
+stop = true
+running = false
+else
+t = new mythread
+t.p = self
+t.run
+stop = false
+end if
+end if
+End Sub
+StaticText
+StaticText
+	MouseMove
+)Sub MouseMove(X As Integer, Y As Integer)
+End Sub
+PushButton
+Action
+Sub Action()
+if running then
+stop = true
+end if
+End Sub
+	EditField
+PushButton
+Action
+Sub Action()
+dim a,b,c as integer
+'w.init(w.size)
+'yrs.text = "0"
+'graphwin.g.init(a = val(editfield1.text)/(w.size*w.size)
+for b = 1 to w.size
+for c = 1 to w.size
+w.p(b,c).p2 = a
+next
+next
+End Sub
+DisclosureTriangle
+Action
+Sub Action()
+if me.value then
+editfield1.visible = true
+pushbutton3.visible = true
+new_size.visible = true
+else
+editfield1.visible = false
+pushbutton3.visible = false
+new_size.visible = false
+end if
+End Sub
+	EditField
+	ImageWell
+Name
+ImageWell1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+True
+LockTop
+True	LockRight
+True
+LockBottom
+True
+Image
+Canvas
+Name
+Canvas1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+True
+LockTop
+True	LockRight
+True
+LockBottom
+True
+Backdrop
+Enabled
+True
+PushButton
+Name
+PushButton1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+True
+LockTop
+False	LockRight
+False
+LockBottom
+True
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Default
+False
+Cancel
+False
+Enabled
+True
+StaticText
+Name
+StaticText1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+True
+LockTop
+False	LockRight
+False
+LockBottom
+True
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Years:	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+True
+LockTop
+False	LockRight
+False
+LockBottom
+True
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+0	TextAlign
+0	TextColor
+0	MultiLine
+False
+PushButton
+Name
+PushButton2
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+True
+LockTop
+False	LockRight
+False
+LockBottom
+True
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Stop
+Default
+False
+Cancel
+False
+Enabled
+True
+	EditField 
+Name
+EditField1
+Index
+-2147483648
+TabPanelIndex
+Visible
+False
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+True
+LockBottom
+True
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+UseFocusRing
+True
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+PushButton
+Name
+PushButton3
+Index
+-2147483648
+TabPanelIndex
+Visible
+False
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+True
+LockBottom
+True
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Distribute
+Default
+False
+Cancel
+False
+Enabled
+True
+DisclosureTriangle
+Name
+DisclosureTriangle1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+True
+LockTop
+False	LockRight
+False
+LockBottom
+True
+Value
+False
+Facing
+	EditField 
+Name
+new_size
+Index
+-2147483648
+TabPanelIndex
+Visible
+False
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+True
+LockBottom
+True
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+UseFocusRing
+True
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+Menu
+Menu
+MenuItem
+MenuItem
+File
+MenuItem
+Quit
+FileQuit
+QuitMenuItem
+MenuItem
+Edit
+MenuItem
+Undo
+EditUndo
+MenuItem
+MenuItem
+EditCut
+MenuItem
+Copy
+EditCopy
+MenuItem
+Paste	EditPaste
+MenuItem
+Clear	EditClear
+MenuItem
+MenuItem
+	Functions
+MenuItem
+Options
+FunctionsOptions
+MenuItem
+Experiment
+FunctionsExperiment
+MenuItem
+MenuItem
+Save
+FunctionsSave
+MenuItem
+Open
+FunctionsOpen
+MenuItem
+MenuItem
+Reset
+FunctionsReset
+MenuItem
+MenuItem
+MenuItem
+Class
+Plot
+Plot
+Capacity as integer
+p1 as double
+p2 as double
+total as double
+d1 as double
+d2 as double
+in1_last as double
+d_in_1 as double
+d_in_2 as double
+out1_last as double
+new_off as double
+wall_mode as integer
+tick
+Sub tick()
+dim n1,n2 as double
+if wall_mode = 0 then
+'d_in_2 = ((24/25)*p2) - ((val(s.life1.text)/val(s.life2.text))*p2*d2)=n2 = (1/6)*p1 + ((val(s.life1.text)/val(s.life2.text)))*p2*d2
+if (Capacity > total) then
+'new_off = (((1/4)*8*p2)*d1)(n1 = (5/6)*p1 + ((val(s.br.text)*p2)*d1)
+else
+n1 = (5/6)*p1
+end if
+p1 = n1
+p2 = n2
+total = p1 + p2
+elseif wall_mode = 1 then
+n1 = p1 * val(s.srate.text)
+'d_in_1 = p1 - n1
+p1 = n1
+total = p1
+end if
+End Sub
+Class
+GridC
+GridC
+Canvas
+num as integer
+w as integer
+h as integer
+g as picture
+text_memory(0,0) as string
+selected(1) as integer
+fill_memory(0,0) as integer
+cur_x as integer
+cur_y as integer
+lit(1) as integer
+sc(0,0) as color
+draw
+Sub draw()
+dim a,b,c,d,ph,pw as integer
+'g.graphics.forecolor = rgb(255,255,255))g.graphics.fillrect(0,0,g.width,g.height)!g.graphics.forecolor = rgb(0,0,0)
+a = w / num
+b = h / num
+for c = 0 to num + 1 g.graphics.drawline(a*c,0,a*c,h) g.graphics.drawline(0,b*c,w,b*c)
+next
+for c = 1 to num
+for d = 1 to num
+if (fill_memory(c,d) = 1) then
+g.graphics.forecolor = sc(c,d)(g.graphics.fillrect(a*(c-1),b*(d-1),a,b)
+end if
+next
+next!g.graphics.forecolor = rgb(0,0,0)
+g.graphics.textsize = 9
+for c = 1 to num
+for d = 1 to num4if (fill_memory(c,d) = 1 and sc(c,d).red < 100) then'g.graphics.forecolor = rgb(255,255,255)
+else!g.graphics.forecolor = rgb(0,0,0)
+end if
+g.graphics.drawstring text_memory(c,d),(a*(c-1))+1,(b*(d-1))+g.graphics.textheight,a
+next
+next
+if lit(0) > 0 then#g.graphics.forecolor = rgb(0,0,255)
+ph = g.graphics.penheight
+pw = g.graphics.penwidth
+g.graphics.penheight = 2
+g.graphics.penwidth = 22g.graphics.drawrect(a*(lit(0)-1),b*(lit(1)-1),a,b)!g.graphics.forecolor = rgb(0,0,0)
+g.graphics.penheight = ph
+g.graphics.penwidth = pw
+end if
+if selected(0) > 0 then#g.graphics.forecolor = rgb(255,0,0)
+ph = g.graphics.penheight
+pw = g.graphics.penwidth
+g.graphics.penheight = 2
+g.graphics.penwidth = 2<g.graphics.drawrect(a*(selected(0)-1),b*(selected(1)-1),a,b)!g.graphics.forecolor = rgb(0,0,0)
+g.graphics.penheight = ph
+g.graphics.penwidth = pw
+end if
+<me.graphics.drawpicture g,(me.width - w)/2,(me.height - h)/2
+End Sub
+fill
+x as integer, y as integer
+$Sub fill(x as integer, y as integer)
+if (fill_memory(x,y) = 1) then
+fill_memory(x,y) = 0
+else
+fill_memory(x,y) = 1
+end if
+draw
+End Sub
+init
+in as integer
+Sub init(in as integer)
+dim a,b as integer
+num = in
+redim selected(1)
+selected(0) = -1
+selected(1) = -1
+redim text_memory(num,num)
+redim fill_memory(num,num)
+redim sc(num,num)
+for a = 1 to num
+for b = 1 to num
+sc(a,b) = rgb(255,255,255)
+next
+next
+End Sub
+put_text*x as integer, y as integer, text as string
+8Sub put_text(x as integer, y as integer, text as string)
+text_memory(x,y) = text
+'draw
+End Sub
+update
+Sub update()
+h = me.height - 10
+w = me.width - 10
+g = newpicture(w,h,8)
+draw
+End Sub
+get_text
+x as integer, y as integer
+String
+7Function get_text(x as integer, y as integer) As String!if (x < (num + 1) and x > 0) then!if (y < (num + 1) and y > 0) then
+return text_memory(x,y)
+end if
+end if	return ""
+End Function
+pick
+x as integer, y as integer
+	$Sub pick(x as integer, y as integer)-if (selected(0) = x and selected(1) = y) then
+select_clear
+else
+selected(0) = x
+selected(1) = y
+end if
+draw
+End Sub
+select_clear
+Sub select_clear()
+selected(0) = -1
+selected(1) = -1
+End Sub
+get_fill
+x as integer, y as integer
+Boolean
+8Function get_fill(x as integer, y as integer) As Boolean
+if (fill_memory(x,y) = 1) then
+return true
+else
+return false
+end if
+End Function
+picked
+x as integer, y as integer
+boolean
+6Function picked(x as integer, y as integer) As boolean-if (selected(0) = x and selected(1) = y) then
+return true
+else
+return false
+end if
+End Function
+clicked
+x as integer, y as integer
+x as integer, y as integer
+	MouseMove
+)Sub MouseMove(X As Integer, Y As Integer)
+dim a,b as integer
+a = (x / (me.width/num)) + 1
+b = (y / (me.height/num)) + 1
+$if (cur_x <> a) or (cur_y <> b) then	cur_x = a	cur_y = b
+in cur_x,cur_y
+end if
+End Sub	MouseDrag
+)Sub MouseDrag(X As Integer, Y As Integer)
+End Sub	MouseDown
+9Function MouseDown(X As Integer, Y As Integer) As Boolean8clicked (x / (me.width/num)) + 1,(y / (me.height/num)+1)
+End Function
+Paint
+Sub Paint(g As Graphics)
+update
+End Sub
+View
+Info
+Name
+Info
+Frame
+HasBackColor
+False	BackColor
+16777215
+Backdrop
+Title
+Info
+Visible
+True
+CloseBox
+True
+GrowIcon
+True
+ZoomIcon
+True
+BalloonHelp
+	MacProcID
+0	Placement
+Width
+Height
+MinWidth
+64	MinHeight
+MaxWidth
+32000	MaxHeight
+32000
+Info
+Dialog
+	EditField
+	EditField
+StaticText
+StaticText
+StaticText
+StaticText
+StaticText
+StaticText
+StaticText
+BevelButton
+Action
+Sub Action()6window1.w.p(val(x.text),val(y.text)).d1 = val(d1.text)6window1.w.p(val(x.text),val(y.text)).d2 = val(d2.text)
+End Sub
+	EditField 
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+True
+LockTop
+False	LockRight
+False
+LockBottom
+True
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+False	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+UseFocusRing
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+temp
+	EditField 
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+True
+LockTop
+False	LockRight
+False
+LockBottom
+True
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+False	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+UseFocusRing
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+temp2
+StaticText
+Name
+StaticText1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+True
+LockTop
+False	LockRight
+False
+LockBottom
+True
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+D1	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+StaticText2
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+True
+LockTop
+False	LockRight
+False
+LockBottom
+True
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+D2	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+StaticText4
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+True
+LockTop
+True	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Info for grid:	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+True
+LockTop
+True	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+x	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+True
+LockTop
+True	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+y	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+StaticText5
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+True
+LockTop
+True	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+,	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+True
+LockTop
+True	LockRight
+True
+LockBottom
+True
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+info	TextAlign
+0	TextColor
+0	MultiLine
+True
+BevelButton!
+Name
+BevelButton1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+True
+LockBottom
+True
+Enabled
+True
+Caption
+Change
+CaptionAlign
+CaptionPlacement
+CaptionDelta
+Icon
+0	IconAlign
+IconDX
+IconDY
+Bevel
+HasMenu
+Value
+False	MenuValue
+ButtonType
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False	
+Class
+World5
+World 
+p(0,0) as plot
+size as integer
+init
+s as integer
+Sub init(s as integer)
+dim a,b as integer
+size = s
+redim p(s,s)
+for a = 1 to s
+for b = 1 to s
+p(a,b) = new plot
+p(a,b).Capacity = 300
+p(a,b).p2 = 200
+p(a,b).d1 = .123
+p(a,b).d2 = .85
+p(a,b).wall_mode = 0
+next
+next
+End Sub
+tick
+Sub tick()
+dim a,b as integer
+for a = 1 to size
+for b = 1 to size
+p(a,b).tick
+next
+next
+End Sub	get_total
+Integer
+Function get_total() As Integer
+dim a,b,c as integer
+dim a,b as integer
+for a = 1 to size
+for b = 1 to size
+c = c + p(a,b).total
+next
+next
+return c
+End Function
+get_total_capacity
+Integer
+(Function get_total_capacity() As Integer
+dim a,b,c as integer
+dim a,b as integer
+for a = 1 to size
+for b = 1 to size
+c = c + p(a,b).Capacity
+next
+next
+return c
+End Function
+Class
+Point
+Point 
+x as integer
+y as integer
+Class
+MyThread
+MyThread 
+Thread
+p as window1
+	Sub Run()
+p.running = true
+while p.stop = false
+p.run
+wend
+p.running = false
+End Sub
+View
+Name
+Frame
+HasBackColor
+True	BackColor
+16777215
+Backdrop
+Title
+World Settings
+Visible
+True
+CloseBox
+False
+GrowIcon
+False
+ZoomIcon
+False
+BalloonHelp
+	MacProcID
+0	Placement
+Width
+Height
+MinWidth
+64	MinHeight
+MaxWidth
+32000	MaxHeight
+32000
+Dialog
+do_frag
+Sub do_frag()
+dim a,b,c,d,e as integer
+dim list(0) as point
+)redim list(window1.w.size*window1.w.size)
+for a = 1 to window1.w.size
+for b = 1 to window1.w.size	d = d + 1
+window1.rem_wall(a,b)
+list(d) = new point
+list(d).x = a
+list(d).y = b
+next
+next
+for c = 1 to (window1.w.size*window1.w.size)*(slider1.value/100)
+e = round(rnd*ubound(list))
+while e < 1
+e = round(rnd*ubound(list))
+wend
+a = list(e).x
+b = list(e).y
+list.remove e+window1.add_wall(a,b,val(s.make_mode.text))
+next
+window1.canvas1.draw
+End Sub
+Open
+Sub Open()
+End Sub
+	EditField
+StaticText
+	MouseMove
+)Sub MouseMove(X As Integer, Y As Integer)
+End Sub
+CheckBox
+CheckBox
+CheckBox
+CheckBox
+CheckBox
+StaticText
+StaticText
+	EditField
+	EditField
+Slider
+ValueChanged
+Sub ValueChanged() fshow.text = str(me.value) + "%"
+End Sub
+PushButton
+Action
+Sub Action()
+do_frag
+End Sub
+CheckBox
+StaticText
+	EditField
+PushButton
+Action
+Sub Action()
+dim a,b as integer
+for a = 1 to window1.w.size
+for b = 1 to window1.w.size"window1.w.p(a,b).d1 = val(d1.text)"window1.w.p(a,b).d2 = val(d2.text)
+next
+next'msgbox "All death rates force-changed."
+End Sub
+	Rectangle
+StaticText
+StaticText
+	EditField
+	EditField
+StaticText
+	EditField
+	EditField
+StaticText
+	EditField
+	EditField
+StaticText
+StaticText
+	EditField
+CheckBox
+TabPanel
+	MouseMove
+)Sub MouseMove(X As Integer, Y As Integer)
+End Sub
+Change
+Sub Change()
+if abpath.text = "" then
+if window1.root <> nil then'abpath.text = window1.root.absolutepath
+end if
+end if
+End Sub
+StaticText
+	MouseMove
+)Sub MouseMove(X As Integer, Y As Integer)
+End Sub
+GroupBox
+GroupBox
+GroupBox
+GroupBox
+CheckBox
+StaticText
+StaticText
+	Separator
+StaticText
+	EditField
+StaticText
+StaticText
+CheckBox
+PopupArrow
+	MouseDown
+9Function MouseDown(X As Integer, Y As Integer) As Boolean
+self.left = (-1*self.width)+16
+End Function
+MouseUp
+'Sub MouseUp(X As Integer, Y As Integer)
+End Sub
+PopupArrow
+	MouseDown
+9Function MouseDown(X As Integer, Y As Integer) As Boolean
+self.left = 2
+End Function
+MouseUp
+'Sub MouseUp(X As Integer, Y As Integer)
+End Sub
+CheckBox
+CheckBox
+	EditField
+StaticText
+StaticText
+	Rectangle
+PushButton
+Action
+Sub Action()
+dim g as folderitem
+g = selectfolder
+if g <> nil  then
+window1.root = g
+abpath.text = g.absolutepath
+end if
+End Sub
+PushButton
+Action
+Sub Action()
+dim a,b as integer
+dim data as string
+dim f as folderitem'f = getsavefolderitem("","Saved Prefs")
+if f <> nil then
+Reset("????")$SetStringValue("mp",s.mp.text,false)$SetStringValue("d1",s.d1.text,false)$SetStringValue("d2",s.d2.text,false)$SetStringValue("br",s.br.text,false).SetStringValue("wall_d1",s.wall_d1.text,false).SetStringValue("wall_d2",s.wall_d2.text,false)*SetStringValue("srate",s.srate.text,false)*SetStringValue("life1",s.life1.text,false)0SetStringValue("lessthan",s.lessthan.text,false)*SetStringValue("life2",s.life2.text,false)(SetStringValue("prob",s.prob.text,false)8SetStringValue("autostoptime",s.autostoptime.text,false)0SetIntegerValue("slider1",s.slider1.value,false),SetBooleanValue("rhalf",s.rhalf.value,false),SetBooleanValue("showw",s.showw.value,false)0SetBooleanValue("update1",s.update1.value,false)*SetBooleanValue("fluc",s.fluc.value,false)&SetBooleanValue("gr",s.gr.value,false)0SetBooleanValue("update2",s.update2.value,false)2SetBooleanValue("autosave",s.autosave.value,false)4SetBooleanValue("autosave2",s.autosave2.value,false)4SetBooleanValue("autostop2",s.autostop2.value,false)2SetBooleanValue("autostop",s.autostop.value,false)(SetBooleanValue("e11",s.e11.value,false)(SetBooleanValue("e21",s.e21.value,false)(SetBooleanValue("e12",s.e12.value,false)(SetBooleanValue("e22",s.e22.value,false)6SetBooleanValue("apply_frag",s.apply_frag.value,false)*SetBooleanValue("rset",s.rset.value,false)
+writeout(f)
+end if
+End Sub
+PushButton
+Action%
+Sub Action()
+dim f as folderitem
+dim a,b as integer
+dim data as string
+f = getopenfolderitem("blah")
+if f <> nil then
+Reset("????")	readin(f)0s.mp.text = GetStringValue("mp",s.mp.text,false)0s.d1.text = GetStringValue("d1",s.d1.text,false)0s.d2.text = GetStringValue("d2",s.d2.text,false)0s.br.text = GetStringValue("br",s.br.text,false)?s.wall_d1.text = GetStringValue("wall_d1",s.wall_d1.text,false)?s.wall_d2.text = GetStringValue("wall_d2",s.wall_d2.text,false)9s.srate.text = GetStringValue("srate",s.srate.text,false)9s.life1.text = GetStringValue("life1",s.life1.text,false)9s.life2.text = GetStringValue("life2",s.life2.text,false)
+s.lessthan.text = GetStringValue("lessthan",s.lessthan.text,false)6s.prob.text = GetStringValue("prob",s.prob.text,false)
+s.autostoptime.text = GetStringValue("autostoptime",s.autostoptime.text,false)
+s.slider1.value = GetIntegerValue("slider1",s.slider1.value,false)<s.rhalf.value = GetBooleanValue("rhalf",s.rhalf.value,false)<s.showw.value = GetBooleanValue("showw",s.showw.value,false)
+s.update1.value = GetBooleanValue("update1",s.update1.value,false)9s.fluc.value = GetBooleanValue("fluc",s.fluc.value,false)3s.gr.value = GetBooleanValue("gr",s.gr.value,false)
+s.update2.value = GetBooleanValue("update2",s.update2.value,false)
+s.autosave.value = GetBooleanValue("autosave",s.autosave.value,false)
+s.autosave2.value = GetBooleanValue("autosave2",s.autosave2.value,false)
+s.autostop2.value = GetBooleanValue("autostop2",s.autostop2.value,false)
+s.autostop.value = GetBooleanValue("autostop",s.autostop.value,false)6s.e11.value = GetBooleanValue("e11",s.e11.value,false)6s.e21.value = GetBooleanValue("e21",s.e21.value,false)6s.e12.value = GetBooleanValue("e12",s.e12.value,false)6s.e22.value = GetBooleanValue("e22",s.e22.value,false)
+s.apply_frag.value = GetBooleanValue("apply_frag",s.apply_frag.value,false)9s.rset.value = GetBooleanValue("rset",s.rset.value,false)
+end if
+End Sub
+	Separator
+	Separator
+CheckBox
+CheckBox
+CheckBox
+CheckBox
+StaticText
+	EditField
+StaticText
+StaticText
+	EditField
+	EditField
+PushButton
+Action
+Sub Action()(window1.current_save = val(s.csave.text).window1.current_setting = val(s.csetting.text)(window1.current_test = val(s.ctest.text)
+End Sub
+PushButton
+Action
+Sub Action()(s.csave.text = str(window1.current_save).s.csetting.text = str(window1.current_setting)(s.ctest.text = str(window1.current_test)
+End Sub
+CheckBox
+TabPanel
+Name	TabPanel1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+TabDefinition%General
+Fragmentation
+Utilities
+Files
+Enabled
+True
+Facing
+0	SmallTabs
+False 	Rectangle
+Name
+Rectangle1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False	FillColor
+15658734
+BorderWidth
+TopLeftColor
+BottomRightColor
+	EditField 
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+False	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+UseFocusRing
+True
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+15658734
+Enabled
+True
+Text
+StaticText
+Name
+StaticText2
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Migration Rate:	TextAlign
+0	TextColor
+0	MultiLine
+False
+CheckBox
+Name
+rhalf
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Random Events
+Value
+True
+Enabled
+True
+CheckBox
+Name
+showw
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption	Show Text
+Value
+False
+Enabled
+True
+CheckBox
+Name
+fluc
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Capacity Fluctuation
+Value
+False
+Enabled
+True
+CheckBox
+Name
+update1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Update Grid
+Value
+True
+Enabled
+True
+CheckBox
+Name
+update2
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption	Show Info
+Value
+False
+Enabled
+True
+StaticText
+Name
+StaticText3
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+D1:	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+StaticText4
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+D2:	TextAlign
+0	TextColor
+0	MultiLine
+False
+	EditField 
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+False	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+UseFocusRing
+True
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+15658734
+Enabled
+True
+Text
+.123		EditField 
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+False	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+UseFocusRing
+True
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+15658734
+Enabled
+True
+Text
+StaticText
+Name
+fshow
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+	TextAlign
+0	TextColor
+0	MultiLine
+False!
+CheckBox
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Show Graph
+Value
+True
+Enabled
+True
+StaticText
+Name
+StaticText5
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Birth Rate:	TextAlign
+0	TextColor
+0	MultiLine
+False
+	EditField 
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+False	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+UseFocusRing
+True
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+15658734
+Enabled
+True
+Text
+PushButton
+Name
+PushButton2
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Apply to All
+Default
+False
+Cancel
+False
+Enabled
+True
+StaticText
+Name
+StaticText6
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Barrier D1 change:	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+StaticText7
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Barrier D2 change:	TextAlign
+0	TextColor
+0	MultiLine
+False
+	EditField 
+Name
+wall_d1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+False	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+UseFocusRing
+True
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+15658734
+Enabled
+True
+Text
+	EditField 
+Name
+wall_d2
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+False	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+UseFocusRing
+True
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+15658734
+Enabled
+True
+Text
+StaticText
+Name
+StaticText8
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Passable Barrier S-rate:	TextAlign
+0	TextColor
+0	MultiLine
+False
+	EditField 
+Name
+srate
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+False	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+UseFocusRing
+True
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+15658734
+Enabled
+True
+Text
+	EditField 
+Name
+life1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+False	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+UseFocusRing
+True
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+15658734
+Enabled
+True
+Text
+	EditField 
+Name
+life2
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+False	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+UseFocusRing
+True
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+15658734
+Enabled
+True
+Text
+StaticText
+Name
+StaticText10
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+/	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+StaticText11
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Life Span:	TextAlign
+0	TextColor
+0	MultiLine
+False
+	EditField 
+Name
+autostoptime
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+False	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+UseFocusRing
+True
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+15658734
+Enabled
+True
+Text
+CheckBox
+Name
+autostop
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption	Stop run.
+Value
+False
+Enabled
+True
+Slider
+Name
+Slider1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+Minimum
+Value
+Maximum
+Enabled
+True
+LineStep
+PageStep
+LiveScroll
+False
+PushButton
+Name
+PushButton1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Apply
+Default
+False
+Cancel
+False
+Enabled
+True
+	EditField 
+Name	make_mode
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+False	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+UseFocusRing
+True
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+15658734
+Enabled
+True
+Text
+StaticText
+Name
+StaticText9
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Barrier Type:	TextAlign
+0	TextColor
+0	MultiLine
+False
+GroupBox
+Name	GroupBox1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Apply Fragmentation
+Enabled
+True"
+GroupBox
+Name	GroupBox2
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Barrier Settings
+Enabled
+True#
+GroupBox
+Name	GroupBox3
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Life History Factors
+Enabled
+True$
+GroupBox
+Name	GroupBox4
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Automation
+Enabled
+True%
+CheckBox
+Name
+autosave
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Save and start a new run.
+Value
+False
+Enabled
+True&
+StaticText
+Name
+StaticText1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+After	TextAlign
+0	TextColor
+0	MultiLine
+False'
+StaticText
+Name
+StaticText13
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+years, I should:	TextAlign
+0	TextColor
+0	MultiLine
+False(	Separator
+Name
+Separator1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False)
+StaticText
+Name
+StaticText14
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text#When total population is less than 	TextAlign
+0	TextColor
+0	MultiLine
+False*	EditField 
+Name
+lessthan
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+False	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+UseFocusRing
+True
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+15658734
+Enabled
+True
+Text
+StaticText
+Name
+StaticText15
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+,	TextAlign
+0	TextColor
+0	MultiLine
+False,
+StaticText
+Name
+StaticText16
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text	I should:	TextAlign
+0	TextColor
+0	MultiLine
+False-
+CheckBox
+Name	autosave2
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Save and start a new run.
+Value
+False
+Enabled
+True.
+PopupArrow
+Name
+PopupArrow1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+Facing
+PopupArrow
+Name
+PopupArrow2
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+Facing
+CheckBox
+Name
+apply_frag
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Apply Current Fragmentation
+Value
+False
+Enabled
+True1
+CheckBox
+Name	autostop2
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption	Stop run.
+Value
+False
+Enabled
+True2	EditField 
+Name
+prob
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+False	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+UseFocusRing
+True
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+9003
+StaticText
+Name
+StaticText12
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Prob:	TextAlign
+0	TextColor
+0	MultiLine
+False4	Rectangle
+Name
+Rectangle2
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False	FillColor
+16777215
+BorderWidth
+TopLeftColor
+BottomRightColor
+StaticText
+Name
+abpath
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+	TextAlign
+0	TextColor
+0	MultiLine
+False5
+PushButton
+Name
+PushButton3
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Change
+Default
+False
+Cancel
+False
+Enabled
+True7
+PushButton
+Name
+PushButton4
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Save Prefs
+Default
+False
+Cancel
+False
+Enabled
+True8
+PushButton
+Name
+PushButton5
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Load Prefs
+Default
+False
+Cancel
+False
+Enabled
+True9	Separator
+Name
+Separator2
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False:	Separator
+Name
+Separator3
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False;
+CheckBox
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Trigger E1
+Value
+False
+Enabled
+True<
+CheckBox
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Trigger E2
+Value
+False
+Enabled
+True=
+CheckBox
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Trigger E1
+Value
+False
+Enabled
+True>
+CheckBox
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Trigger E2
+Value
+False
+Enabled
+True?
+StaticText
+Name
+StaticText17
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Current Save	TextAlign
+0	TextColor
+0	MultiLine
+False
+	EditField 
+Name
+csave
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+UseFocusRing
+True
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+StaticText
+Name
+StaticText18
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Current Setting	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+StaticText19
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Current Test	TextAlign
+0	TextColor
+0	MultiLine
+False
+	EditField 
+Name
+csetting
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+UseFocusRing
+True
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+	EditField 
+Name
+ctest
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+UseFocusRing
+True
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+PushButton
+Name
+PushButton6
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Default
+False
+Cancel
+False
+Enabled
+True
+PushButton
+Name
+PushButton7
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Update
+Default
+False
+Cancel
+False
+Enabled
+True
+CheckBox
+Name
+rset
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Reset
+Value
+False
+Enabled
+True
+Class
+graph,
+graph
+Canvas
+pts(0) as point
+scale as double
+gg as picture
+shift as integer
+shifty as integer
+init
+Sub init()
+redim pts(0)
+pts(0) = new point%gg = newpicture(me.width,me.height,4)	scale = 1
+End Sub
+addpt
+x as integer, y as integer
+%Sub addpt(x as integer, y as integer)
+dim a as point
+a = new point
+a.x = x
+a.y = y
+pts.append a	part_draw
+End Sub
+draw
+Sub draw()
+dim a as integer&gg.graphics.forecolor=rgb(255,255,255),gg.graphics.fillrect(0,0,gg.width,gg.height)"gg.graphics.forecolor=rgb(255,0,0)
+for a = 1 to ubound(pts)
+gg.graphics.fillrect(pts(a).x - shift,(me.height-(pts(a).y/scale))-shifty,1,1)
+next
+me.graphics.drawpicture gg,0,0
+End Sub	part_draw
+Sub part_draw()"gg.graphics.forecolor=rgb(255,0,0)
+gg.graphics.fillrect(pts(ubound(pts)).x - shift,(me.height-(pts(ubound(pts)).y/scale))-shifty,1,1)
+me.graphics.drawpicture gg,0,0
+End Sub
+	Sub res()%gg = newpicture(me.width,me.height,4)
+End Sub
+Paint
+Sub Paint(g As Graphics)	part_draw
+End Sub
+View
+GraphWin
+Name
+GraphWin
+Frame
+HasBackColor
+True	BackColor
+16777215
+Backdrop
+Title
+Graph
+Visible
+True
+CloseBox
+False
+GrowIcon
+True
+ZoomIcon
+True
+BalloonHelp
+	MacProcID
+0	Placement
+Width
+Height
+MinWidth
+64	MinHeight
+MaxWidth
+32000	MaxHeight
+32000
+GraphWin
+Dialog
+Resized
+Sub Resized()
+g.res
+End Sub
+Open
+Sub Open()
+self.left = 50
+End Sub
+graph
+Open
+Sub Open()
+me.init
+End Sub	MouseDown
+9Function MouseDown(X As Integer, Y As Integer) As Boolean
+End Function
+Slider
+ValueChanged
+Sub ValueChanged()
+'msgbox str(me.value)
+g.scale = me.value
+g.draw
+End Sub
+StaticText
+StaticText
+	ScrollBar
+MouseEnter
+Sub MouseEnter()#me.maximum = g.pts(ubound(g.pts)).x
+End Sub
+ValueChanged
+Sub ValueChanged()
+g.shift = me.value
+g.draw
+End Sub
+StaticText
+	ScrollBar
+MouseEnter
+Sub MouseEnter()
+End Sub
+ValueChanged
+Sub ValueChanged()
+g.shifty = me.value
+g.draw
+End Sub
+Placard
+Canvas
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+True
+LockTop
+True	LockRight
+True
+LockBottom
+True
+Backdrop
+Enabled
+True
+Slider
+Name
+Slider1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+True
+LockTop
+False	LockRight
+True
+LockBottom
+True
+Minimum
+Value
+Maximum
+1000
+Enabled
+True
+LineStep
+PageStep
+LiveScroll
+True
+StaticText
+Name
+StaticText1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+True
+LockTop
+False	LockRight
+False
+LockBottom
+True
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Total:	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+True
+LockTop
+False	LockRight
+False
+LockBottom
+True
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+	TextAlign
+0	TextColor
+0	MultiLine
+False
+	ScrollBar
+Name
+ScrollBar1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+True
+LockTop
+False	LockRight
+True
+LockBottom
+True
+Minimum
+Value
+Maximum
+Enabled
+True
+LineStep
+PageStep
+LiveScroll
+True
+StaticText
+Name
+StaticText2
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+True
+LockTop
+False	LockRight
+False
+LockBottom
+True
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Scale:	TextAlign
+0	TextColor
+0	MultiLine
+False
+	ScrollBar
+Name
+ScrollBar2
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+True	LockRight
+True
+LockBottom
+True
+Minimum
+-5000
+Value
+Maximum
+Enabled
+True
+LineStep
+PageStep
+LiveScroll
+True
+Placard
+Name
+Placard1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+True
+LockBottom
+True
+Enabled
+True
+Value
+False
+Module
+PrefsModualChanged
+PrefsModualChanged
+CreatorType as string
+PrefsName as string
+set as boolean
+Strings(0) as String
+Integers(0) as Integer
+Singles(0) as Single
+Doubles(0) as Double
+Booleans(0) as Boolean
+BNames(0) as String
+DNames(0) as string
+INames(0) as string
+SNames(0) as string
+Names(0) as string
+Encrypted(0) as boolean
+Benc(0) as boolean
+Denc(0) as boolean
+Ienc(0) as boolean
+Senc(0) as boolean
+Cenc(0) as boolean
+CNames(0) as string
+Colors(0) as string
+Decode
+text as string
+String
+)Function Decode(text as string) As String
+Dim i as Integer
+Dim a,b,out as String
+out = ""
+for i = 1 to len(text)
+a = mid(text,i,1)
+b = chr(asc(a)-len(text))
+if asc(b) < 1 then
+b = chr(asc(b) + 256)
+end if
+out = out + b
+next
+return out
+8// This is the method I use to decode information marked6// as encrypted. Note: Once information is loaded into9// RAM this isn't needed since it is decoded as it is put
+// into the arrays.
+End Function
+Encode
+text as string
+String
+)Function Encode(text as string) As String
+Dim i as Integer
+Dim a,b,out as String
+'msgBox text
+out = ""
+for i = 1 to len(text)
+a = mid(text,i,1)
+b = chr(asc(a)+len(text))
+if asc(b) > 256 then
+b = chr(asc(b) - 256)
+end if
+out = out + b
+next
+return out
+:// This is the method I use to encrypt information that is:// written out to the prefs file (used only if you specify8// it by putting true on the end of the SetValue method)
+End Function
+ReadIn
+f as folderitem
+Sub ReadIn(f as folderitem)
+dim b as binaryStream
+dim i as integer
+dim z,x,c as integer
+dim NameT as string
+dim ValT as string
+dim r,g,bl as integer
+dim col as color
+'dim f as FolderItem
+'dim tempTest as integer
+if set then
+redim BNames(-1)
+redim Booleans(-1)
+redim DNames(-1)
+redim Doubles(-1)
+redim INames(-1)
+redim Integers(-1)
+redim Names(-1)
+redim Singles(-1)
+redim SNames(-1)
+redim Strings(-1)
+redim Encrypted(-1)
+redim Benc(-1)
+redim Denc(-1)
+redim Ienc(-1)
+redim Senc(-1)
+redim Cenc(-1)
+redim CNames(-1)
+redim Colors(-1)
+''f = preferencesFolder.child(PrefsName)
+if f.exists then
+b = f.OpenAsBinaryFile(false)
+do until b.EOF
+c = b.ReadByte
+z = b.ReadByte
+NameT = b.Read(b.ReadShort)
+if z = 1 then
+NameT = Decode(NameT)
+end if
+Select Case c
+Case 1
+BNames.append NameT
+Booleans.append false-Booleans(ubound(Booleans)) = (b.ReadByte = 1)
+Benc.append (z = 1)
+Case 2
+DNames.append NameT
+Doubles.append b.ReadLong
+Denc.append (z = 1)
+Case 3
+INames.append NameT
+Integers.append b.ReadByte
+Ienc.append (z = 1)
+Case 4
+SNames.append NameT
+Singles.append b.ReadShort
+Senc.append (z = 1)
+Case 5
+Names.append NameT
+ValT = b.Read(b.ReadLong)
+if z = 1 then
+ValT = Decode(ValT)
+end if
+Strings.append ValT
+Encrypted.append (z = 1)
+Case 6
+CNames.append NameT
+r = b.ReadByte
+g = b.ReadByte
+bl = b.ReadByte'Colors.append chr(r) + chr(g) + chr(bl)
+Cenc.append (z = 1)
+End Select
+loop
+b.Close
+end if
+end if
+4// This method reads in all the information from the,// Prefs file and loads it in to two arrays:7// Names and Values. Since we load the information into4// RAM, we don't have to re-read the file every time8// a value is requested. You usually don't have to worry<// about calling this, since it is called from various other
+// methods when needed.
+End Sub
+Reset
+creator as string
+Sub Reset(creator as string)
+'if not set then
+CreatorType = creator
+'PrefsName = name
+set = true
+redim BNames(-1)
+redim Booleans(-1)
+redim DNames(-1)
+redim Doubles(-1)
+redim INames(-1)
+redim Integers(-1)
+redim Names(-1)
+redim Singles(-1)
+redim SNames(-1)
+redim Strings(-1)
+redim Encrypted(-1)
+redim Benc(-1)
+redim Denc(-1)
+redim Ienc(-1)
+redim Senc(-1)
+redim Cenc(-1)
+redim CNames(-1)
+redim Colors(-1)
+'end if
+'ReadIn
+=// This sets the name of the prefs file you will use. It also6// removes the 0 items from the Names and Values array8// since I prefer working with 0-based arrays. This also<// calls the ReadIn method to read in the values prefs file.
+End Sub
+WriteOut
+f as folderitem
+Sub WriteOut(f as folderitem)
+dim b as BinaryStream
+dim t as TextOutputStream
+dim i as integer
+'dim f as FolderItem
+''f = preferencesFolder.child(PrefsName)
+if not f.exists then
+t = f.CreateTextFile
+t.Close
+f.MacType = "pref"
+f.MacCreator = CreatorType
+end if
+b = f.OpenAsBinaryFile(true)
+b.Length = 0
+if ubound(BNames) >= 0 then
+for i = 0 to ubound(BNames)5b.Length = b.Length + 1 + 1 + 2 + lenb(BNames(i)) + 1
+b.WriteByte 1
+if Benc(i) then
+b.WriteByte 1
+else
+b.WriteByte 0
+end if
+b.WriteShort lenb(BNames(i))
+if Benc(i) then
+b.Write Encode(BNames(i))
+else
+b.Write BNames(i)
+end if
+if Booleans(i) then
+b.WriteByte 1
+else
+b.WriteByte 0
+end if
+next
+end if
+if ubound(DNames) >= 0 then
+for i = 0 to ubound(DNames)5b.Length = b.Length + 1 + 1 + 2 + lenb(DNames(i)) + 4
+b.WriteByte 2
+if Denc(i) then
+b.WriteByte 1
+else
+b.WriteByte 0
+end if
+b.WriteShort lenb(DNames(i))
+if Denc(i) then
+b.Write Encode(DNames(i))
+else
+b.Write DNames(i)
+end if
+b.WriteLong Doubles(i)
+next
+end if
+if ubound(INames) >= 0 then
+for i = 0 to ubound(INames)5b.Length = b.Length + 1 + 1 + 2 + lenb(INames(i)) + 1
+b.WriteByte 3
+if Ienc(i) then
+b.WriteByte 1
+else
+b.WriteByte 0
+end if
+b.WriteShort lenb(INames(i))
+if Ienc(i) then
+b.Write Encode(INames(i))
+else
+b.Write INames(i)
+end if
+b.WriteByte Integers(i)
+next
+end if
+if ubound(SNames) >= 0 then
+for i = 0 to ubound(SNames)5b.Length = b.Length + 1 + 1 + 2 + lenb(SNames(i)) + 2
+b.WriteByte 4
+if Senc(i) then
+b.WriteByte 1
+else
+b.WriteByte 0
+end if
+b.WriteShort lenb(SNames(i))
+if Senc(i) then
+b.Write Encode(SNames(i))
+else
+b.Write SNames(i)
+end if
+b.WriteShort Singles(i)
+next
+end if
+if ubound(Names) >= 0 then
+for i = 0 to ubound(Names)
+b.Length = b.Length + 1 + 1 + 2 + lenb(Names(i)) + 2 + lenb(Strings(i))
+b.WriteByte 5
+if Encrypted(i) then
+b.WriteByte 1
+else
+b.WriteByte 0
+end if
+b.WriteShort lenb(Names(i))
+if Encrypted(i) then
+b.Write Encode(Names(i))
+else
+b.Write Names(i)
+end if
+b.WriteLong lenb(Strings(i))
+if Encrypted(i) then
+b.Write Encode(Strings(i))
+else
+b.Write Strings(i)
+end if
+next
+end if
+if ubound(CNames) >= 0 then
+for i = 0 to ubound(CNames)5b.Length = b.Length + 1 + 1 + 2 + lenb(CNames(i)) + 3
+b.WriteByte 6
+if Cenc(i) then
+b.WriteByte 1
+else
+b.WriteByte 0
+end if
+b.WriteShort lenb(CNames(i))
+if Cenc(i) then
+b.Write Encode(CNames(i))
+else
+b.Write CNames(i)
+end if#b.WriteByte asc(mid(Colors(i),1,1))#b.WriteByte asc(mid(Colors(i),2,1))#b.WriteByte asc(mid(Colors(i),3,1))
+next
+end if
+b.Close
+End Sub
+SetBooleanValue2name as string,value as boolean,encrypt as boolean
+Sub SetBooleanValue(name as string,value as boolean,encrypt as boolean)
+dim i as integer
+if set then
+if ubound(BNames) >= 0 then
+for i = 0 to ubound(BNames)%if StrComp(Name,BNames(i),1) = 0 then
+Booleans(i) = value
+Benc(i) = encrypt
+goto Out
+end if
+next
+end if
+BNames.append name
+Booleans.append value
+Benc.append encrypt
+Out:
+	'WriteOut
+end if
+End Sub
+SetDoubleValue1name as string,value as double,encrypt as boolean
+Sub SetDoubleValue(name as string,value as double,encrypt as boolean)
+dim i as integer
+if set then
+if ubound(DNames) >= 0 then
+for i = 0 to ubound(DNames)%if StrComp(Name,DNames(i),1) = 0 then
+Doubles(i) = value
+Denc(i) = encrypt
+goto Out
+end if
+next
+end if
+DNames.append name
+Doubles.append value
+Denc.append encrypt
+Out:
+	'WriteOut
+end if
+End Sub
+SetIntegerValue2name as string,value as integer,encrypt as boolean
+Sub SetIntegerValue(name as string,value as integer,encrypt as boolean)
+dim i as integer
+if set then
+if ubound(INames) >= 0 then
+for i = 0 to ubound(INames)%if StrComp(Name,INames(i),1) = 0 then
+Integers(i) = value
+Ienc(i) = encrypt
+goto Out
+end if
+next
+end if
+INames.append name
+Integers.append value
+Ienc.append encrypt
+Out:
+	'WriteOut
+end if
+End Sub
+SetSingleValue1name as string,value as single,encrypt as boolean
+Sub SetSingleValue(name as string,value as single,encrypt as boolean)
+dim i as integer
+if set then
+if ubound(SNames) >= 0 then
+for i = 0 to ubound(SNames)%if StrComp(Name,SNames(i),1) = 0 then
+Singles(i) = value
+Senc(i) = encrypt
+goto Out
+end if
+next
+end if
+SNames.append name
+Singles.append value
+Senc.append encrypt
+Out:
+	'WriteOut
+end if
+End Sub
+SetStringValue1name as string,value as string,encrypt as boolean
+Sub SetStringValue(name as string,value as string,encrypt as boolean)
+dim i as integer
+if set then
+if ubound(Names) >= 0 then
+for i = 0 to ubound(Names)$if StrComp(Name,Names(i),1) = 0 then
+Strings(i) = value
+Encrypted(i) = encrypt
+goto Out
+end if
+next
+end if
+Names.append name
+Strings.append value
+Encrypted.append encrypt
+Out:
+	'WriteOut
+end if
+End Sub
+GetStringValue3name as string,default as string,encrypt as boolean
+String
+Function GetStringValue(name as string,default as string,encrypt as boolean) As String
+dim i as integer
+if set then
+if ubound(Names) >= 0 then
+for i = 0 to ubound(Names)$if StrComp(Names(i),name,1) = 0 then
+return Strings(i)
+end if
+next
+end if
+end if
+#SetStringValue name,default,encrypt
+return default
+/// This method searches the Names array for the1// name passed, and then returns the coresponding7// information in the Strings array. If the name is not<// found, it will set it to the default value and return the
+// default value.
+End Function
+GetBooleanValue4name as string,default as boolean,encrypt as boolean
+Boolean
+Function GetBooleanValue(name as string,default as boolean,encrypt as boolean) As Boolean
+dim i as integer
+if set then
+if ubound(BNames) >= 0 then
+for i = 0 to ubound(BNames)%if StrComp(BNames(i),name,1) = 0 then
+return Booleans(i)
+end if
+next
+end if
+end if
+$SetBooleanValue name,default,encrypt
+return default
+/// This method searches the Names array for the1// name passed, and then returns the coresponding7// information in the Strings array. If the name is not<// found, it will set it to the default value and return the
+// default value.
+End Function
+GetDoubleValue3name as string,default as double,encrypt as boolean
+Double
+Function GetDoubleValue(name as string,default as double,encrypt as boolean) As Double
+dim i as integer
+if set then
+if ubound(DNames) >= 0 then
+for i = 0 to ubound(DNames)%if StrComp(DNames(i),name,1) = 0 then
+return Doubles(i)
+end if
+next
+end if
+end if
+#SetDoubleValue name,default,encrypt
+return default
+/// This method searches the Names array for the1// name passed, and then returns the coresponding7// information in the Strings array. If the name is not<// found, it will set it to the default value and return the
+// default value.
+End Function
+GetIntegerValue4name as string,default as integer,encrypt as boolean
+Integer
+Function GetIntegerValue(name as string,default as integer,encrypt as boolean) As Integer
+dim i as integer
+if set then
+if ubound(INames) >= 0 then
+for i = 0 to ubound(INames)%if StrComp(INames(i),name,1) = 0 then
+return Integers(i)
+end if
+next
+end if
+end if
+$SetIntegerValue name,default,encrypt
+return default
+/// This method searches the Names array for the1// name passed, and then returns the coresponding7// information in the Strings array. If the name is not<// found, it will set it to the default value and return the
+// default value.
+End Function
+GetSingleValue3name as string,default as single,encrypt as boolean
+Single
+Function GetSingleValue(name as string,default as single,encrypt as boolean) As Single
+dim i as integer
+if set then
+if ubound(SNames) >= 0 then
+for i = 0 to ubound(SNames)%if StrComp(SNames(i),name,1) = 0 then
+return Singles(i)
+end if
+next
+end if
+end if
+#SetSingleValue name,default,encrypt
+return default
+/// This method searches the Names array for the1// name passed, and then returns the coresponding7// information in the Strings array. If the name is not<// found, it will set it to the default value and return the
+// default value.
+End Function
+DeleteBooleanValue
+name as string
+&Sub DeleteBooleanValue(name as string)
+dim i as integer
+if set then
+if ubound(BNames) >= 0 then
+for i = 0 to ubound(BNames)%if StrComp(BNames(i),name,1) = 0 then
+BNames.remove i
+Booleans.remove i
+Benc.remove i	'WriteOut
+exit
+end if
+next
+end if
+end if
+End Sub
+DeleteLongValue
+name as string
+#Sub DeleteLongValue(name as string)
+dim i as integer
+if set then
+if ubound(DNames) >= 0 then
+for i = 0 to ubound(DNames)%if StrComp(DNames(i),name,1) = 0 then
+DNames.remove i
+Doubles.remove i
+Denc.remove i	'WriteOut
+exit
+end if
+next
+end if
+end if
+End Sub
+DeleteByteValue
+name as string
+#Sub DeleteByteValue(name as string)
+dim i as integer
+if set then
+if ubound(BNames) >= 0 then
+for i = 0 to ubound(BNames)%if StrComp(BNames(i),name,1) = 0 then
+BNames.remove i
+Booleans.remove i
+Ienc.remove i	'WriteOut
+exit
+end if
+next
+end if
+end if
+End Sub
+DeleteShortValue
+name as string
+$Sub DeleteShortValue(name as string)
+dim i as integer
+if set then
+if ubound(SNames) >= 0 then
+for i = 0 to ubound(SNames)%if StrComp(SNames(i),name,1) = 0 then
+SNames.remove i
+Singles.remove i
+Senc.remove i	'WriteOut
+exit
+end if
+next
+end if
+end if
+End Sub
+DeleteStringValue
+name as string
+%Sub DeleteStringValue(name as string)
+dim i as integer
+if set then
+if ubound(Names) >= 0 then
+for i = 0 to ubound(Names)$if StrComp(Names(i),name,1) = 0 then
+Names.remove i
+Strings.remove i
+Encrypted.remove i	'WriteOut
+exit
+end if
+next
+end if
+end if
+End Sub
+DeleteValue
+name as string
+Sub DeleteValue(name as string)
+if set then
+DeleteBooleanValue name
+'DeleteDoubleValue name
+'DeleteIntegerValue name
+'DeleteSingleValue name
+DeleteStringValue name
+end if
+End Sub
+DeleteColorValue
+name as string
+$Sub DeleteColorValue(name as string)
+dim i as integer
+if set then
+if ubound(CNames) >= 0 then
+for i = 0 to ubound(CNames)%if StrComp(CNames(i),name,1) = 0 then
+CNames.remove i
+Colors.remove i
+Cenc.remove i	'WriteOut
+exit
+end if
+next
+end if
+end if
+End Sub
+GetColorValue2name as string,default as color,encrypt as boolean
+Color
+Function GetColorValue(name as string,default as color,encrypt as boolean) As Color
+dim i as integer
+dim c as color
+dim r,g,b as integer
+if set then
+if ubound(CNames) >= 0 then
+for i = 0 to ubound(CNames)%if StrComp(CNames(i),name,1) = 0 then
+r = asc(mid(Colors(i),1,1))
+g = asc(mid(Colors(i),2,1))
+b = asc(mid(Colors(i),3,1))
+return RGB(r,g,b)
+end if
+next
+end if
+end if
+"SetColorValue name,default,encrypt
+return default
+/// This method searches the Names array for the1// name passed, and then returns the coresponding7// information in the Strings array. If the name is not<// found, it will set it to the default value and return the
+// default value.
+End Function
+SetColorValue0name as string,value as color,encrypt as boolean
+Sub SetColorValue(name as string,value as color,encrypt as boolean)
+dim i as integer
+if set then
+if ubound(CNames) >= 0 then
+for i = 0 to ubound(CNames)%if StrComp(Name,CNames(i),1) = 0 then?Colors(i) = chr(value.red) + chr(value.green) + chr(value.blue)
+Cenc(i) = encrypt
+goto Out
+end if
+next
+end if
+CNames.append name
+Colors.append chr(value.red) + chr(value.green) + chr(value.blue)
+Cenc.append encrypt
+Out:
+	'WriteOut
+end if
+End Sub
+Class
+Application
+Open
+Sub Open()
+s.left = (-1*s.width)+16
+s.top = 15
+End Sub
+EnableMenuItems
+Sub EnableMenuItems()
+functionsopen.enable
+functionsoptions.enable
+functionssave.enable
+functionsexperiment.enable
+functionsreset.enable
+End Sub
+FunctionsSave
+Function Action As Boolean/window1.save(getsavefolderitem("","Saved Run"))
+End Function
+FunctionsOpen
+Function Action As Boolean
+window1.load
+End Function
+FunctionsOptions
+Function Action As Boolean
+s.left = 2
+End Function
+FunctionsExperiment
+Function Action As Boolean
+experiment.show()
+End Function
+FunctionsReset
+Function Action As Boolean
+if not Window1.running then*Window1.w.init(val(Window1.new_size.text))0Window1.canvas1.init(val(Window1.new_size.text))
+Window1.yrs.text = "0"
+graphwin.g.init
+Window1.canvas1.draw
+end if
+End Function
+Folder
+Stuff, Etc.
+Folder
+Classes
+Folder
+Windows
+View
+experiment
+Name
+experiment
+Frame
+HasBackColor
+True	BackColor
+16777215
+Backdrop
+Title
+Experiment Control
+Visible
+True
+CloseBox
+True
+GrowIcon
+True
+ZoomIcon
+True
+BalloonHelp
+	MacProcID
+0	Placement
+Width
+Height
+MinWidth
+64	MinHeight
+MaxWidth
+32000	MaxHeight
+32000
+experiment
+Dialog
+GetDataFor
+f as folderitem
+String
+.Function GetDataFor(f as folderitem) As String
+dim ss as string
+if f <> nil then
+Reset("????")	readin(f)
+ss = str(GetIntegerValue("slider1",s.slider1.value,false)) + " " + GetStringValue("prob",s.prob.text,false) + " Br:" + GetStringValue("br",s.br.text,false) + " L1:" + GetStringValue("life1","?",false) + " L2:" + GetStringValue("life2","?",false) + " Mi:" + GetStringValue("mp",s.mp.text,false)
+return ss + " Den:" + GetStringValue("editfield1",window1.editfield1.text,false)
+end if	return ""
+End Function
+Open
+Sub Open()
+End Sub
+StaticText
+	MouseMove
+)Sub MouseMove(X As Integer, Y As Integer)
+End Sub
+	Separator
+PushButton
+	MouseMove
+)Sub MouseMove(X As Integer, Y As Integer)
+End Sub
+Action
+Sub Action()
+dim f,g,h,j as folderitem
+dim a,b,c,temp(0) as integer dim setting,test,save as integer
+dim average,average2 as double
+dim average_n as integer
+dim data as string
+out.text = ""
+msgbox "Please select the top lvl folder of the experiment.  Please note, the entire folder will be parsed.  Don't have any aliases in it."
+f = selectfolder
+if f <> nil then
+for a = 1 to f.count
+if (left(f.item(a).name,len("setting")) = "setting") and f.item(a).directory then
+average = 0
+average_n = 0
+average2 = 0
+for b = 1 to f.item(a).count
+if (left(f.item(a).item(b).name,len("test")) = "test") and f.item(a).item(b).directory then
+redim temp(0)$for c = 1 to f.item(a).item(b).count
+if (left(f.item(a).item(b).item(c).name,len("save")) = "save") and f.item(a).item(b).item(c).MacType = "pref" then
+temp.append val(replace(f.item(a).item(b).item(c).name,"save",""))
+end if
+next	temp.sort
+data = GetDataFor(f.item(a).item(b).child("save" + str(temp(ubound(temp)))))-average = average + val(nthfield(data," ",1))/average2 = average2 + val(nthfield(data," ",2))
+average_n = average_n + 1<out.text = out.text + chr(13) + f.item(a).name + "  " + data
+end if
+next
+average = average/average_n
+average2 = average2/average_n
+out.text = out.text + chr(13) + f.item(a).name + "  Avg frag:" + str(average) + "  Avg prob:" + str(average2)
+end if
+next
+end if
+End Sub
+	EditField
+StaticText
+Name
+StaticText1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+True
+LockTop
+True	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+This window is for analyzing experimental runs.  More experimental options can be found in the options window.	TextAlign
+0	TextColor
+0	MultiLine
+True
+	Separator
+Name
+Separator1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+True
+LockTop
+True	LockRight
+True
+LockBottom
+False
+PushButton
+Name
+PushButton1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+True
+LockTop
+True	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption	Load Data
+Default
+False
+Cancel
+False
+Enabled
+True
+	EditField 
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+True
+LockTop
+True	LockRight
+True
+LockBottom
+True
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+True	ScrollBar
+True
+Styled
+False
+Password
+False
+UseFocusRing
+True
+ReadOnly
+True	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text

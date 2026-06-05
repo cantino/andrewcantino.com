@@ -1,0 +1,56 @@
+Recovered constants / default preferences for the 1999 Sympatric Speciation
+Simulator (SSS). These are the defaults baked into Window.getprefs() in the
+RealBASIC source (the GetIntegerValue/GetStringValue "default" arguments), i.e.
+the values the program starts with before any saved prefs are loaded.
+
+Source: "Sci Fair 1999/Development/SSS 1.0" (RealBASIC project binary), method
+Window.getprefs and Module Food.
+
+--- Food support (amount of each food type regenerated every year) ---
+fruitb    (fruit_support)            = 60
+insectb   (insect_support)           = 60
+nsb       (nector_curved_support)    = 60   [note: stored under key "nsb"]
+ncb       (nector_straight_support)  = 60   [note: stored under key "ncb"]
+ssb       (seed_small_support)       = 60
+smb       (seed_medium_support)      = 60
+slb       (seed_large_support)       = 60
+
+--- General settings ---
+mbirdsb   (max_birds)                = 100
+spanb     (max_age)                  = 10
+trb       (mut_max, mutation rate)   = 10
+recfoodb  (rec_food, food/bird/year) = 5
+maxbabyb  (max_baby)                 = 5
+minbabyb  (min_baby)                 = 2
+
+--- Mating ---
+matemode  (1=random, 2=assortative, 3=semi-random) = 1
+maxdist   (max beak difference for semi-random)     = 3
+
+--- Speciation detection (Module / Window properties) ---
+detect_species default = false
+stop_running   default = false
+save_new       default = false
+save_continue  default = false
+gen_stop       default = false
+num_gen_stop   default = 0
+(needs 3 consecutive positive checks, sampled every 5 years, to trigger)
+
+--- Starting birds (Window.dimbirds / Window.startup) ---
+2 birds: length = 1, width = 1, curve = 0, age = 0
+bird(0).sex = 0 (female), bird(1).sex = 1 (male), life = max_age
+
+--- Beak units are clamped to [0, 5] on every trait. ---
+
+--- Food eating rules (Module functions, verbatim) ---
+caneatfruit          : width <= 3 and curve <= 1
+caneatinsect         : width <= 3
+caneatseedsmall      : curve <= 2
+caneatseedmedium     : width >= 2 and curve <= 2
+caneatseedlarge      : width >= 3 and length <= 3
+caneatnectorcurved   : width <= 2 and length >= 4 and curve >= 3
+caneatnectorstraight : width <= 2 and curve <= 2 and length > 2
+
+--- Save file format (Window.savearray / loadold) ---
+line 1 : year count
+line N : length:width:curve:sex:age:life     (one bird per line)

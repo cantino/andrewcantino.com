@@ -1,0 +1,144 @@
+/*
+ * retro-mac.css -- reusable classic Mac OS (System 7 / Platinum) UI kit.
+ *
+ * A shared base theme for porting old RealBASIC Mac apps to the web. Provides
+ * the structural primitives an RB app needs: a gray desktop, draggable-looking
+ * windows with pinstripe title bars, group boxes, push buttons, popup menus
+ * (select), edit fields (input), sunken canvases, and scrolling log/text areas.
+ *
+ * Pair with windowing.js (drag + close behaviour). App-specific styling (big
+ * titles, control strips, etc.) should live in the project's own style.css,
+ * which can `@import "../shared/retro-mac.css";` first.
+ *
+ * Deliberately does NOT set `-webkit-font-smoothing: none` -- that makes UI
+ * text aliased and hard to read. Let text antialias normally.
+ */
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0; height: 100%;
+  font-family: "Geneva", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px; color: #000;
+  background-color: #888;
+  background-image: repeating-conic-gradient(#8a8a8a 0% 25%, #828282 0% 50%);
+  background-size: 4px 4px;
+}
+
+/* ----- top bar (e.g. a back link) ----- */
+.macTopbar {
+  position: sticky; top: 0; z-index: 1000;
+  height: 24px; line-height: 24px;
+  background: linear-gradient(#fff, #e8e8e8);
+  border-bottom: 1px solid #000; padding: 0 10px;
+  box-shadow: 0 1px 0 #fff inset;
+}
+.macTopbar a { font-weight: bold; text-decoration: none; }
+.macTopbar a:hover { text-decoration: underline; }
+
+/* ----- windows ----- */
+.window {
+  position: absolute; background: #d8d8d8;
+  border: 1px solid #000; border-radius: 2px;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.35); min-width: 200px;
+}
+.titlebar {
+  height: 19px; display: flex; align-items: center;
+  border-bottom: 1px solid #000;
+  background-image: repeating-linear-gradient(to bottom, #cfcfcf 0 1px, #ffffff 1px 2px);
+  cursor: move; user-select: none; padding: 0 4px;
+}
+.titlebar .close {
+  width: 11px; height: 11px; margin-right: 6px;
+  border: 1px solid #000; background: #d8d8d8; border-radius: 1px;
+  cursor: pointer; flex: 0 0 auto;
+  box-shadow: inset -1px -1px 0 #888, inset 1px 1px 0 #fff;
+}
+.titlebar .close:active { background: #aaa; }
+.titlebar .title {
+  flex: 1; text-align: center; font-weight: bold; font-size: 12px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  background: #d8d8d8; padding: 0 8px; margin: 0 4px;
+}
+.titlebar .zoom {
+  width: 11px; height: 11px; border: 1px solid #000; background: #d8d8d8;
+  box-shadow: inset -1px -1px 0 #888, inset 1px 1px 0 #fff; flex: 0 0 auto;
+}
+.window .body { padding: 10px; }
+
+/* ----- group boxes (RB GroupBox) ----- */
+.groupbox {
+  border: 1px solid #808080; border-radius: 3px;
+  margin: 12px 0; padding: 14px 12px 12px; position: relative; background: #d8d8d8;
+}
+.groupbox > .legend {
+  position: absolute; top: -8px; left: 10px; background: #d8d8d8; padding: 0 4px; font-weight: bold;
+}
+
+/* ----- push buttons ----- */
+button, .btn {
+  font-family: inherit; font-size: 12px;
+  background: linear-gradient(#fcfcfc, #d6d6d6);
+  border: 1px solid #000; border-radius: 7px; padding: 2px 12px; cursor: pointer;
+  box-shadow: inset 0 1px 0 #fff, 1px 1px 0 rgba(0,0,0,0.25);
+}
+button:active, .btn:active { background: linear-gradient(#c8c8c8, #b8b8b8); }
+button:disabled { color: #999; cursor: default; box-shadow: none; }
+button.default { border-width: 2px; font-weight: bold; }
+button.square { border-radius: 3px; padding: 2px 8px; }
+
+/* ----- popup menu / edit field ----- */
+select {
+  font-family: inherit; font-size: 12px; border: 1px solid #000; border-radius: 3px;
+  background: linear-gradient(#fcfcfc, #e0e0e0); padding: 1px 4px;
+}
+input[type=text], input[type=number] {
+  font-family: inherit; font-size: 12px; border: 1px solid #000; border-radius: 2px;
+  padding: 1px 4px; background: #fff; box-shadow: inset 1px 1px 0 #bbb;
+}
+label.check { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
+
+/* ----- canvases / sunken wells ----- */
+canvas { display: block; background: #fff; }
+.sunken { border: 1px solid #000; box-shadow: inset 1px 1px 0 #888; background: #fff; }
+
+/* ----- scrolling text / log areas (RB EditField, listbox) ----- */
+.logbox {
+  background: #fff; border: 1px solid #000; box-shadow: inset 1px 1px 0 #888;
+  font-family: "Monaco", "Courier New", monospace; font-size: 11px;
+  white-space: pre-wrap; overflow: auto; padding: 4px;
+}
+
+/* ----- tab view (RB TabPanel) ----- */
+.tabview { margin: 4px 0; }
+.tabbar {
+  display: flex; flex-wrap: nowrap; gap: 2px; padding-left: 10px;
+  position: relative; z-index: 1;
+}
+.tab {
+  font-family: inherit; font-size: 12px; padding: 3px 11px 4px;
+  border: 1px solid #808080; border-bottom: none; border-radius: 6px 6px 0 0;
+  background: linear-gradient(#dcdcdc, #c4c4c4);
+  box-shadow: none; cursor: pointer; margin: 0; position: relative; top: 1px;
+  color: #000; white-space: nowrap;
+}
+.tab.active {
+  background: linear-gradient(#fcfcfc, #ededed);
+  top: 0; padding-bottom: 5px; font-weight: bold; z-index: 2;
+}
+.tabpanes {
+  border: 1px solid #808080; border-radius: 0 4px 4px 4px;
+  background: #ededed; padding: 14px 14px 12px;
+}
+.tabpane { display: none; }
+.tabpane.active { display: block; }
+
+/* ----- instruction / static-text box ----- */
+.instructions {
+  border: 1px solid #808080; border-radius: 3px; padding: 12px 10px 10px;
+  position: relative; margin-top: 10px; line-height: 1.35;
+}
+.instructions > .legend {
+  position: absolute; top: -8px; left: 10px; background: #d8d8d8; padding: 0 4px; font-weight: bold;
+}
+
+.hint { color: #444; font-size: 11px; }
+a { color: #1414ff; }

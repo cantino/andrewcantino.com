@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Factors Affecting Species Extinction</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="macTopbar">
+  <a href="https://andrewcantino.com">[Back to andrewcantino.com]</a>
+</div>
+
+<!-- ============================ INTRO ============================ -->
+<div class="window" id="introWin" style="left:60px; top:46px; width:560px;">
+  <div class="titlebar">
+    <div class="close" data-close="introWin"></div>
+    <div class="title">Species Extinction Simulator</div>
+    <div class="zoom"></div>
+  </div>
+  <div class="body">
+    <div class="bigtitle">
+      <div class="l1">Factors Affecting</div>
+      <div class="l2">Species</div>
+      <div class="l3">Extinction</div>
+    </div>
+    <p>This program models a population of a hypothetical animal on a 2-D grid of
+      habitat cells. Each cell tracks two life stages &mdash; resident
+      <b>adults</b> that reproduce and dispersing <b>juveniles</b> that spread to
+      neighbouring cells. You control life-history factors (<b>birth rate</b>,
+      <b>life span</b>, <b>dispersal rate</b>) and two sources of mortality:
+      <b>habitat fragmentation</b> (walls that block dispersal and degrade their
+      neighbours) and <b>random short-term events</b> (local catastrophes).</p>
+    <p>The original project used it to ask which factors most push a species
+      toward extinction &mdash; finding that reproductive rate mattered more than
+      starting population size, life span barely mattered, and that dispersal
+      could help or hurt depending on the kind of stress.</p>
+
+    <div class="groupbox">
+      <div class="legend">Run the Simulator</div>
+      <p>Pick a scenario, then press <b>Go</b> in the Display window. Cells shade
+        from white (full) to black (empty); blue and green cells are walls.</p>
+      <div style="text-align:right">
+        <button class="default" id="btnLaunch">Open the Simulator</button>
+      </div>
+    </div>
+    <p class="hint">Science fair project &amp; model by Andrew Cantino (2000).
+      Port of the RealBASIC source by Claude.</p>
+  </div>
+</div>
+
+<!-- ========================== DISPLAY ============================ -->
+<div class="window" id="displayWin" style="left:330px; top:120px; width:440px; display:none;">
+  <div class="titlebar">
+    <div class="close" data-close="displayWin"></div>
+    <div class="title">Display Window</div>
+    <div class="zoom"></div>
+  </div>
+  <div class="body" style="padding:6px;">
+    <div class="sunken" style="display:inline-block;">
+      <canvas id="grid" width="420" height="420"></canvas>
+    </div>
+    <div class="controlstrip" style="margin-top:6px;">
+      <button class="square" id="goBtn" style="width:54px">Go</button>
+      <button class="square" id="stopBtn">Stop</button>
+      <button class="square" id="stepBtn">Step</button>
+      <button class="square" id="resetBtn">Reset</button>
+      <span class="statusline" style="margin:0;">Years: <span id="yrs">0</span></span>
+      <span class="hint" id="totLabel">Total: 0</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========================== OPTIONS =========================== -->
+<div class="window" id="settingsWin" style="left:24px; top:120px; width:380px; display:none;">
+  <div class="titlebar">
+    <div class="close" data-close="settingsWin"></div>
+    <div class="title">Options</div>
+    <div class="zoom"></div>
+  </div>
+  <div class="body">
+    <div class="tabview" id="optTabs">
+      <div class="tabbar">
+        <button class="tab active" data-tab="ffGeneral">General</button>
+        <button class="tab" data-tab="ffFrag">Fragmentation</button>
+        <button class="tab" data-tab="ffUtil">Utilities</button>
+        <button class="tab" data-tab="ffFiles">Files</button>
+      </div>
+      <div class="tabpanes">
+
+        <!-- ---------- General ---------- -->
+        <div class="tabpane active" id="ffGeneral">
+          <div class="gencols">
+            <div class="gencol">
+              <label class="check"><input type="checkbox" id="opt_fluc"> Capacity Movement</label>
+              <label class="check"><input type="checkbox" id="opt_rhalf"> Random Events</label>
+              <div class="psub">P: <input type="text" id="opt_prob" style="width:60px"></div>
+            </div>
+            <div class="gencol">
+              <label class="check"><input type="checkbox" id="opt_update2" checked> Show info</label>
+              <label class="check"><input type="checkbox" id="opt_gr" checked> Show Graph</label>
+              <label class="check"><input type="checkbox" id="opt_update1" checked> Show grid</label>
+              <label class="check"><input type="checkbox" id="opt_showw"> Show text</label>
+            </div>
+          </div>
+          <div class="groupbox">
+            <div class="legend">Life History Factors</div>
+            <div class="optgrid">
+              <label>Migration %</label><input type="text" id="opt_mp">
+              <label>Birth rate:</label><input type="text" id="opt_br">
+              <label>Life span:</label>
+              <span><input type="text" id="opt_life1" style="width:42px"> /
+                <input type="text" id="opt_life2" style="width:42px"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ---------- Fragmentation ---------- -->
+        <div class="tabpane" id="ffFrag">
+          <label>Fragment <input type="range" id="fragSlider" min="0" max="100" value="0" style="width:130px">
+            <span id="fragShow">0%</span></label>
+          <div style="margin-top:8px;">
+            <label>Wall type
+              <select id="opt_make_mode">
+                <option value="2">Solid (impassable)</option>
+                <option value="1">Passable but hurting</option>
+              </select></label>
+          </div>
+          <div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+            <label>d1 <input type="text" id="opt_wall_d1" style="width:50px"></label>
+            <label>d2 <input type="text" id="opt_wall_d2" style="width:50px"></label>
+            <span class="hint">wall penalty</span>
+          </div>
+          <div style="text-align:right; margin-top:10px;">
+            <button class="square" id="applyFrag">Apply Fragmentation</button>
+          </div>
+        </div>
+
+        <!-- ---------- Utilities ---------- -->
+        <div class="tabpane" id="ffUtil">
+          <div class="controlstrip">
+            <label>Grid size <input type="number" id="opt_size" value="10" style="width:50px"></label>
+            <button class="square" id="newWorld">New World</button>
+          </div>
+          <p class="hint">Build a fresh size&times;size world from the current
+            settings (resets all cells and the year count).</p>
+          <div style="text-align:right; margin-top:6px;">
+            <button class="square" id="applySettings">Apply Settings</button>
+          </div>
+        </div>
+
+        <!-- ---------- Files ---------- -->
+        <div class="tabpane" id="ffFiles">
+          <div class="controlstrip">
+            <select id="scenarioSelect" style="min-width:180px"></select>
+            <button class="square" id="loadScenario">Load</button>
+          </div>
+          <div class="hint" id="scenarioNote" style="margin:6px 0;"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== EXPERIMENT CONTROL ====================== -->
+<div class="window" id="experWin" style="left:24px; top:360px; width:240px; display:none;">
+  <div class="titlebar">
+    <div class="close" data-close="experWin"></div>
+    <div class="title">Experiment Control</div>
+    <div class="zoom"></div>
+  </div>
+  <div class="body">
+    <div class="instructions" style="margin-top:0;">This window is for analyzing
+      experimental runs.  More experimental options can be found in the options
+      window.</div>
+    <div style="margin-top:8px;">
+      <button class="square" id="loadData">Load Data</button>
+    </div>
+    <div class="logbox" id="experOut" style="height:90px; margin-top:8px;"></div>
+  </div>
+</div>
+
+<!-- =========================== GRAPH ============================= -->
+<div class="window" id="graphWin" style="left:560px; top:330px; width:330px; display:none;">
+  <div class="titlebar">
+    <div class="close" data-close="graphWin"></div>
+    <div class="title">Graph</div>
+    <div class="zoom"></div>
+  </div>
+  <div class="body" style="padding:6px;">
+    <div class="sunken"><canvas id="graph" width="316" height="170"></canvas></div>
+    <div class="controlstrip">
+      <label>Scale <input type="range" id="graphScale" min="1" max="100" value="100" style="width:120px"></label>
+      <span class="hint" id="graphTotal">Total: 0</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================ INFO ============================= -->
+<div class="window" id="infoWin" style="left:30px; top:470px; width:240px; display:none;">
+  <div class="titlebar">
+    <div class="close" data-close="infoWin"></div>
+    <div class="title">Cell Info</div>
+    <div class="zoom"></div>
+  </div>
+  <div class="body">
+    <div class="logbox" id="infoOut" style="height:120px;">Click a cell in the Display window.</div>
+    <div class="controlstrip">
+      <label>d1 <input type="text" id="cell_d1" style="width:56px"></label>
+      <label>d2 <input type="text" id="cell_d2" style="width:56px"></label>
+      <button class="square" id="cellApply">Set</button>
+    </div>
+  </div>
+</div>
+
+<script src="../shared/windowing.js"></script>
+<script src="engine.js"></script>
+<script src="scenarios-data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

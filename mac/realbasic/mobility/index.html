@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Computational Evolution of Mobility</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="topbar">
+  <a href="https://andrewcantino.com">[Back to andrewcantino.com]</a>
+</div>
+
+<!-- ============================ INTRO ============================ -->
+<div class="window" id="introWin" style="left:60px; top:50px; width:640px;">
+  <div class="titlebar">
+    <div class="close" data-close="introWin"></div>
+    <div class="title">Mobility Simulator</div>
+    <div class="zoom"></div>
+  </div>
+  <div class="body">
+    <div class="bigtitle">
+      <div class="l1">Computational Evolution</div>
+      <div class="l2">of</div>
+      <div class="l3">Mobility</div>
+    </div>
+    <p>Welcome. This program contains a physics engine, a display window to apply
+      the physics engine to various tests and &ldquo;creatures,&rdquo; and an
+      evolutionary algorithm application window to evolve new creatures.</p>
+
+    <div class="groupbox">
+      <div class="legend">Evolutionary Algorithm</div>
+      <p>The evolutionary algorithm allows the creation of &ldquo;creatures&rdquo;
+        through application of the evolutionary process. In this case, the algorithm
+        starts with an initial creature and generates 15 slightly mutated copies.
+        Each copy is tested in the physics engine and is rated based on the
+        displacement of the center of mass after a certain number of simulation
+        iterations. The best offspring is selected to become the new parent and the
+        cycle repeats.</p>
+      <div style="text-align:right">
+        <button class="default" id="btnLaunchEvo">Launch Evolutionary Algorithm</button>
+      </div>
+    </div>
+
+    <div class="groupbox">
+      <div class="legend">Tests and Evolved Creatures</div>
+      <p>This option allows one to run various saved evolved creatures and
+        pre-constructed tests through the physics model, animated in real-time.</p>
+      <div style="text-align:right">
+        <button class="default" id="btnViewCreatures">View Tests and Evolved Creatures</button>
+      </div>
+    </div>
+    <p class="hint">International Science and Engineering Fair project &amp; physics
+      model by Andrew Cantino (2001). This is a port of the RealBASIC source by Claude.</p>
+  </div>
+</div>
+
+<!-- ====================== CREATURE DISPLAY ======================= -->
+<div class="window" id="displayWin" style="left:340px; top:170px; width:720px; display:none;">
+  <div class="titlebar">
+    <div class="close" data-close="displayWin"></div>
+    <div class="title">Creature Display</div>
+    <div class="zoom"></div>
+  </div>
+  <div class="body" style="padding:6px;">
+    <div class="canvaspane">
+      <div class="sunken nb"><canvas id="outputCanvas" width="606" height="240"></canvas></div>
+      <!-- classic Mac horizontal scrollbar: pans the view when Follow camera is
+           off (port of the original CreatureDisplay.ScrollBar1). -->
+      <div class="macscroll disabled" id="panScroll">
+        <div class="sb-arrow sb-left" id="sbLeft"></div>
+        <div class="sb-track" id="sbTrack"><div class="sb-thumb" id="sbThumb"></div></div>
+        <div class="sb-arrow sb-right" id="sbRight"></div>
+      </div>
+    </div>
+
+    <div class="controlstrip">
+      <button class="stepbtn" id="stepBack" title="Step back">&#9664;</button>
+      <button class="stepbtn" id="stepFwd" title="Step forward">&#9654;</button>
+      <button class="square" id="runBtn" style="width:54px">Run</button>
+      <button class="square" id="resetBtn">Reset</button>
+      <span class="wavewrap sunken"><canvas id="waveCanvas" width="300" height="56"></canvas></span>
+    </div>
+
+    <div class="controlstrip" style="padding-top:0;">
+      <select id="creatureSelect" style="min-width:200px"></select>
+      <label class="check"><input type="checkbox" id="followCam" checked> Follow camera</label>
+      <span class="hint" id="dispStats"></span>
+    </div>
+
+    <div class="instructions">
+      <div class="legend">Instructions:</div>
+      This is the &ldquo;creature&rdquo; display window. Using the controls in this
+      window, you may view and animate &ldquo;creatures.&rdquo; Start by choosing a
+      model from the drop-down menu directly above, then press <b>Run</b>. Muscles
+      are drawn in <span style="color:#1414ff">blue</span>; the
+      <span style="color:#cc0000">red dot</span> is the center of mass. The lower
+      panel shows the summed muscle waveform and each muscle&rsquo;s sample position.
+    </div>
+  </div>
+</div>
+
+<!-- ===================== EVOLVING CREATURES ====================== -->
+<div class="window" id="evoWin" style="left:90px; top:80px; width:700px; display:none;">
+  <div class="titlebar">
+    <div class="close" data-close="evoWin"></div>
+    <div class="title">Evolving Creatures Window</div>
+    <div class="zoom"></div>
+  </div>
+  <div class="body">
+    <div class="bigtitle" style="margin:2px 0 8px;">
+      <div class="l1" style="font-size:30px">Computational Evolution</div>
+      <div class="l2" style="font-size:16px">of</div>
+      <div class="l3" style="font-size:30px">Mobility</div>
+    </div>
+
+    <div style="display:flex; gap:14px; align-items:flex-start;">
+      <div style="flex:0 0 300px; max-width:300px;">
+        <div style="display:flex; gap:10px; margin-bottom:8px;">
+          <button class="square" id="evoStart" style="width:70px">Start</button>
+          <button class="square" id="evoWatch" style="width:110px">Watch</button>
+          <button class="square" id="evoReset" style="width:70px">Reset</button>
+        </div>
+        <div class="groupbox" style="margin-top:14px;">
+          <div class="legend">View Creatures</div>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <input type="text" id="viewIndex" value="best" style="width:60px">
+            <button class="square" id="evoView">View</button>
+          </div>
+          <div class="hint" style="margin-top:6px;">Type <b>best</b> for the current
+            champion, or a cycle number from the list at right (needs &ldquo;Store
+            Steps&rdquo;).</div>
+        </div>
+        <div style="margin-top:10px;">
+          <label class="check" title="Saving steps to disk is not available in the browser port"><input type="checkbox" id="saveSteps" disabled> Save Steps</label>
+          <label class="check" style="margin-left:12px;"><input type="checkbox" id="storeSteps"> Store Steps in RAM</label>
+        </div>
+        <div style="margin-top:4px;">
+          <label class="check"><input type="checkbox" id="showGraph"> Show graph</label>
+        </div>
+      </div>
+
+      <div style="flex:1 1 auto; min-width:0;">
+        <div id="evoStatus" style="font-weight:bold; margin-bottom:4px;">Evolution idle</div>
+        <div class="logbox" id="statLog" style="height:120px;"></div>
+      </div>
+    </div>
+
+    <div id="watchPanel" class="sunken" style="margin-top:10px; display:none;">
+      <canvas id="watchCanvas" width="636" height="150"></canvas>
+    </div>
+
+    <div id="graphPanel" class="sunken" style="margin-top:10px; display:none;">
+      <canvas id="graphCanvas" width="636" height="150"></canvas>
+    </div>
+
+    <div class="logbox" id="detailLog" style="height:110px; margin-top:10px;"></div>
+  </div>
+</div>
+
+<script src="engine.js"></script>
+<script src="evolution.js"></script>
+<script src="creatures-data.js"></script>
+<script src="left-pict.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

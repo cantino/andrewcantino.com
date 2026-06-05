@@ -1,0 +1,7953 @@
+AAAAAAAAAAAAAAAA
+evol
+SSS b1.0 PPC
+ics#
+ICN#
+&bgi
+ics4
+s!"/
+s!"/
+ics8
+*****
+icl4
+ssq!
+sssq!!"""
+sssq!!"""
+!!""/
+icl8
+******
+***********T
+*******T
+TTTT
+***T
+TTTTTT
+TTTTTT
+TTTTTTT
+TTTTTT
+TTTTTTT
+TTTTT
+TTTT
+text
+evol
+TEXT
+View
+main
+Name
+main
+Frame
+HasBackColor
+True	BackColor
+15658734
+Backdrop
+Title
+Main
+Visible
+True
+CloseBox
+False
+GrowIcon
+False
+ZoomIcon
+False
+BalloonHelp
+	Placement
+Width
+Height
+MinWidth
+64	MinHeight
+MaxWidth
+32000	MaxHeight
+32000
+main
+Applet
+imgnumber as integer
+EnableMenuItems
+Sub EnableMenuItems()
+End Sub
+Resized
+Sub Resized()
+End Sub
+Paint
+Sub Paint(g As Graphics)
+End Sub
+Open
+Sub Open()
+End Sub
+StaticText
+StaticText
+StaticText
+StaticText
+StaticText
+	MouseMove
+)Sub MouseMove(X As Integer, Y As Integer)
+End Sub
+StaticText
+StaticText
+StaticText
+StaticText
+StaticText
+StaticText
+StaticText
+StaticText
+StaticText
+StaticText
+StaticText
+StaticText
+StaticText
+StaticText
+StaticText
+StaticText
+	Rectangle
+Line
+	Rectangle
+	Rectangle
+Name
+Rectangle2
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False	FillColor
+16777215
+BorderWidth
+TopLeftColor
+8947848
+BottomRightColor
+13421772
+	Rectangle
+Name
+Rectangle1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False	FillColor
+13421772
+BorderWidth
+TopLeftColor
+BottomRightColor
+15658734
+StaticText
+Name
+StaticText1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Current Birds:	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+totbirds
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+0	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+status
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Ready	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+StaticText2
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Total Years:	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+years
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+0	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+StaticText3
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Insects:	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+StaticText4
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Fruits:	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+StaticText5
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text	S. Seeds:	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+StaticText6
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text	M. Seeds:	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+StaticText7
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text	L. Seeds:	TextAlign
+0	TextColor
+0	MultiLine
+False	
+StaticText
+Name
+StaticText8
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+C. Corollas:	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+StaticText9
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+S. Corollas:	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name	insectbox
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+0	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+fruitbox
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+0	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+sseedbox
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+0	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+mseedbox
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+0	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+lseedbox
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+0	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+cnectorbox
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+0	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+snectorbox
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+0	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+StaticText10
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Total food left:	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+StaticText11
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Status:	TextAlign
+0	TextColor
+0	MultiLine
+False
+Line
+Name
+Line1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+BorderWidth
+1	LineColor
+8947848
+Menu
+Menu
+MenuItem
+About...
+AppleAbout
+MenuItem
+MenuItem
+File
+MenuItem
+Quit
+FileQuit
+MenuItem
+MenuItem
+Edit
+MenuItem
+Undo
+EditUndo
+MenuItem
+MenuItem
+EditCut
+MenuItem
+Copy
+EditCopy
+MenuItem
+Paste	EditPaste
+MenuItem
+Clear	EditClear
+MenuItem
+MenuItem
+Control
+MenuItem
+Graphic Output
+ControlGraphicOutput
+MenuItem
+Options
+ControlOptions
+MenuItem
+Speciation Watch
+ControlSpeciation
+MenuItem
+MenuItem
+Start
+ControlStart
+MenuItem
+Stop
+ControlStop
+MenuItem
+MenuItem
+Reset
+ControlSetVariables
+MenuItem
+Output Save File
+ControlSave
+MenuItem
+Input Save File
+ControlInput
+MenuItem
+MenuItem
+MenuItem
+Class
+bird
+bird<
+age as integer
+life as integer
+sex as integer
+curve as double
+length as double
+width as double
+temp as string
+Module
+MainMod
+MainMod
+rep_age as integer
+max_age as integer
+total as integer
+max_baby as integer
+min_baby as integer
+rec_food as integer
+mut_max as integer
+max_birds as integer
+birds(1) as bird
+needsave as integer
+matemode as integer
+speci_count as integer
+speci_mem as integer
+speci_stop as boolean
+	statusadd
+stringg as string
+ Sub statusadd(stringg as string)5output.out.text = output.out.text + chr(13) + stringg
+End Sub
+startup
+Sub startup()
+redim birds(1)
+getprefs
+dimbirds
+main.years.text = str(0)%statusadd("Set prefs and variables.")
+birds(0).age = 0
+birds(0).sex = 0
+birds(1).age = 0
+birds(1).sex = 1
+birds(0).life = max_age
+birds(1).life = max_age	total = 2
+needsave = 0
+app.nt = new rt
+app.nt.terminate = false
+app.nt.running = false
+main.totbirds.text = str(total)
+End Sub
+getprefs
+Sub getprefs()
+setname("EvolverPrefs","????")
+readin
+// Pane One;prefs.fruitb.text = str(GetIntegerValue("fruitb",60,false))=prefs.insectb.text = str(GetIntegerValue("insectb",60,false))5prefs.nsb.text = str(GetIntegerValue("nsb",60,false))5prefs.ncb.text = str(GetIntegerValue("ncb",60,false))5prefs.ssb.text = str(GetIntegerValue("ssb",60,false))5prefs.smb.text = str(GetIntegerValue("smb",60,false))5prefs.slb.text = str(GetIntegerValue("slb",60,false))2fruit_support = GetIntegerValue("fruitb",60,false)4insect_support = GetIntegerValue("insectb",60,false)7nector_curved_support = GetIntegerValue("nsb",60,false)9nector_straight_support = GetIntegerValue("ncb",60,false)4seed_small_support = GetIntegerValue("ssb",60,false)5seed_medium_support = GetIntegerValue("smb",60,false)4seed_large_support = GetIntegerValue("slb",60,false)
+>prefs.mbirdsb.text = str(GetIntegerValue("mbirdsb",100,false))9prefs.spanb.text = str(GetIntegerValue("spanb",10,false))5prefs.trb.text = str(GetIntegerValue("trb",10,false))>prefs.recfoodb.text = str(GetIntegerValue("recfoodb",5,false))>prefs.maxbabyb.text = str(GetIntegerValue("maxbabyb",5,false))>prefs.minbabyb.text = str(GetIntegerValue("minbabyb",2,false))0max_birds = GetIntegerValue("mbirdsb",100,false)+max_age = GetIntegerValue("spanb",10,false))mut_max = GetIntegerValue("trb",10,false).rec_food = GetIntegerValue("recfoodb",5,false).max_baby = GetIntegerValue("maxbabyb",5,false).min_baby = GetIntegerValue("minbabyb",2,false)
+// Pane Two
+-prefs.iw.text = GetStringValue("iw","",false)-prefs.il.text = GetStringValue("il","",false)-prefs.ic.text = GetStringValue("ic","",false)-prefs.fw.text = GetStringValue("fw","",false)-prefs.fl.text = GetStringValue("fl","",false)-prefs.fc.text = GetStringValue("fc","",false)/prefs.ssw.text = GetStringValue("ssw","",false)/prefs.ssl.text = GetStringValue("ssl","",false)/prefs.ssc.text = GetStringValue("ssc","",false)/prefs.msw.text = GetStringValue("msw","",false)/prefs.msl.text = GetStringValue("msl","",false)/prefs.msc.text = GetStringValue("msc","",false)/prefs.lsw.text = GetStringValue("lsw","",false)/prefs.lsl.text = GetStringValue("lsl","",false)/prefs.lsc.text = GetStringValue("lsc","",false)/prefs.snw.text = GetStringValue("snw","",false)/prefs.snl.text = GetStringValue("snl","",false)/prefs.snc.text = GetStringValue("snc","",false)/prefs.cnw.text = GetStringValue("cnw","",false)/prefs.cnl.text = GetStringValue("cnl","",false)/prefs.cnc.text = GetStringValue("cnc","",false)
+// Pane three.matemode = GetIntegerValue("matemode",1,false)
+prefs.randmate.value = false
+prefs.selmate.value = false
+prefs.semimate.value = false
+if (matemode = 1) then
+prefs.randmate.value = true
+elseif (matemode = 2) then
+prefs.selmate.value = true
+elseif (matemode = 3) then
+prefs.semimate.value = true
+else
+prefs.randmate.value = true
+end if;prefs.maxdist.text = GetStringValue("maxdist",str(3),false)
+//Pane four
+prefs.detect_species.value = GetBooleanValue("detect_species",prefs.detect_species.value,false)
+prefs.stop_running.value = GetBooleanValue("stop_running",prefs.stop_running.value,false)
+prefs.save_new.value = GetBooleanValue("save_new",prefs.save_new.value,false)
+prefs.save_continue.value = GetBooleanValue("save_continue",prefs.save_continue.value,false)
+prefs.num_gen_stop.text = str(GetDoubleValue("num_gen_stop",val(prefs.num_gen_stop.text),false))
+prefs.gen_stop.value = GetBooleanValue("gen_stop",prefs.gen_stop.value,false)
+fruit = fruit_support
+insect = insect_support%nector_curved = nector_curved_support)nector_straight = nector_straight_support
+seed_small = seed_small_support!seed_medium = seed_medium_support
+seed_large = seed_large_support
+needsave = 0
+speci_stop = false
+speci_count = 0
+speci_mem = 0
+End Sub
+mainloop
+Sub mainloop()
+rem OK, here goes.  At this point we should atleast have a few birds.$rem In the array.  Lets get started.	foodreset
+age //Age the birds.
+eat //Birds gota eat!
+babys //Lets have some kids!
+updategraphs/main.years.text = str(val(main.years.text) + 1)
+dispfood
+main.totbirds.text = str(total)
+if ((prefs.detect_species.value = true) and (speci_stop = false)) then
+speci_count = speci_count + 1
+if (speci_count > 5) then
+speci_count = 0
+if (speci_check) then
+speci_mem = speci_mem + 1
+if (speci_mem = 3) then
+deal_with_speciation
+end if
+else
+speci_mem = 0
+end if
+end if
+end if
+if ((prefs.gen_stop.value = true) and (val(prefs.num_gen_stop.text) > 0)) then=if (val(main.years.text) > val(prefs.num_gen_stop.text)) then
+deal_with_speciation
+end if
+end if
+ exception StackoverflowException;msgbox "Stack error occured.  Recovering... (In MAIN LOOP)"
+End Sub
+dimbirds
+Sub dimbirds()
+dim a as integer
+redim birds(1)
+for a = 0 to 1
+birds(a) = new bird
+birds(a).length = 1
+birds(a).width = 1
+birds(a).curve = 0
+birds(a).age = 0
+next
+End Sub
+removebird
+birdy as integer
+ Sub removebird(birdy as integer)
+birds.remove birdy
+total = total - 1#rem main.totbirds.text = str(total)
+End Sub
+addbird'motherid as integer,fatherid as integer
+4Sub addbird(motherid as integer,fatherid as integer)
+dim newbird as bird5dim fl,fw,fc,ml,mw,mc,aw,al,ac,nl,nw,nc,amt as double
+dim b as integer
+newbird = new bird
+newbird.age = 0
+newbird.life = max_age
+if ((round(rnd*1)) = 0) then
+newbird.sex = 1
+else
+newbird.sex = 0
+end if
+ml = birds(motherid).length
+mw = birds(motherid).width
+mc = birds(motherid).curve
+fl = birds(fatherid).length
+fw = birds(fatherid).width
+fc = birds(fatherid).curve
+al = (ml + fl)/2
+aw = (mw + fw)/2
+ac = (mc + fc)/2
+rem do we mutate?"if ((round(rnd*mut_max)) = 2) then
+rem Yes!  We mutate!
+rem What do we mutate?
+b = round(rnd*2)
+rem how much?
+amt = rnd*1
+if (round(rnd) = 1) then
+amt = amt * -1
+end if
+if (b = 0) then
+ac = ac + amt
+elseif (b = 1) then
+al = al + amt
+elseif (b = 2) then
+aw = aw + amt
+end if
+end if
+if (aw < 0) then
+aw = 0
+end if
+if (al < 0) then
+al = 0
+end if
+if (ac < 0) then
+ac = 0
+end if
+if (aw > 5) then
+aw = 5
+end if
+if (al > 5) then
+al = 5
+end if
+if (ac > 5) then
+ac = 5
+end if
+rem statusadd "New bird: " + "ML: " + str(birds(motherid).length) + " MW:" + str(birds(motherid).width) + " MC:" + str(birds(motherid).curve)
+rem statusadd "      FL: " + str(birds(fatherid).length) + " FW:" + str(birds(fatherid).width) + " FC:" + str(birds(fatherid).curve)
+newbird.length = al
+newbird.width = aw
+newbird.curve = ac6rem Makes a new bird if given mother and father indexs
+birds.append newbird
+total = total + 1
+End Sub
+	Sub age()
+dim b as integer
+for b = 0 to ubound(birds)&if (birds(b).age > birds(b).life) then
+removebird(b)	b = b - 1
+else
+birds(b).age = birds(b).age + 1
+end if
+next
+End Sub
+	Sub eat()%dim b,tmp,food,holder,blah as integer
+dim birdies(0) as integer
+redim birdies(ubound(birds))
+for b = 0 to ubound(birds)
+tmp = round(rnd*ubound(birds))
+while (birds(tmp).temp = "ate")
+tmp = round(rnd*ubound(birds))
+wend
+birdies(b) = tmp
+birds(tmp).temp = "ate"
+next
+resettemps
+for b = 0 to ubound(birdies)
+food = 0
+while (food < (rec_food + 1))!rem OK, now we have a random bird'rem We need to have it eat what it can.
+rem there are 7 food types.
+tmp = round(rnd*7)
+holder = 0 rem OK, we have a random number.
+if (tmp = 1) then&if caneatfruit(birdies(b)) = true then
+if (fruit > 0) then
+fruit = fruit - 1
+food = food + 1
+end if
+end if
+elseif (tmp = 2) then'if caneatinsect(birdies(b)) = true then
+if (insect > 0) then
+insect = insect - 1
+food = food + 1
+holder = 1
+end if
+end if
+elseif (tmp = 3) then/if caneatnectorstraight(birdies(b)) = true then
+if (nector_straight > 0) then%nector_straight = nector_straight - 1
+food = food + 1
+holder = 1
+end if
+end if
+elseif (tmp = 4) then-if caneatnectorcurved(birdies(b)) = true then
+if (nector_curved > 0) then!nector_curved = nector_curved - 1
+food = food + 1
+holder = 1
+end if
+end if
+elseif (tmp = 5) then*if caneatseedsmall(birdies(b)) = true then
+if (seed_small > 0) then
+seed_small = seed_small - 1
+food = food + 1
+holder = 1
+end if
+end if
+elseif (tmp = 6) then+if caneatseedmedium(birdies(b)) = true then
+if (seed_medium > 0) then
+seed_medium = seed_medium - 1
+food = food + 1
+holder = 1
+end if
+end if
+elseif (tmp = 7) then*if caneatseedlarge(birdies(b)) = true then
+if (seed_large > 0) then
+seed_large = seed_large - 1
+food = food + 1
+holder = 1
+end if
+end if
+end if
+if (holder = 0) then
+blah = 0)if (caneatinsect(birdies(b)) = true) then
+if insect > 0 then
+blah = 1
+end if
+end if(if (caneatfruit(birdies(b)) = true) then
+if fruit > 0 then
+blah = 1
+end if
+end if,if (caneatseedsmall(birdies(b)) = true) then
+if seed_small > 0 then
+blah = 1
+end if
+end if-if (caneatseedmedium(birdies(b)) = true) then
+if seed_medium > 0 then
+blah = 1
+end if
+end if,if (caneatseedlarge(birdies(b)) = true) then
+if seed_large > 0 then
+blah = 1
+end if
+end if1if (caneatnectorstraight(birdies(b)) = true) then
+if nector_straight > 0 then
+blah = 1
+end if
+end if/if (caneatnectorcurved(birdies(b)) = true) then
+if nector_curved > 0 then
+blah = 1
+end if
+end if
+if (blah = 0) then"birds(birdies(b)).temp = "starved"
+food = 500
+end if
+end if
+wend
+next
+for b = 0 to ubound(birds)#if (birds(b).temp = "starved") then
+removebird(b)	b = b - 1
+end if
+next
+End Sub
+resettemps
+Sub resettemps()
+dim b,tmp as integer
+for b = 0 to ubound(birds)
+birds(b).temp = ""
+next
+End Sub
+babys
+Sub babys()6dim a,f,g,h,d,b,tmp,food,holder,blah,c,good as integer
+dim e,biggest as double+dim birdies(0),male(0),female(0) as integer
+redim birdies(ubound(birds))
+redim male(-1)
+redim female(-1)
+for b = 0 to ubound(birds)
+tmp = round(rnd*ubound(birds))
+while (birds(tmp).temp = "ate")
+tmp = round(rnd*ubound(birds))
+wend
+birdies(b) = tmp
+birds(tmp).temp = "ate"
+next
+resettemps
+for b = 0 to ubound(birdies)#if (birds(birdies(b)).sex = 0) then
+rem female
+female.append birdies(b)
+else
+rem male
+male.append birdies(b)
+end if
+next
+// Random mating
+if (matemode = 1) then'if (ubound(male) > ubound(female)) then
+for b = 0 to ubound(female)
+tmp = round(rnd*max_baby)
+while (tmp < min_baby)
+tmp = round(rnd*max_baby)
+wend
+for c = 1 to tmp
+addbird(male(b),female(b))
+next
+next
+else
+for b = 0 to ubound(male)
+tmp = round(rnd*max_baby)
+while (tmp < min_baby)
+tmp = round(rnd*max_baby)
+wend
+for c = 1 to tmp
+addbird(male(b),female(b))
+next
+next
+end if
+end if
+// Mate to closest match
+if (matemode = 2) then'if (ubound(male) > ubound(female)) then
+for a = 0 to ubound(female)
+biggest = 10000	good = -1
+e = -1
+for b = 0 to ubound(male)
+if (male(b) <> -1) then6e = abs(birds(male(b)).width - birds(female(a)).width)<e = e + abs(birds(male(b)).length - birds(female(a)).length):e = e + abs(birds(male(b)).curve - birds(female(a)).curve)
+if (e < biggest) then
+biggest = e
+good = b
+end if
+end if
+next
+if (good <> -1) then
+tmp = round(rnd*max_baby)
+while (tmp < min_baby)
+tmp = round(rnd*max_baby)
+wend
+for c = 1 to tmp
+addbird(male(good),female(a))
+next
+male(good) = -1
+end if
+next
+else
+for a = 0 to ubound(male)
+biggest = 10000	good = -1
+e = -1
+for b = 0 to ubound(female)
+if (female(b) <> -1) then6e = abs(birds(female(b)).width - birds(male(a)).width)<e = e + abs(birds(female(b)).length - birds(male(a)).length):e = e + abs(birds(female(b)).curve - birds(male(a)).curve)
+if (e < biggest) then
+biggest = e
+good = b
+end if
+end if
+next
+if (good <> -1) then
+tmp = round(rnd*max_baby)
+while (tmp < min_baby)
+tmp = round(rnd*max_baby)
+wend
+for c = 1 to tmp
+addbird(male(a),female(good))
+next
+female(good) = -1
+end if
+next
+end if
+end if
+// Semi-random mateing
+if (matemode = 3) then
+'if (ubound(female) > ubound(male)) then
+for b = 0 to ubound(male)
+for c = 0 to ubound(female)6e = abs(birds(female(c)).width - birds(male(b)).width)<e = e + abs(birds(female(c)).length - birds(male(b)).length):e = e + abs(birds(female(c)).curve - birds(male(b)).curve)%if (e < val(prefs.maxdist.text)) then
+tmp = round(rnd*max_baby)
+while (tmp < min_baby)
+tmp = round(rnd*max_baby)
+wend
+for d = 1 to tmp
+addbird(male(b),female(c))
+next	c = 20000
+end if
+next
+next
+else
+for b = 0 to ubound(female)
+for c = 0 to ubound(male)6e = abs(birds(male(c)).width - birds(female(b)).width)<e = e + abs(birds(male(c)).length - birds(female(b)).length):e = e + abs(birds(male(c)).curve - birds(female(b)).curve)%if (e < val(prefs.maxdist.text)) then
+tmp = round(rnd*max_baby)
+while (tmp < min_baby)
+tmp = round(rnd*max_baby)
+wend
+for d = 1 to tmp
+addbird(male(c),female(b))
+next	c = 20000
+end if
+next
+next
+end if
+end if
+End Sub
+updategraphs
+Sub updategraphs()
+dim a,b,c as integer
+dim incolor as color
+if (graphs.visible = true) then
+graphs.canvas1.clear_pict
+graphs.canvas2.clear_pict
+graphs.canvas3.clear_pict if (graphs.fv.value = true) then
+for a = 0 to ubound(birds):if (caneatfruit(a) = true and graphs.fs.value = true) then
+incolor = rgb(0,0,255)?elseif (caneatinsect(a) = true and graphs.is.value = true) then
+incolor = rgb(0,0,255)
+elseif (caneatseedsmall(a) = true and graphs.sss.value = true) then
+incolor = rgb(0,0,255)
+elseif (caneatseedmedium(a) = true and graphs.mss.value = true) then
+incolor = rgb(0,0,255)
+elseif (caneatseedlarge(a) = true and graphs.lss.value = true) then
+incolor = rgb(0,0,255)
+elseif (caneatnectorcurved(a) = true and graphs.cns.value = true) then
+incolor = rgb(0,0,255)
+elseif (caneatnectorstraight(a) = true and graphs.sns.value = true) then
+incolor = rgb(0,0,255)9elseif (birds(a).sex = 1 and graphs.md.value = true) then
+incolor = rgb(0,0,255)9elseif (birds(a).sex = 0 and graphs.fd.value = true) then
+incolor = rgb(0,0,255)
+else
+incolor = rgb(255,0,0)
+end if=graphs.canvas1.drawpt(birds(a).length,birds(a).width,incolor)<graphs.canvas2.drawpt(birds(a).curve,birds(a).width,incolor)=graphs.canvas3.drawpt(birds(a).length,birds(a).curve,incolor)
+next
+else
+incolor = rgb(255,0,0)
+for a = 0 to ubound(birds)=graphs.canvas1.drawpt(birds(a).length,birds(a).width,incolor)<graphs.canvas2.drawpt(birds(a).curve,birds(a).width,incolor)=graphs.canvas3.drawpt(birds(a).length,birds(a).curve,incolor)
+next
+end if
+graphs.canvas1.disp_pict
+graphs.canvas2.disp_pict
+graphs.canvas3.disp_pict
+end if
+End Sub
+loadold%inblah as folderitem,tempp as integer
+*2Sub loadold(inblah as folderitem,tempp as integer)
+dim f as folderitem
+dim s as textinputstream
+dim a as integer
+dim tempbird as bird
+dim blah as string
+tempbird = new bird
+if (tempp = 1) then
+f = inblah
+else
+f = getopenfolderitem("text")
+end if
+if (f <> nil) then
+s = f.openastextfile
+if (s <> nil) then
+redim birds(-1)
+main.years.text = s.readline
+getprefs	total = 0	foodreset
+dispfood
+while (s.eof = false)
+blah = s.readline
+tempbird = new bird+tempbird.length = val(nthfield(blah,":",1))*tempbird.width = val(nthfield(blah,":",2))*tempbird.curve = val(nthfield(blah,":",3))(tempbird.sex = val(nthfield(blah,":",4))(tempbird.age = val(nthfield(blah,":",5)))tempbird.life = val(nthfield(blah,":",6))
+birds.append tempbird
+total = total + 1
+main.totbirds.text = str(total)
+wend
+s.close
+else
+needsave = 1
+end if
+else
+needsave = 1
+end if
+End Sub	savearray
+mode as integer
+Sub savearray(mode as integer)
+dim f as folderitem
+dim s as textoutputstream
+dim a as integer
+dim d as date
+dim st as string
+d = new date
+if (mode < 5) then,f = getsavefolderitem("","Saved Bird Array")
+else
+f = desktopfolder$st = d.shortdate + " " + d.shorttime
+st = replaceall(st,":","-")'if (right(f.absolutepath,1) = ":") then&f = getfolderitem(f.absolutepath + st)
+else,f = getfolderitem(f.absolutepath + ":" + st)
+end if
+end if
+if (f <> nil) then
+s = f.createtextfile
+if (s <> nil) then
+s.writeline main.years.text
+for a = 0 to ubound(birds)
+s.writeline str(birds(a).length) + ":" + str(birds(a).width) + ":" + str(birds(a).curve) + ":" + str(birds(a).sex) + ":" + str(birds(a).age) + ":" + str(birds(a).life)
+next
+s.close
+f.mactype = "TEXT"
+f.maccreator = "evol"
+needsave = 0
+if (mode = 1) then
+msgbox "File saved."
+elseif (mode = 1) then
+quit
+end if
+end if
+elseif (mode = 1) then
+quit
+end if
+End Sub
+saveapic
+g as picture
+Sub saveapic(g as picture)
+dim f as folderitem
+dim p as picture"p = newpicture(g.width,g.height,8)
+p.graphics.drawpicture g,0,0!f=getsavefolderitem("","Picture")
+if f<> nil then
+f.saveaspicture p
+end if
+End Sub
+getdist6x as integer,y as integer,cx as integer, cy as integer
+double
+Function getdist(x as integer,y as integer,cx as integer, cy as integer) As double(return sqrt(Pow((X-CX),2)+Pow((Y-CY),2))
+End Function
+speci_check
+boolean
+!Function speci_check() As boolean
+dim a,b,c as integer&dim pos_x, pos_y,dist_check as integer
+dim pix_color as color9dim cur_x,cur_y,cur_amt,high_x,high_y,high_amt as integer
+dim pict as picture
+dim speciation as boolean.'For now, lets work with canvas1 as our image.
+pict = newpicture(graphs.canvas1.width,graphs.canvas1.height,16)='Pict is now clear, however we need to make it have rgb 0,0,0$pict.graphics.forecolor = rgb(0,0,0)%pict.graphics.fillrect(0,0,1000,1000))'OK, now lets loop through all the birds.
+for a = 0 to ubound(birds).pos_x = graphs.canvas1.trans_x(birds(a).width)/pos_y = graphs.canvas1.trans_y(birds(a).length))'OK, we have the pixel locations to plot..'We are going to draw a 5 x 5 square of pixels2'around the center pixel.  Pixel colors are ADDED.
+cur_x = pos_x - 2
+cur_y = pos_y - 2
+for b = 1 to 5
+for c = 1 to 55cur_amt = 5 - round(getdist(cur_x,cur_y,pos_x,pos_y)),pix_color = pict.graphics.pixel(cur_x,cur_y)
+pict.graphics.pixel(cur_x,cur_y) = rgb(pix_color.red + (cur_amt*10),200,pix_color.red + (cur_amt*10))
+cur_x = cur_x + 1
+next
+cur_x = pos_x - 2
+cur_y = cur_y + 1
+next
+next
+3'filter out low lvl points, and find highest point.
+for a = 0 to ubound(birds).pos_x = graphs.canvas1.trans_x(birds(a).width)/pos_y = graphs.canvas1.trans_y(birds(a).length)
+cur_x = pos_x - 2
+cur_y = pos_y - 2
+for b = 1 to 5
+for c = 1 to 5,pix_color = pict.graphics.pixel(cur_x,cur_y)
+if (pix_color.red < 135) then-pict.graphics.pixel(cur_x,cur_y) = rgb(0,0,0)
+else
+'work to find highest pt"if (pix_color.red > high_amt) then
+high_amt = pix_color.red
+high_x = cur_x
+high_y = cur_y
+end if
+end if
+cur_x = cur_x + 1
+next
+cur_x = pos_x - 2
+cur_y = cur_y + 1
+next
+next
+speciation = false
+'display highest point&pict.graphics.forecolor = rgb(0,0,255)1pict.graphics.filloval(high_x - 2,high_y - 2,4,4)
+ 'Start looking for lower points.
+for a = 0 to ubound(birds).pos_x = graphs.canvas1.trans_x(birds(a).width)/pos_y = graphs.canvas1.trans_y(birds(a).length)
+cur_x = pos_x - 2
+cur_y = pos_y - 2
+for b = 1 to 5
+for c = 1 to 5,pix_color = pict.graphics.pixel(cur_x,cur_y)
+if (pix_color.red > 140) then/dist_check = getdist(cur_x,cur_y,high_x,high_y)
+if (dist_check > 35) then
+speciation = true/pict.graphics.pixel(cur_x,cur_y) = rgb(255,0,0)
+end if
+end if
+cur_x = cur_x + 1
+next
+cur_x = pos_x - 2
+cur_y = cur_y + 1
+next
+next
+"speci_win.last = speci_win.current
+speci_win.current = pict
+;speci_win.output.graphics.drawpicture speci_win.current,0,0
+if (speciation) then
+return true
+else
+return false
+end if
+End Function
+deal_with_speciation
+Sub deal_with_speciation()
+dim a as integer)if (prefs.stop_running.value = true) then
+graphs.visible=false
+if (app.nt.running = true) then
+app.nt.terminate = true(main.status.text = "Stoped (Speciation)"
+end if
+end if%if (prefs.save_new.value = true) then
+speci_stop = true
+graphs.visible = false
+app.nt.terminate = true
+app.nt.special_mode = 1.elseif (prefs.save_continue.value = true) then
+speci_stop = true
+savearray(6)
+needsave = 1
+end if
+End Sub
+Module
+Food
+Food
+insect as integer
+insect_support as integer
+fruit as integer
+fruit_support as integer
+nector_curved as integer
+ nector_curved_support as integer
+nector_straight as integer
+"nector_straight_support as integer
+seed_small as integer
+seed_small_support as integer
+seed_medium as integer
+seed_medium_support as integer
+seed_large as integer
+seed_large_support as integer
+	foodreset
+Sub foodreset()
+fruit = fruit_support
+insect = insect_support
+seed_small = seed_small_support!seed_medium = seed_medium_support
+seed_large = seed_large_support)nector_straight = nector_straight_support%nector_curved = nector_curved_support
+End Sub
+caneatfruit
+bird as integer
+boolean
+0Function caneatfruit(bird as integer) As boolean;if (birds(bird).width <= 3 and birds(bird).curve <= 1) then
+return true
+end if
+return false
+End Function
+caneatinsect
+bird as integer
+boolean
+1Function caneatinsect(bird as integer) As boolean if (birds(bird).width <= 3) then
+return true
+end if
+return false
+End Function
+caneatseedsmall
+bird as integer
+boolean
+4Function caneatseedsmall(bird as integer) As boolean if (birds(bird).curve <= 2) then
+return true
+end if
+return false
+End Function
+caneatseedmedium
+bird as integer
+boolean
+5Function caneatseedmedium(bird as integer) As boolean;if (birds(bird).width >= 2 and birds(bird).curve <= 2) then
+return true
+end if
+return false
+End Function
+caneatseedlarge
+bird as integer
+boolean
+4Function caneatseedlarge(bird as integer) As boolean<if (birds(bird).width >= 3 and birds(bird).length <= 3) then
+return true
+end if
+return false
+End Function
+caneatnectorcurved
+bird as integer
+boolean
+7Function caneatnectorcurved(bird as integer) As boolean
+if (birds(bird).width <= 2 and birds(bird).length >= 4 and birds(bird).curve >= 3) then
+return true
+end if
+return false
+End Function
+caneatnectorstraight
+bird as integer
+boolean
+9Function caneatnectorstraight(bird as integer) As boolean
+if (birds(bird).width <= 2 and birds(bird).curve <= 2 and birds(bird).length > 2) then
+return true
+end if
+return false
+End Function
+dispfood
+Sub dispfood()
+main.fruitbox.text = str(fruit)!main.insectbox.text = str(insect)$main.sseedbox.text = str(seed_small)%main.mseedbox.text = str(seed_medium)$main.lseedbox.text = str(seed_large)+main.snectorbox.text = str(nector_straight))main.cnectorbox.text = str(nector_curved)
+End Sub
+records
+Sub records()/// Insects, fruits, nectors (flower depth -2-),
+// seeds (size -3-)
+!// insects:            width <= 3-// fruits:             width <= 3, curve <= 1
+// nectors:;//   curved corolla:   curve => 3, width <= 2, length => 4 9//   straight corolla: curve <= 2, width <= 2, length > 2	// seeds:!//   small seed:       curve <= 2-//   medium seed:      curve <= 2, width => 2.//   large seed:       width => 3, length <= 3
+End Sub
+Class
+Application
+nt as RT
+HandleAppleEvent
+Function HandleAppleEvent(event As AppleEvent, eventClass As String, eventID As String) As Boolean
+End Function
+OpenDocument
+$Sub OpenDocument(item As FolderItem)
+if (needsave = 1) then
+varifywin.show()
+varifywin.temp = item
+varifywin.tempp = 1
+needsave = 0
+else
+loadold(item,1)
+end if
+End Sub
+NewDocument
+Sub NewDocument()
+End Sub
+Open
+Sub Open()
+getprefs
+startup
+nt = new RT
+nt.terminate = false
+nt.running = false!graphs.width = graphs.width - 150
+End Sub
+Close
+Sub Close()
+End Sub
+EnableMenuItems
+Sub EnableMenuItems()
+controlstart.enable
+controlstop.enable
+controlsetvariables.enable
+controloptions.enable
+controlinput.enable
+controlsave.enable
+controlgraphicoutput.enable
+filequit.enable
+appleabout.enable
+controlspeciation.enable
+End Sub
+ControlStop
+Function Action As Boolean
+graphs.visible=false
+if (nt.running = true) then
+nt.terminate = true
+nt.special_mode = 0
+main.status.text = "Stopping"
+end if exception StackoverflowException,msgbox "Stack error occured.  Recovering..."
+End Function
+ControlStart
+Function Action As Boolean
+if (nt.running = false) then
+needsave = 1
+nt = new RT
+nt.terminate = false
+nt.running = true
+nt.run
+graphs.redraw.enabled = false
+main.status.text = "Running"
+end if
+End Function
+ControlSetVariables
+Function Action As Boolean
+if (nt.running = false) then
+startup
+main.status.text = "Reset"
+else
+msgbox "Please stop running the current simulation before you reset variables."
+end if
+End Function
+ControlOutput
+Function Action As Boolean
+output.show()
+End Function
+ControlOptions
+Function Action As Boolean
+prefs.show()
+End Function
+ControlGraphicOutput
+Function Action As Boolean if (graphs.visible = false) then if (graphs.fv.value = true) then
+graphs.width = 477
+else
+graphs.width = 327
+end if
+if (nt.running = false) then
+graphs.redraw.enabled = true
+else
+graphs.redraw.enabled = false
+end if
+graphs.visible=true
+else
+graphs.visible = false
+end if
+End Function
+ControlSave
+Function Action As Boolean
+savearray(0)
+End Function
+ControlInput
+Function Action As Boolean
+dim f as folderitem
+if (needsave = 1) then
+varifywin.show()
+else
+loadold(f,0)
+end if
+End Function
+FileQuit
+Function Action As Boolean
+if (needsave = 1) then
+save.show()
+else
+quit
+end if
+End Function
+AppleAbout
+Function Action As Boolean
+about.show()
+about.place = -170
+about.timer1.mode = 2
+End Function
+ControlSpeciation
+Function Action As Boolean
+speci_win.show()
+speci_win.visible = true,if (prefs.detect_species.value = false) then9msgbox "Speciation detection is not currently turned on."
+speci_win.hide()
+speci_win.visible = false
+end if
+End Function
+View
+output
+Name
+output
+Frame
+HasBackColor
+True	BackColor
+16777215
+Backdrop
+Title
+Run Output
+Visible
+True
+CloseBox
+False
+GrowIcon
+True
+ZoomIcon
+True
+BalloonHelp
+	Placement
+Width
+Height
+MinWidth
+64	MinHeight
+MaxWidth
+32000	MaxHeight
+32000
+output
+Dialog
+Open
+Sub Open()
+output.hide()
+End Sub
+	EditField
+PushButton
+Action
+Sub Action()
+output.hide()
+End Sub
+PushButton
+Action
+Sub Action()
+out.text = ""
+End Sub
+	EditField
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+True
+LockTop
+True	LockRight
+True
+LockBottom
+True
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+True	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+PushButton
+Name
+PushButton1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+True
+LockTop
+False	LockRight
+False
+LockBottom
+True
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Hide
+Default
+False
+Cancel
+False
+Enabled
+True
+PushButton
+Name
+PushButton2
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+True
+LockTop
+False	LockRight
+False
+LockBottom
+True
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Clear
+Default
+False
+Cancel
+False
+Enabled
+True
+View
+prefs
+Name
+prefs
+Frame
+HasBackColor
+True	BackColor
+15658734
+Backdrop
+Title
+Options
+Visible
+True
+CloseBox
+False
+GrowIcon
+True
+ZoomIcon
+True
+BalloonHelp
+	Placement
+Width
+Height
+MinWidth
+64	MinHeight
+MaxWidth
+32000	MaxHeight
+32000
+prefs
+Dialog
+	saveprefs
+;	;	
+Sub saveprefs()
+setname("EvolverPrefs","????")
+// Pane one0SetIntegerValue("fruitb",val(fruitb.text),false)2SetIntegerValue("insectb",val(insectb.text),false)*SetIntegerValue("nsb",val(nsb.text),false)*SetIntegerValue("ncb",val(ncb.text),false)*SetIntegerValue("ssb",val(ssb.text),false)*SetIntegerValue("smb",val(smb.text),false)*SetIntegerValue("slb",val(slb.text),false)
+2SetIntegerValue("mbirdsb",val(mbirdsb.text),false).SetIntegerValue("spanb",val(spanb.text),false)*SetIntegerValue("trb",val(trb.text),false)4SetIntegerValue("recfoodb",val(recfoodb.text),false)4SetIntegerValue("maxbabyb",val(maxbabyb.text),false)4SetIntegerValue("minbabyb",val(minbabyb.text),false)
+// Pane two
+"SetStringValue("iw",iw.text,false)"SetStringValue("il",il.text,false)"SetStringValue("ic",ic.text,false)"SetStringValue("fw",fw.text,false)"SetStringValue("fl",fl.text,false)"SetStringValue("fc",fc.text,false)$SetStringValue("ssw",ssw.text,false)$SetStringValue("ssl",ssl.text,false)$SetStringValue("ssc",ssc.text,false)$SetStringValue("msw",msw.text,false)$SetStringValue("msl",msl.text,false)$SetStringValue("msc",msc.text,false)$SetStringValue("lsw",lsw.text,false)$SetStringValue("lsl",lsl.text,false)$SetStringValue("lsc",lsc.text,false)$SetStringValue("snw",snw.text,false)$SetStringValue("snl",snl.text,false)$SetStringValue("snc",snc.text,false)$SetStringValue("cnw",cnw.text,false)$SetStringValue("cnl",cnl.text,false)$SetStringValue("cnc",cnc.text,false)
+// Pane three
+if (randmate.value = true) then#SetIntegerValue("matemode",1,false)"elseif (selmate.value = true) then#SetIntegerValue("matemode",2,false)#elseif (semimate.value = true) then#SetIntegerValue("matemode",3,false)
+end if,SetStringValue("maxdist",maxdist.text,false)
+//Pane four<SetBooleanValue("detect_species",detect_species.value,false)
+8SetBooleanValue("stop_running",stop_running.value,false)0SetBooleanValue("save_new",save_new.value,false):SetBooleanValue("save_continue",save_continue.value,false)
+;SetDoubleValue("num_gen_stop",val(num_gen_stop.text),false)0SetBooleanValue("gen_stop",gen_stop.value,false)
+writeout
+getprefs
+End Sub
+Open
+Sub Open()
+prefs.hide()
+End Sub
+PushButton
+Action
+Sub Action()	saveprefs
+prefs.hide()
+End Sub
+PushButton
+Action
+Sub Action()
+prefs.hide()
+End Sub
+GroupBox
+StaticText
+	EditField
+KeyDown
+*Function KeyDown(Key As String) As Boolean
+End Function
+StaticText
+StaticText
+	EditField
+StaticText
+	EditField
+StaticText
+	EditField
+StaticText
+	EditField
+StaticText
+	EditField
+StaticText
+	EditField
+GroupBox
+StaticText
+StaticText
+StaticText
+StaticText
+StaticText
+StaticText
+	EditField
+KeyDown
+*Function KeyDown(Key As String) As Boolean
+End Function
+	EditField
+	EditField
+	EditField
+	EditField
+	EditField
+TabPanel
+Change
+Sub Change()
+End Sub
+RadioButton
+StaticText
+RadioButton
+StaticText
+RadioButton
+StaticText
+	EditField
+StaticText
+StaticText
+StaticText
+StaticText
+StaticText
+StaticText
+	EditField
+	EditField
+	EditField
+StaticText
+	EditField
+	EditField
+	EditField
+StaticText
+	EditField
+	EditField
+	EditField
+StaticText
+	EditField
+	EditField
+	EditField
+StaticText
+	EditField
+	EditField
+	EditField
+StaticText
+	EditField
+	EditField
+	EditField
+StaticText
+	EditField
+	EditField
+	EditField
+StaticText
+	Rectangle
+	MouseMove
+)Sub MouseMove(X As Integer, Y As Integer)
+End Sub
+StaticText
+StaticText
+CheckBox
+StaticText
+StaticText
+CheckBox
+Action
+Sub Action()
+if (me.value = true) then
+save_continue.value = false
+save_new.value = false
+end if
+End Sub
+CheckBox
+Action
+Sub Action()
+if (me.value = true) then
+stop_running.value = false
+save_continue.value = false
+end if
+End Sub
+CheckBox
+Action
+Sub Action()
+if (me.value = true) then
+stop_running.value = false
+save_new.value = false
+end if
+End Sub
+StaticText
+	EditField
+	MouseExit
+Sub MouseExit()
+hidden.setfocus
+End Sub
+KeyDown
+*Function KeyDown(Key As String) As Boolean
+End Function
+StaticText
+CheckBox
+	EditField
+	Rectangle
+Name
+Rectangle1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False	FillColor
+13421772
+BorderWidth
+TopLeftColor
+BottomRightColor
+11184810
+TabPanel
+Name	TabPanel1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TabDefinition6General Settings
+Food Zones
+Mating Settings
+Speciation
+Enabled
+True
+PushButton
+Name
+PushButton1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Save
+Default
+True
+Cancel
+False
+Enabled
+True
+PushButton
+Name
+PushButton2
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Abort
+Default
+False
+Cancel
+False
+Enabled
+True
+GroupBox
+Name	GroupBox1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+True
+Italic
+False	Underline
+False
+Caption
+Food Support Values
+Enabled
+True
+StaticText
+Name
+StaticText2
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Fruit	TextAlign
+0	TextColor
+0	MultiLine
+False
+	EditField
+Name
+fruitb
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+StaticText
+Name
+StaticText3
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+True
+Italic
+False	Underline
+False
+Text
+Name                  Supports:	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+StaticText4
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Insects	TextAlign
+0	TextColor
+0	MultiLine
+False
+	EditField
+Name
+insectb
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+StaticText
+Name
+StaticText5
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Straight Corollas	TextAlign
+0	TextColor
+0	MultiLine
+False
+	EditField
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+StaticText
+Name
+StaticText6
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Curved Corollas	TextAlign
+0	TextColor
+0	MultiLine
+False
+	EditField
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+StaticText
+Name
+StaticText7
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Small Seeds	TextAlign
+0	TextColor
+0	MultiLine
+False
+	EditField
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+StaticText
+Name
+StaticText1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Medium Seeds	TextAlign
+0	TextColor
+0	MultiLine
+False
+	EditField
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+StaticText
+Name
+StaticText8
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Large Seeds	TextAlign
+0	TextColor
+0	MultiLine
+False
+	EditField
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+GroupBox
+Name	GroupBox2
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+True
+Italic
+False	Underline
+False
+Caption
+General Settings
+Enabled
+True
+StaticText
+Name
+StaticText9
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text	Max Birds	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+StaticText11
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text	Life Span	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+StaticText12
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Mutation Rate	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+StaticText13
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Req Food	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+StaticText14
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Max Offspring	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+StaticText15
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Min Offspring	TextAlign
+0	TextColor
+0	MultiLine
+False
+	EditField
+Name
+mbirdsb
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+	EditField
+Name
+spanb
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+	EditField
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+	EditField
+Name
+recfoodb
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+	EditField
+Name
+maxbabyb
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+	EditField
+Name
+minbabyb
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+RadioButton
+Name
+randmate
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+True
+Italic
+False	Underline
+False
+Caption
+Random Mating
+Value
+False
+Enabled
+True 
+StaticText
+Name
+StaticText10
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text<Birds mate with a random partner,  regardless of beak shape.	TextAlign
+0	TextColor
+0	MultiLine
+True!
+RadioButton
+Name
+selmate
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+True
+Italic
+False	Underline
+False
+Caption
+Assortative Mating
+Value
+False
+Enabled
+True"
+StaticText
+Name
+StaticText16
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text5Each bird selects a partner that is most like itself.	TextAlign
+0	TextColor
+0	MultiLine
+True#
+RadioButton
+Name
+semimate
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+True
+Italic
+False	Underline
+False
+Caption
+Semi-random Mating
+Value
+True
+Enabled
+True$
+StaticText
+Name
+StaticText17
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Each bird selects a random partner.  If the difference between its beak shape and its partner's is greater  than the difference variable (which can be set below) allows, then a new partner will be picked.  If a bird can't find any unpaired partner, then it will not mate that year.	TextAlign
+0	TextColor
+0	MultiLine
+True%	EditField
+Name
+maxdist
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+StaticText
+Name
+StaticText18
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+True
+Italic
+False	Underline
+False
+Text
+Maximum Difference	TextAlign
+0	TextColor
+0	MultiLine
+False'
+StaticText
+Name
+StaticText19
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+This program allows for 7 food types.  These food types are listed on the remaining portion of this window.  To determine which beak shapes can eat which foods, you need to set the beak shape requirements.  Each food has a beak width, length, and curve setting.  If a setting should be null, and is not needed, put 100 in the field.	TextAlign
+0	TextColor
+0	MultiLine
+True(
+StaticText
+Name
+StaticText20
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+True
+Italic
+False	Underline
+False
+Text	Example: 	TextAlign
+0	TextColor
+0	MultiLine
+False)
+StaticText
+Name
+StaticText21
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text1Food: Insects  Width: < 3  Length: 100 Curve: < 4	TextAlign
+0	TextColor
+0	MultiLine
+False*
+StaticText
+Name
+StaticText22
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+True
+Italic
+False	Underline
+False
+Text
+Insects:	TextAlign
+0	TextColor
+0	MultiLine
+False+
+StaticText
+Name
+StaticText23
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+True
+Italic
+False	Underline
+False
+Text5Name                       Width      Length    Curve	TextAlign
+0	TextColor
+16713487	MultiLine
+False,	EditField
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+-	EditField
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+.	EditField
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+StaticText
+Name
+StaticText24
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+True
+Italic
+False	Underline
+False
+Text
+Fruits:	TextAlign
+0	TextColor
+0	MultiLine
+False0	EditField
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+1	EditField
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+2	EditField
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+StaticText
+Name
+StaticText25
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+True
+Italic
+False	Underline
+False
+Text
+Small Seeds:	TextAlign
+0	TextColor
+0	MultiLine
+False4	EditField
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+5	EditField
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+6	EditField
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+StaticText
+Name
+StaticText26
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+True
+Italic
+False	Underline
+False
+Text
+Medium Seeds:	TextAlign
+0	TextColor
+0	MultiLine
+False8	EditField
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+9	EditField
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+:	EditField
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+StaticText
+Name
+StaticText27
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+True
+Italic
+False	Underline
+False
+Text
+Large Seeds:	TextAlign
+0	TextColor
+0	MultiLine
+False<	EditField
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+=	EditField
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+>	EditField
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+StaticText
+Name
+StaticText28
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+True
+Italic
+False	Underline
+False
+Text
+Straight Corollas:	TextAlign
+0	TextColor
+0	MultiLine
+False
+	EditField
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+	EditField
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+	EditField
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+StaticText
+Name
+StaticText29
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+True
+Italic
+False	Underline
+False
+Text
+Curved Corollas:	TextAlign
+0	TextColor
+0	MultiLine
+False
+	EditField
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+	EditField
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+	EditField
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+StaticText
+Name
+StaticText30
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+(The maximum total difference between the two bird's beak  shapes.)	TextAlign
+0	TextColor
+0	MultiLine
+True
+StaticText
+Name
+StaticText31
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+True
+Italic
+False	Underline
+False
+Text
+Options	TextAlign
+0	TextColor
+15538206	MultiLine
+False
+StaticText
+Name
+StaticText32
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+The following options control speciation detection and actions taken if speciation is detected.	TextAlign
+0	TextColor
+0	MultiLine
+True
+CheckBox
+Name
+detect_species
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+True
+Italic
+False	Underline
+False
+Caption
+Detect Species
+Value
+False
+Enabled
+True
+StaticText
+Name
+StaticText33
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text0When speciation is detected, the program should:	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+StaticText34
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+The program should attempt to detect when speciation has occurred by analizing scatter plot data and looking for species divergence.	TextAlign
+0	TextColor
+0	MultiLine
+True
+CheckBox
+Name
+stop_running
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+True
+Italic
+False	Underline
+False
+Caption
+Stop Running
+Value
+False
+Enabled
+True
+CheckBox
+Name
+save_new
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+True
+Italic
+False	Underline
+False
+Caption,Save a bird array file, and start a new run.
+Value
+False
+Enabled
+True
+CheckBox
+Name
+save_continue
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+True
+Italic
+False	Underline
+False
+Caption5Save a bird array file, and continue the current run.
+Value
+False
+Enabled
+True
+StaticText
+Name
+StaticText35
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+True
+Italic
+False	Underline
+False
+Text
+Even if speciation is not detected, the program should do the above after 	TextAlign
+0	TextColor
+0	MultiLine
+True
+	EditField
+Name
+num_gen_stop
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+False	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+15658734
+Enabled
+True
+Text
+2000
+StaticText
+Name
+StaticText36
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+Geneva
+TextSize
+Bold
+True
+Italic
+False	Underline
+False
+Text
+generations.	TextAlign
+0	TextColor
+0	MultiLine
+False
+CheckBox
+Name
+gen_stop
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Value
+False
+Enabled
+True
+	EditField
+Name
+hidden
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+5000
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+False	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+Module
+PrefsModual
+PrefsModual
+CreatorType as string
+PrefsName as string
+set as boolean
+Strings(0) as String
+Integers(0) as Integer
+Singles(0) as Single
+Doubles(0) as Double
+Booleans(0) as Boolean
+BNames(0) as String
+DNames(0) as string
+INames(0) as string
+SNames(0) as string
+Names(0) as string
+Encrypted(0) as boolean
+Benc(0) as boolean
+Denc(0) as boolean
+Ienc(0) as boolean
+Senc(0) as boolean
+Cenc(0) as boolean
+CNames(0) as string
+Colors(0) as string
+Decode
+text as string
+String
+)Function Decode(text as string) As String
+Dim i as Integer
+Dim a,b,out as String
+out = ""
+for i = 1 to len(text)
+a = mid(text,i,1)
+b = chr(asc(a)-len(text))
+if asc(b) < 1 then
+b = chr(asc(b) + 256)
+end if
+out = out + b
+next
+return out
+8// This is the method I use to decode information marked6// as encrypted. Note: Once information is loaded into9// RAM this isn't needed since it is decoded as it is put
+// into the arrays.
+End Function
+Encode
+text as string
+String
+)Function Encode(text as string) As String
+Dim i as Integer
+Dim a,b,out as String
+'msgBox text
+out = ""
+for i = 1 to len(text)
+a = mid(text,i,1)
+b = chr(asc(a)+len(text))
+if asc(b) > 256 then
+b = chr(asc(b) - 256)
+end if
+out = out + b
+next
+return out
+:// This is the method I use to encrypt information that is:// written out to the prefs file (used only if you specify8// it by putting true on the end of the SetValue method)
+End Function
+ReadIn
+Sub ReadIn()
+dim f as FolderItem
+dim b as binaryStream
+dim i as integer
+dim z,x,c as integer
+dim NameT as string
+dim ValT as string
+dim r,g,bl as integer
+dim col as color
+if set then
+redim BNames(-1)
+redim Booleans(-1)
+redim DNames(-1)
+redim Doubles(-1)
+redim INames(-1)
+redim Integers(-1)
+redim Names(-1)
+redim Singles(-1)
+redim SNames(-1)
+redim Strings(-1)
+redim Encrypted(-1)
+redim Benc(-1)
+redim Denc(-1)
+redim Ienc(-1)
+redim Senc(-1)
+redim Cenc(-1)
+redim CNames(-1)
+redim Colors(-1)
+*rem f = preferencesFolder.child(PrefsName)
+f = getfolderitem(PrefsName)
+if f.exists then
+b = f.OpenAsBinaryFile(false)
+do until b.EOF
+c = b.ReadByte
+z = b.ReadByte
+NameT = b.Read(b.ReadShort)
+if z = 1 then
+NameT = Decode(NameT)
+end if
+Select Case c
+Case 1
+BNames.append NameT Booleans.append (b.ReadByte = 1)
+Benc.append (z = 1)
+Case 2
+DNames.append NameT
+Doubles.append b.ReadLong
+Denc.append (z = 1)
+Case 3
+INames.append NameT
+Integers.append b.ReadByte
+Ienc.append (z = 1)
+Case 4
+SNames.append NameT
+Singles.append b.ReadShort
+Senc.append (z = 1)
+Case 5
+Names.append NameT
+ValT = b.Read(b.ReadShort)
+if z = 1 then
+ValT = Decode(ValT)
+end if
+Strings.append ValT
+Encrypted.append (z = 1)
+Case 6
+CNames.append NameT
+r = b.ReadByte
+g = b.ReadByte
+bl = b.ReadByte'Colors.append chr(r) + chr(g) + chr(bl)
+Cenc.append (z = 1)
+End Select
+loop
+b.Close
+end if
+end if
+4// This method reads in all the information from the,// Prefs file and loads it in to two arrays:7// Names and Values. Since we load the information into4// RAM, we don't have to re-read the file every time8// a value is requested. You usually don't have to worry<// about calling this, since it is called from various other
+// methods when needed.
+End Sub
+SetName name as string,creator as string
+!-Sub SetName(name as string,creator as string)
+if not set then
+CreatorType = creator
+PrefsName = name
+set = true
+redim BNames(-1)
+redim Booleans(-1)
+redim DNames(-1)
+redim Doubles(-1)
+redim INames(-1)
+redim Integers(-1)
+redim Names(-1)
+redim Singles(-1)
+redim SNames(-1)
+redim Strings(-1)
+redim Encrypted(-1)
+redim Benc(-1)
+redim Denc(-1)
+redim Ienc(-1)
+redim Senc(-1)
+redim Cenc(-1)
+redim CNames(-1)
+redim Colors(-1)
+end if
+ReadIn
+=// This sets the name of the prefs file you will use. It also6// removes the 0 items from the Names and Values array8// since I prefer working with 0-based arrays. This also<// calls the ReadIn method to read in the values prefs file.
+End Sub
+WriteOut
+Sub WriteOut()
+dim f as FolderItem
+dim b as BinaryStream
+dim t as TextOutputStream
+dim i as integer
+*rem f = preferencesFolder.child(PrefsName)
+f = getfolderitem(PrefsName)
+if not f.exists then
+t = f.CreateTextFile
+t.Close
+f.MacType = "pref"
+f.MacCreator = CreatorType
+end if
+b = f.OpenAsBinaryFile(true)
+b.Length = 0
+if ubound(BNames) >= 0 then
+for i = 0 to ubound(BNames)5b.Length = b.Length + 1 + 1 + 2 + lenb(BNames(i)) + 1
+b.WriteByte 1
+if Benc(i) then
+b.WriteByte 1
+else
+b.WriteByte 0
+end if
+b.WriteShort lenb(BNames(i))
+if Benc(i) then
+b.Write Encode(BNames(i))
+else
+b.Write BNames(i)
+end if
+if Booleans(i) then
+b.WriteByte 1
+else
+b.WriteByte 0
+end if
+next
+end if
+if ubound(DNames) >= 0 then
+for i = 0 to ubound(DNames)5b.Length = b.Length + 1 + 1 + 2 + lenb(DNames(i)) + 4
+b.WriteByte 2
+if Denc(i) then
+b.WriteByte 1
+else
+b.WriteByte 0
+end if
+b.WriteShort lenb(DNames(i))
+if Denc(i) then
+b.Write Encode(DNames(i))
+else
+b.Write DNames(i)
+end if
+b.WriteLong Doubles(i)
+next
+end if
+if ubound(INames) >= 0 then
+for i = 0 to ubound(INames)5b.Length = b.Length + 1 + 1 + 2 + lenb(INames(i)) + 1
+b.WriteByte 3
+if Ienc(i) then
+b.WriteByte 1
+else
+b.WriteByte 0
+end if
+b.WriteShort lenb(INames(i))
+if Ienc(i) then
+b.Write Encode(INames(i))
+else
+b.Write INames(i)
+end if
+b.WriteByte Integers(i)
+next
+end if
+if ubound(SNames) >= 0 then
+for i = 0 to ubound(SNames)5b.Length = b.Length + 1 + 1 + 2 + lenb(SNames(i)) + 2
+b.WriteByte 4
+if Senc(i) then
+b.WriteByte 1
+else
+b.WriteByte 0
+end if
+b.WriteShort lenb(SNames(i))
+if Senc(i) then
+b.Write Encode(SNames(i))
+else
+b.Write SNames(i)
+end if
+b.WriteShort Singles(i)
+next
+end if
+if ubound(Names) >= 0 then
+for i = 0 to ubound(Names)
+b.Length = b.Length + 1 + 1 + 2 + lenb(Names(i)) + 2 + lenb(Strings(i))
+b.WriteByte 5
+if Encrypted(i) then
+b.WriteByte 1
+else
+b.WriteByte 0
+end if
+b.WriteShort lenb(Names(i))
+if Encrypted(i) then
+b.Write Encode(Names(i))
+else
+b.Write Names(i)
+end if
+b.WriteShort lenb(Strings(i))
+if Encrypted(i) then
+b.Write Encode(Strings(i))
+else
+b.Write Strings(i)
+end if
+next
+end if
+if ubound(CNames) >= 0 then
+for i = 0 to ubound(CNames)5b.Length = b.Length + 1 + 1 + 2 + lenb(CNames(i)) + 3
+b.WriteByte 6
+if Cenc(i) then
+b.WriteByte 1
+else
+b.WriteByte 0
+end if
+b.WriteShort lenb(CNames(i))
+if Cenc(i) then
+b.Write Encode(CNames(i))
+else
+b.Write CNames(i)
+end if#b.WriteByte val(mid(Colors(i),1,1))#b.WriteByte val(mid(Colors(i),2,1))#b.WriteByte val(mid(Colors(i),3,1))
+next
+end if
+b.Close
+End Sub
+SetBooleanValue2name as string,value as boolean,encrypt as boolean
+Sub SetBooleanValue(name as string,value as boolean,encrypt as boolean)
+dim i as integer
+if set then
+if ubound(BNames) >= 0 then
+for i = 0 to ubound(BNames)%if StrComp(Name,BNames(i),1) = 0 then
+Booleans(i) = value
+Benc(i) = encrypt
+goto Out
+end if
+next
+end if
+BNames.append name
+Booleans.append value
+Benc.append encrypt
+Out:
+rem WriteOut
+end if
+End Sub
+SetDoubleValue1name as string,value as double,encrypt as boolean
+Sub SetDoubleValue(name as string,value as double,encrypt as boolean)
+dim i as integer
+if set then
+if ubound(DNames) >= 0 then
+for i = 0 to ubound(DNames)%if StrComp(Name,DNames(i),1) = 0 then
+Doubles(i) = value
+Denc(i) = encrypt
+goto Out
+end if
+next
+end if
+DNames.append name
+Doubles.append value
+Denc.append encrypt
+Out:
+rem WriteOut
+end if
+End Sub
+SetIntegerValue2name as string,value as integer,encrypt as boolean
+Sub SetIntegerValue(name as string,value as integer,encrypt as boolean)
+dim i as integer
+if set then
+if ubound(INames) >= 0 then
+for i = 0 to ubound(INames)%if StrComp(Name,INames(i),1) = 0 then
+Integers(i) = value
+Ienc(i) = encrypt
+goto Out
+end if
+next
+end if
+INames.append name
+Integers.append value
+Ienc.append encrypt
+Out:
+rem WriteOut
+end if
+End Sub
+SetSingleValue1name as string,value as single,encrypt as boolean
+Sub SetSingleValue(name as string,value as single,encrypt as boolean)
+dim i as integer
+if set then
+if ubound(SNames) >= 0 then
+for i = 0 to ubound(SNames)%if StrComp(Name,SNames(i),1) = 0 then
+Singles(i) = value
+Senc(i) = encrypt
+goto Out
+end if
+next
+end if
+SNames.append name
+Singles.append value
+Senc.append encrypt
+Out:
+rem WriteOut
+end if
+End Sub
+SetStringValue1name as string,value as string,encrypt as boolean
+Sub SetStringValue(name as string,value as string,encrypt as boolean)
+dim i as integer
+if set then
+if ubound(Names) >= 0 then
+for i = 0 to ubound(Names)$if StrComp(Name,Names(i),1) = 0 then
+Strings(i) = value
+Encrypted(i) = encrypt
+goto Out
+end if
+next
+end if
+Names.append name
+Strings.append value
+Encrypted.append encrypt
+Out:
+rem WriteOut
+end if
+End Sub
+GetStringValue3name as string,default as string,encrypt as boolean
+String
+Function GetStringValue(name as string,default as string,encrypt as boolean) As String
+dim i as integer
+if set then
+if ubound(Names) >= 0 then
+for i = 0 to ubound(Names)$if StrComp(Names(i),name,1) = 0 then
+return Strings(i)
+end if
+next
+end if
+end if
+#SetStringValue name,default,encrypt
+return default
+/// This method searches the Names array for the1// name passed, and then returns the coresponding7// information in the Strings array. If the name is not<// found, it will set it to the default value and return the
+// default value.
+End Function
+GetBooleanValue4name as string,default as boolean,encrypt as boolean
+Boolean
+Function GetBooleanValue(name as string,default as boolean,encrypt as boolean) As Boolean
+dim i as integer
+if set then
+if ubound(BNames) >= 0 then
+for i = 0 to ubound(BNames)%if StrComp(BNames(i),name,1) = 0 then
+return Booleans(i)
+end if
+next
+end if
+end if
+$SetBooleanValue name,default,encrypt
+return default
+/// This method searches the Names array for the1// name passed, and then returns the coresponding7// information in the Strings array. If the name is not<// found, it will set it to the default value and return the
+// default value.
+End Function
+GetDoubleValue3name as string,default as double,encrypt as boolean
+Double
+Function GetDoubleValue(name as string,default as double,encrypt as boolean) As Double
+dim i as integer
+if set then
+if ubound(DNames) >= 0 then
+for i = 0 to ubound(DNames)%if StrComp(DNames(i),name,1) = 0 then
+return Doubles(i)
+end if
+next
+end if
+end if
+#SetDoubleValue name,default,encrypt
+return default
+/// This method searches the Names array for the1// name passed, and then returns the coresponding7// information in the Strings array. If the name is not<// found, it will set it to the default value and return the
+// default value.
+End Function
+GetIntegerValue4name as string,default as integer,encrypt as boolean
+Integer
+Function GetIntegerValue(name as string,default as integer,encrypt as boolean) As Integer
+dim i as integer
+if set then
+if ubound(INames) >= 0 then
+for i = 0 to ubound(INames)%if StrComp(INames(i),name,1) = 0 then
+return Integers(i)
+end if
+next
+end if
+end if
+$SetIntegerValue name,default,encrypt
+return default
+/// This method searches the Names array for the1// name passed, and then returns the coresponding7// information in the Strings array. If the name is not<// found, it will set it to the default value and return the
+// default value.
+End Function
+GetSingleValue3name as string,default as single,encrypt as boolean
+Single
+Function GetSingleValue(name as string,default as single,encrypt as boolean) As Single
+dim i as integer
+if set then
+if ubound(SNames) >= 0 then
+for i = 0 to ubound(SNames)%if StrComp(SNames(i),name,1) = 0 then
+return Singles(i)
+end if
+next
+end if
+end if
+#SetSingleValue name,default,encrypt
+return default
+/// This method searches the Names array for the1// name passed, and then returns the coresponding7// information in the Strings array. If the name is not<// found, it will set it to the default value and return the
+// default value.
+End Function
+DeleteBooleanValue
+name as string
+&Sub DeleteBooleanValue(name as string)
+dim i as integer
+if set then
+if ubound(BNames) >= 0 then
+for i = 0 to ubound(BNames)%if StrComp(BNames(i),name,1) = 0 then
+BNames.remove i
+Booleans.remove i
+Benc.remove i
+WriteOut
+exit
+end if
+next
+end if
+end if
+End Sub
+DeleteDoubleValue
+name as string
+%Sub DeleteDoubleValue(name as string)
+dim i as integer
+if set then
+if ubound(DNames) >= 0 then
+for i = 0 to ubound(DNames)%if StrComp(DNames(i),name,1) = 0 then
+DNames.remove i
+Doubles.remove i
+Denc.remove i
+WriteOut
+exit
+end if
+next
+end if
+end if
+End Sub
+DeleteIntegerValue
+name as string
+&Sub DeleteIntegerValue(name as string)
+dim i as integer
+if set then
+if ubound(BNames) >= 0 then
+for i = 0 to ubound(BNames)%if StrComp(BNames(i),name,1) = 0 then
+BNames.remove i
+Booleans.remove i
+Ienc.remove i
+WriteOut
+exit
+end if
+next
+end if
+end if
+End Sub
+DeleteSingleValue
+name as string
+%Sub DeleteSingleValue(name as string)
+dim i as integer
+if set then
+if ubound(SNames) >= 0 then
+for i = 0 to ubound(SNames)%if StrComp(SNames(i),name,1) = 0 then
+SNames.remove i
+Singles.remove i
+Senc.remove i
+WriteOut
+exit
+end if
+next
+end if
+end if
+End Sub
+DeleteStringValue
+name as string
+%Sub DeleteStringValue(name as string)
+dim i as integer
+if set then
+if ubound(Names) >= 0 then
+for i = 0 to ubound(Names)$if StrComp(Names(i),name,1) = 0 then
+Names.remove i
+Strings.remove i
+Encrypted.remove i
+WriteOut
+exit
+end if
+next
+end if
+end if
+End Sub
+DeleteValue
+name as string
+Sub DeleteValue(name as string)
+if set then
+DeleteBooleanValue name
+DeleteDoubleValue name
+DeleteIntegerValue name
+DeleteSingleValue name
+DeleteStringValue name
+end if
+End Sub
+DeleteColorValue
+name as string
+				
+$Sub DeleteColorValue(name as string)
+dim i as integer
+if set then
+if ubound(CNames) >= 0 then
+for i = 0 to ubound(CNames)%if StrComp(CNames(i),name,1) = 0 then
+CNames.remove i
+Colors.remove i
+Cenc.remove i
+WriteOut
+exit
+end if
+next
+end if
+end if
+End Sub
+GetColorValue2name as string,default as color,encrypt as boolean
+Color
+Function GetColorValue(name as string,default as color,encrypt as boolean) As Color
+dim i as integer
+dim c as color
+dim r,g,b as integer
+if set then
+if ubound(CNames) >= 0 then
+for i = 0 to ubound(CNames)%if StrComp(CNames(i),name,1) = 0 then
+r = val(mid(Colors(i),1,1))
+g = val(mid(Colors(i),2,1))
+b = val(mid(Colors(i),3,1))
+return RGB(r,g,b)
+end if
+next
+end if
+end if
+"SetColorValue name,default,encrypt
+return default
+/// This method searches the Names array for the1// name passed, and then returns the coresponding7// information in the Strings array. If the name is not<// found, it will set it to the default value and return the
+// default value.
+End Function
+SetColorValue0name as string,value as color,encrypt as boolean
+Sub SetColorValue(name as string,value as color,encrypt as boolean)
+dim i as integer
+if set then
+if ubound(CNames) >= 0 then
+for i = 0 to ubound(CNames)%if StrComp(Name,CNames(i),1) = 0 then?Colors(i) = chr(value.red) + chr(value.green) + chr(value.blue)
+Cenc(i) = encrypt
+goto Out
+end if
+next
+end if
+CNames.append name
+Colors.append chr(value.red) + chr(value.green) + chr(value.blue)
+Cenc.append encrypt
+Out:
+rem WriteOut
+end if
+End Sub
+Class
+Thread
+terminate as boolean
+running as boolean
+special_mode as integer
+	Sub Run()
+terminate = false
+special_mode = 0
+while (terminate = false)
+mainloop
+wend
+if (special_mode = 1) then
+savearray(6)
+startup
+main.status.text = "Saved: " + str(val(nthfield(main.status.text," ",2)) + 1)
+needsave = 1
+app.nt = new RT
+app.nt.terminate = false
+app.nt.running = true
+app.nt.run
+graphs.redraw.enabled = false
+else
+main.status.text = "Stopped"
+running = false
+needsave = 1
+graphs.redraw.enabled = true
+end if
+exception NilObjectException2msgbox "NilObjectException detected.....fixing..." exception StackoverflowException8msgbox "Stack error occured.  Recovering... (In THREAD)"
+End Sub
+View
+graphs
+Name
+graphs
+Frame
+HasBackColor
+True	BackColor
+15658734
+Backdrop
+Title
+Graphic Output
+Visible
+False
+CloseBox
+True
+GrowIcon
+False
+ZoomIcon
+False
+BalloonHelp
+	Placement
+Width
+Height
+MinWidth
+64	MinHeight
+MaxWidth
+32000	MaxHeight
+32000
+graphs
+Dialog
+MouseEnter
+Sub MouseEnter()
+End Sub
+Paint
+Sub Paint(g As Graphics)
+canvas1.mark
+canvas3.mark
+canvas2.mark
+canvas1.outline
+canvas3.outline
+canvas2.outline if (graphs.fv.value = true) then
+graphs.width = 477
+else
+graphs.width = 327
+end if if (app.nt.running = false) then
+graphs.redraw.enabled = true
+else
+graphs.redraw.enabled = false
+end if
+End Sub
+Close
+Sub Close()
+graphs.visible=false
+End Sub
+Open
+Sub Open()
+graphs.visible=false
+End Sub
+graphcanvas
+graphcanvas
+graphcanvas
+PushButton
+Action
+Sub Action()
+updategraphs
+End Sub
+StaticText
+StaticText
+	EditField
+StaticText
+RadioButton
+RadioButton
+RadioButton
+RadioButton
+RadioButton
+RadioButton
+RadioButton
+RadioButton
+Action
+Sub Action()
+End Sub
+RadioButton
+RadioButton
+round_check_box
+action
+Sub action()
+if (fv.value = true) then
+self.width = self.width + 150
+else
+self.width = self.width - 150
+end if
+End Sub
+StaticText
+	MouseMove
+)Sub MouseMove(X As Integer, Y As Integer)
+End Sub
+	Rectangle
+StaticText
+PushButton
+Action
+Sub Action()
+dim a,b,c as integer&dim pos_x, pos_y,dist_check as integer
+dim pix_color as color9dim cur_x,cur_y,cur_amt,high_x,high_y,high_amt as integer
+dim speciation as boolean.'For now, lets work with canvas1 as our image.&'Canvas1.pict is a picture we can use.
+canvas1.clear_pict='Pict is now clear, however we need to make it have rgb 0,0,0,canvas1.pict.graphics.forecolor = rgb(0,0,0)-canvas1.pict.graphics.fillrect(0,0,1000,1000))'OK, now lets loop through all the birds.
+for a = 0 to ubound(birds),'Remember, canvas1 is width(x) vs. length(y)'pos_x = canvas1.trans_x(birds(a).width)(pos_y = canvas1.trans_y(birds(a).length))'OK, we have the pixel locations to plot..'We are going to draw a 5 x 5 square of pixels2'around the center pixel.  Pixel colors are ADDED.
+cur_x = pos_x - 2
+cur_y = pos_y - 2
+for b = 1 to 5
+for c = 1 to 55cur_amt = 5 - round(getdist(cur_x,cur_y,pos_x,pos_y))4pix_color = canvas1.pict.graphics.pixel(cur_x,cur_y)
+canvas1.pict.graphics.pixel(cur_x,cur_y) = rgb(pix_color.red + (cur_amt*10),200,pix_color.red + (cur_amt*10))
+cur_x = cur_x + 1
+next
+canvas1.disp_pict
+cur_x = pos_x - 2
+cur_y = cur_y + 1
+next
+next
+3'filter out low lvl points, and find highest point.
+for a = 0 to ubound(birds)'pos_x = canvas1.trans_x(birds(a).width)(pos_y = canvas1.trans_y(birds(a).length)
+cur_x = pos_x - 2
+cur_y = pos_y - 2
+for b = 1 to 5
+for c = 1 to 54pix_color = canvas1.pict.graphics.pixel(cur_x,cur_y)
+if (pix_color.red < 135) then5canvas1.pict.graphics.pixel(cur_x,cur_y) = rgb(0,0,0)
+else
+'work to find highest pt"if (pix_color.red > high_amt) then
+high_amt = pix_color.red
+high_x = cur_x
+high_y = cur_y
+end if
+end if
+cur_x = cur_x + 1
+next
+canvas1.disp_pict
+cur_x = pos_x - 2
+cur_y = cur_y + 1
+next
+next
+speciation = false
+'display highest point.canvas1.pict.graphics.forecolor = rgb(0,0,255)9canvas1.pict.graphics.filloval(high_x - 2,high_y - 2,4,4)
+ 'Start looking for lower points.
+for a = 0 to ubound(birds)'pos_x = canvas1.trans_x(birds(a).width)(pos_y = canvas1.trans_y(birds(a).length)
+cur_x = pos_x - 2
+cur_y = pos_y - 2
+for b = 1 to 5
+for c = 1 to 54pix_color = canvas1.pict.graphics.pixel(cur_x,cur_y)
+if (pix_color.red > 140) then/dist_check = getdist(cur_x,cur_y,high_x,high_y)
+if (dist_check > 35) then
+speciation = true7canvas1.pict.graphics.pixel(cur_x,cur_y) = rgb(255,0,0)
+end if
+end if
+cur_x = cur_x + 1
+next
+cur_x = pos_x - 2
+cur_y = cur_y + 1
+next
+next
+if (speciation) then
+msgbox "Speciation!"
+end if
+canvas1.disp_pict
+End Sub
+	Rectangle
+Name
+Rectangle1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False	FillColor
+16777215
+BorderWidth
+TopLeftColor
+11184810
+BottomRightColor
+Canvas
+Name
+Canvas1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+Backdrop
+Enabled
+True
+Canvas
+Name
+Canvas2
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+Backdrop
+Enabled
+True
+Canvas
+Name
+Canvas3
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+Backdrop
+Enabled
+True
+PushButton
+Name
+redraw
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Redraw
+Default
+False
+Cancel
+False
+Enabled
+True
+StaticText
+Name
+StaticText1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Width(x) vs. Length(y):	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+StaticText2
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Curve(x) vs. Length(y):	TextAlign
+0	TextColor
+0	MultiLine
+False
+StaticText
+Name
+StaticText3
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Width(x) vs. Curve(y):	TextAlign
+0	TextColor
+0	MultiLine
+False
+	EditField
+Name
+place
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Border
+True	MultiLine
+False	ScrollBar
+True
+Styled
+False
+Password
+False
+ReadOnly
+True	LimitText
+AcceptTabs
+False	TextColor
+0	BackColor
+16777215
+Enabled
+True
+Text
+StaticText
+Name
+StaticText4
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Bird Position:	TextAlign
+0	TextColor
+0	MultiLine
+False
+RadioButton
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Fruits
+Value
+False
+Enabled
+True
+RadioButton
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Insects
+Value
+False
+Enabled
+True	
+RadioButton
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Small Seeds
+Value
+False
+Enabled
+True
+RadioButton
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Medium Seeds
+Value
+False
+Enabled
+True
+RadioButton
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Large Seeds
+Value
+False
+Enabled
+True
+RadioButton
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Curved Corollas
+Value
+False
+Enabled
+True
+RadioButton
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Straight Corollas
+Value
+False
+Enabled
+True
+RadioButton
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Male
+Value
+False
+Enabled
+True
+RadioButton
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Female
+Value
+False
+Enabled
+True
+RadioButton
+Name
+RadioButton3
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+None
+Value
+False
+Enabled
+True
+Canvas
+Name
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+Backdrop
+Enabled
+True
+StaticText
+Name
+StaticText5
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Food Mapping	TextAlign
+0	TextColor
+0	MultiLine
+False
+PushButton
+Name
+PushButton1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Show Speciation
+Default
+False
+Cancel
+False
+Enabled
+True
+Class
+graphcanvas!
+graphcanvas
+Canvas
+pict as picture
+drawpt,ny as double, nx as double, incolor as color
+8Sub drawpt(ny as double, nx as double, incolor as color)$pict.graphics.forecolor = rgb(0,0,0)
+outline
+mark!pict.graphics.forecolor = incolor3pict.graphics.filloval(trans_x(nx),trans_y(ny),2,2)
+End Sub
+outline
+Sub outline()$pict.graphics.forecolor = rgb(0,0,0)*pict.graphics.drawline(0,0,pict.width-5,0)+pict.graphics.drawline(0,0,0,pict.height-5)
+pict.graphics.drawline(pict.width - 5,0,pict.width -5,pict.height-5)
+pict.graphics.drawline(0,pict.height-5,pict.width-5,pict.height-5)
+End Sub
+mark
+Sub mark()
+dim a,b as integer$pict.graphics.forecolor = rgb(0,0,0)
+for a = 1 to 58pict.graphics.filloval((a * 20) + 4,pict.height - 8,2,3)7pict.graphics.filloval(0,pict.height - (a*20) - 10,3,2)
+next
+End Sub
+clear_pict
+Sub clear_pict()(pict = newpicture(me.width,me.height,16)*pict.graphics.forecolor = graphs.backcolor%pict.graphics.fillrect(0,0,1000,1000)
+End Sub	disp_pict
+Sub disp_pict() me.graphics.drawpicture pict,0,0
+End Sub
+trans_x
+nx as double
+integer
+)Function trans_x(nx as double) As integer
+return (nx * 20) + 4
+End Function
+trans_y
+ny as double
+integer
+)Function trans_y(ny as double) As integer!return pict.height - (ny*20) - 10
+End Function
+rev_trans_x
+nx as integer
+double
+-Function rev_trans_x(nx as integer) As double
+dim b as double
+b = nx - 4
+b = b / 20
+return b
+End Function
+rev_trans_y
+ny as integer
+double
+-Function rev_trans_y(ny as integer) As double
+dim a as double
+a = self.height - ny - 10
+a = a / 20
+return a
+End Function
+Paint
+Sub Paint(g As Graphics)	disp_pict
+End Sub
+Open
+Sub Open()
+clear_pict
+End Sub	MouseDown
+9Function MouseDown(X As Integer, Y As Integer) As Boolean
+graphs.place.text = "X: " + str(rev_trans_x(x)) + "   Y: " + str(rev_trans_y(y))
+End Function
+View	varifywin
+Name	varifywin
+Frame
+HasBackColor
+True	BackColor
+16777215
+Backdrop
+Title
+Are you sure?
+Visible
+True
+CloseBox
+False
+GrowIcon
+False
+ZoomIcon
+False
+BalloonHelp
+	Placement
+Width
+Height
+MinWidth
+64	MinHeight
+MaxWidth
+32000	MaxHeight
+32000
+	varifywin
+Dialog
+temp as folderitem
+tempp as integer
+Open
+Sub Open()
+End Sub
+StaticText
+PushButton
+Action
+Sub Action()
+varifywin.hide()
+needsave = 0
+if (varifywin.tempp = 1) then
+loadold(temp,tempp)
+varifywin.tempp = 0
+else
+loadold(temp,0)
+end if
+End Sub
+PushButton
+Action
+Sub Action()
+varifywin.hide()
+varifywin.tempp = 0
+End Sub
+StaticText
+Name
+StaticText1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Are you sure you wish to load an old bird array into memory?  This action deletes the current simulation.  You may wish to save your array to file first.	TextAlign
+0	TextColor
+0	MultiLine
+True
+PushButton
+Name
+PushButton1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Load
+Default
+False
+Cancel
+False
+Enabled
+True
+PushButton
+Name
+PushButton2
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Abort
+Default
+False
+Cancel
+False
+Enabled
+True
+View
+save
+Name
+save
+Frame
+HasBackColor
+True	BackColor
+16777215
+Backdrop
+Title
+Save
+Visible
+True
+CloseBox
+False
+GrowIcon
+False
+ZoomIcon
+False
+BalloonHelp
+	Placement
+Width
+Height
+MinWidth
+64	MinHeight
+MaxWidth
+32000	MaxHeight
+32000
+save
+Dialog
+StaticText
+PushButton
+Action
+Sub Action()
+save.hide()
+savearray(1)
+End Sub
+PushButton
+Action
+Sub Action()
+quit
+End Sub
+StaticText
+Name
+StaticText1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Would you like to save your current bird array to file before quitting?	TextAlign
+0	TextColor
+0	MultiLine
+True
+PushButton
+Name
+PushButton1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Save
+Default
+False
+Cancel
+False
+Enabled
+True
+PushButton
+Name
+PushButton2
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Don't Save
+Default
+False
+Cancel
+False
+Enabled
+True
+View
+about
+Name
+about
+Frame
+HasBackColor
+True	BackColor
+16777215
+Backdrop
+Title
+About...
+Visible
+True
+CloseBox
+False
+GrowIcon
+False
+ZoomIcon
+False
+BalloonHelp
+	Placement
+Width
+Height
+MinWidth
+64	MinHeight
+MaxWidth
+32000	MaxHeight
+32000
+about
+Dialog
+place as integer
+Open
+Sub Open()
+about.hide()
+End Sub
+PushButton
+Action
+Sub Action()
+about.hide()
+End Sub
+Canvas
+Paint
+Sub Paint(g As Graphics)
+if (timer1.mode = 0) then me.graphics.drawpicture sss,0,13
+end if
+End Sub
+StaticText
+StaticText
+	MouseMove
+)Sub MouseMove(X As Integer, Y As Integer)
+End Sub
+PushButton
+Action
+Sub Action()4msgbox "Thanks David Newberry for the prefs module."
+End Sub
+	Rectangle
+Line
+StaticText
+Canvas
+	MouseExit
+Sub MouseExit()-canvas5.graphics.forecolor = rgb(255,255,255)
+canvas5.graphics.filloval((canvas5.width / 2) - 4,(canvas5.height / 2) - 4,8,8)
+End Sub
+MouseEnter
+Sub MouseEnter()+canvas5.graphics.forecolor = rgb(255,0,255)
+canvas5.graphics.filloval((canvas5.width / 2) - 4,(canvas5.height / 2) - 4,8,8)
+End Sub	MouseDown
+9Function MouseDown(X As Integer, Y As Integer) As Boolean$statictext3.textcolor = rgb(255,0,0)(showURL "http://tectonicdesigns.com/mac"
+End Function
+Paint
+Sub Paint(g As Graphics)
+End Sub
+Canvas
+	MouseExit
+Sub MouseExit()-canvas4.graphics.forecolor = rgb(255,255,255)
+canvas4.graphics.filloval((canvas4.width / 2) - 4,(canvas4.height / 2) - 4,8,8)
+End Sub
+MouseEnter
+Sub MouseEnter()+canvas4.graphics.forecolor = rgb(255,0,255)
+canvas4.graphics.filloval((canvas4.width / 2) - 4,(canvas4.height / 2) - 4,8,8)
+End Sub	MouseDown
+9Function MouseDown(X As Integer, Y As Integer) As Boolean$statictext2.textcolor = rgb(255,0,0)$showURL "mailto:cantino@frognet.net"
+End Function
+Paint
+Sub Paint(g As Graphics)
+End Sub
+Canvas
+Canvas
+Timer
+Action
+Sub Action()
+dim a as integer
+dim p as picture/p = newpicture(canvas1.width,canvas1.height,16)
+if (place < (13 - 5)) then
+place = place + 5"p.graphics.drawpicture sss,0,place"canvas1.graphics.drawpicture p,0,0
+else
+me.mode = 0
+end if
+End Sub
+Canvas
+Name
+Canvas3
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+Backdrop
+Enabled
+True	
+Canvas
+Name
+Canvas2
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+Backdrop
+Enabled
+True
+	Rectangle
+Name
+Rectangle1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False	FillColor
+13421772
+BorderWidth
+TopLeftColor
+15658734
+BottomRightColor
+PushButton
+Name
+PushButton1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Close
+Default
+False
+Cancel
+False
+Enabled
+True
+Canvas
+Name
+Canvas1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+Backdrop
+Enabled
+True
+StaticText
+Name
+StaticText1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+SSS 1.0 by Andrew Cantino.  This program is for simulating sympatric speciation.	TextAlign
+0	TextColor
+0	MultiLine
+True
+StaticText
+Name
+StaticText2
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+cantino@frognet.net	TextAlign
+0	TextColor
+0	MultiLine
+False
+PushButton
+Name
+PushButton2
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+More Credits
+Default
+False
+Cancel
+False
+Enabled
+True
+Line
+Name
+Line1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+BorderWidth
+1	LineColor
+13421772
+StaticText
+Name
+StaticText3
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+http://tectonicdesigns.com/mac	TextAlign
+0	TextColor
+0	MultiLine
+False
+Canvas
+Name
+Canvas4
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+Backdrop
+Enabled
+True
+Canvas
+Name
+Canvas5
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+Backdrop
+Enabled
+True
+Timer
+Name
+Timer1
+Index
+-2147483648
+Left
+Mode
+Period
+Class
+round_check_box5
+round_check_box
+Canvas
+value as boolean
+draw
+Sub draw()
+dim cx,cy as integer-me.graphics.clearrect(0,0,me.width,me.height)
+cx = me.width / 2
+cy = me.height / 2
+if (value) then(me.graphics.forecolor = rgb(130,130,130)'me.graphics.drawoval(cx - 3,cy - 3,8,8)(me.graphics.forecolor = rgb(255,255,255)'me.graphics.filloval(cx - 4,cy - 4,8,8)(me.graphics.forecolor = rgb(150,150,150)'me.graphics.drawoval(cx - 4,cy - 4,8,8)$me.graphics.forecolor = rgb(0,0,255)
+-me.graphics.drawline(cx - 2,cy - 3,cx,cy + 1)-me.graphics.drawline(cx - 2,cy - 2,cx,cy + 2)
+.me.graphics.drawline(cx,cy + 1,cx + 6, cy - 6).me.graphics.drawline(cx,cy + 2,cx + 6, cy - 5)
+else(me.graphics.forecolor = rgb(130,130,130)'me.graphics.drawoval(cx - 3,cy - 3,8,8)(me.graphics.forecolor = rgb(255,255,255)'me.graphics.filloval(cx - 4,cy - 4,8,8)(me.graphics.forecolor = rgb(150,150,150)'me.graphics.drawoval(cx - 4,cy - 4,8,8)
+end if
+End Sub
+about
+Sub about()
+'Round check box canvas b.8
+'by Andrew Cantino
+'cantino@frognet.net
+'http://tectonicdesigns.com/mac
+5'If you use this in a project, please give me credit.
+End Sub
+action
+MouseUp
+'Sub MouseUp(X As Integer, Y As Integer)
+End Sub	MouseDrag
+)Sub MouseDrag(X As Integer, Y As Integer)
+End Sub
+Paint
+Sub Paint(g As Graphics)
+draw
+End Sub	MouseDown
+	9Function MouseDown(X As Integer, Y As Integer) As Boolean
+if (value) then
+value = false
+else
+value = true
+end if
+draw
+action
+End Function
+Folder
+Windows
+Folder
+Dialogs
+Folder
+Classes and subs
+Folder
+Other
+Picture
+Macintosh HD
+sss.pict
+^PICTGCon
+Development
+IMacintosh HD:Andrew's Stuff:REALbasic:Bird Evolution:Development:sss.pict
+View	speci_win
+Name	speci_win
+Frame
+HasBackColor
+True	BackColor
+13421772
+Backdrop
+Title
+Speciation Watch
+Visible
+False
+CloseBox
+True
+GrowIcon
+False
+ZoomIcon
+False
+BalloonHelp
+	Placement
+Width
+Height
+MinWidth
+64	MinHeight
+MaxWidth
+32000	MaxHeight
+32000
+	speci_win
+Dialog
+last as picture
+current as picture
+Close
+Sub Close()
+speci_win.visible = false
+End Sub
+Open
+Sub Open()
+End Sub
+Canvas
+Paint
+Sub Paint(g As Graphics)#me.graphics.drawpicture current,0,0
+End Sub	MouseDrag
+)Sub MouseDrag(X As Integer, Y As Integer)
+End Sub
+StaticText
+PushButton
+Action
+Sub Action()
+if (speci_check) then!msgbox "Speciation was detected."
+else$msgbox "No speciation was detected."
+end if'output.graphics.drawpicture current,0,0
+End Sub
+Canvas
+Name
+output
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+Backdrop
+Enabled
+True
+StaticText
+Name
+StaticText1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Text
+Width(x) vs. Length(y):	TextAlign
+0	TextColor
+0	MultiLine
+False
+PushButton
+Name
+PushButton1
+Index
+-2147483648
+TabPanelIndex
+Visible
+True
+Left
+Width
+Height
+BalloonHelp
+DisabledBalloonHelp
+LockLeft
+False
+LockTop
+False	LockRight
+False
+LockBottom
+False
+TextFont
+System
+TextSize
+Bold
+False
+Italic
+False	Underline
+False
+Caption
+Speciation Check
+Default
+False
+Cancel
+False
+Enabled
+True

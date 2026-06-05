@@ -1,0 +1,29 @@
+@import "../shared/retro-mac.css?v=3";
+
+/* ----- intro big title ----- */
+.bigtitle { text-align: center; margin: 4px 0 12px; line-height: 1.05; }
+.bigtitle .l1 { font-size: 26px; font-weight: bold; letter-spacing: -0.5px; }
+.bigtitle .l2 { font-size: 15px; font-style: italic; margin: 2px 0; }
+.bigtitle .l3 { font-size: 30px; font-weight: bold; }
+
+/* ----- control strips ----- */
+.controlstrip {
+  display: flex; align-items: center; gap: 8px;
+  padding: 4px 0; flex-wrap: wrap;
+}
+.statusline { font-weight: normal; }
+.statusline span { font-weight: bold; }
+
+/* ----- settings ----- */
+.optgrid {
+  display: grid; grid-template-columns: auto 1fr; gap: 5px 8px; align-items: center;
+}
+.optgrid input[type=text] { width: 64px; }
+
+/* General tab: two columns of toggles (Mortality | Display) */
+.gencols { display: flex; gap: 24px; }
+.gencol { display: flex; flex-direction: column; gap: 5px; }
+.psub { margin-left: 18px; }
+
+#grid { background: #fff; cursor: crosshair; }
+#graph { background: #fff; }
