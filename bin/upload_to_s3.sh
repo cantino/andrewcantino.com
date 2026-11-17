@@ -1,3 +1,17 @@
 #!/usr/bin/env sh
+set -e
 
-s3cmd sync --no-check-md5 --cf-invalidate -M --no-mime-magic --delete-removed --rexclude=^.git\|^.idea\|.DS_Store\|^bin . s3://andrewcantino.com
+BUCKET=andrewcantino.com
+
+aws s3 sync . "s3://$BUCKET" \
+  --delete \
+  --exclude ".git*" \
+  --exclude ".idea*" \
+  --exclude "*.DS_Store" \
+  --exclude "bin/*"
+
+DIST_ID=$(aws cloudfront list-distributions \
+  --query "DistributionList.Items[?contains(Aliases.Items || \`[]\`, '$BUCKET')].Id | [0]" \
+  --output text)
+
+aws cloudfront create-invalidation --distribution-id "$DIST_ID" --paths "/*"
